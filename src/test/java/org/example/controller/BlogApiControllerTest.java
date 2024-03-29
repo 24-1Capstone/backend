@@ -1,4 +1,5 @@
 package org.example.controller;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.domain.Article;
 import org.example.dto.AddArticleRequest;
@@ -79,10 +80,9 @@ class BlogApiControllerTest {
     @Test
     public void findAllArticles() throws Exception {
         //given
-        final String url = "/api/articles";
+        final String url = "api/articles";
         final String title = "title";
         final String content = "content";
-
         blogRepository.save(Article.builder()
                 .title(title)
                 .content(content)
@@ -99,7 +99,7 @@ class BlogApiControllerTest {
                 .andExpect(jsonPath("$[0].title").value(title));
     }
 
-    @DisplayName("findArticle: 블로그 글 조회에 성공한다.")
+    @DisplayName("findArticle: 블로그 글 조회에 성공.")
     @Test
     public void findArticle() throws Exception {
         //given
@@ -121,7 +121,6 @@ class BlogApiControllerTest {
                 .andExpect(jsonPath("$.content").value(content))
                 .andExpect(jsonPath("$.title").value(title));
     }
-
     @DisplayName("deleteArticle: 블로그 글 삭제에 성공한다.")
     @Test
     public void deleteArticle() throws Exception {
@@ -135,14 +134,12 @@ class BlogApiControllerTest {
                 .content(content)
                 .build());
 
-        //when
-        mockMvc.perform(delete(url, savedArticle.getId()))
-                .andExpect(status().isOk());
+        mockMvc.perform(delete(url, savedArticle.getId())).andExpect(status().isOk());
 
-        //then
         List<Article> articles = blogRepository.findAll();
 
         assertThat(articles).isEmpty();
+
     }
 
     @DisplayName("updateArticle: 블로그 글 수정에 성공한다.")
@@ -167,7 +164,6 @@ class BlogApiControllerTest {
         ResultActions result = mockMvc.perform(put(url, savedArticle.getId())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(request)));
-
         //then
         result.andExpect(status().isOk());
 
@@ -176,4 +172,5 @@ class BlogApiControllerTest {
         assertThat(article.getTitle()).isEqualTo(newTitle);
         assertThat(article.getContent()).isEqualTo(newContent);
     }
+
 }

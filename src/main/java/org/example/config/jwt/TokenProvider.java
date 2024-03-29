@@ -18,7 +18,7 @@ import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
-public class TokenProvider {
+public class TokenProvider { // 계속해서 토큰을 생성하고 올바른 토큰인지 유효성 검사를 하고, 토큰에서 필요한 정보를 가져오는 클래스 작성.
 
     private final JwtProperties jwtProperties;
 
@@ -27,6 +27,7 @@ public class TokenProvider {
         return makeToken(new Date(now.getTime() + expiredAt.toMillis()), user);
     }
 
+    // JWT 토큰 생성 메서드
     private String makeToken(Date expiry, User user) {
         Date now = new Date();
 

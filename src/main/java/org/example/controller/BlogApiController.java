@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.example.domain.Article;
 import org.example.dto.AddArticleRequest;
 import org.example.dto.ArticleResponse;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController // HTTP Response Body에 객체 데이터를 JSON 형식으로 반환하는 컨트롤러
@@ -32,15 +34,15 @@ public class BlogApiController {
     public ResponseEntity<List<ArticleResponse>> findAllArticles() {
         List<ArticleResponse> articles = blogService.findAll()
                 .stream()
-                .map(ArticleResponse::new)
+                .map(a -> new ArticleResponse(a))
                 .toList();
 
         return ResponseEntity.ok()
                 .body(articles);
     }
 
+
     @GetMapping("/api/articles/{id}")
-    // URL 경로에서 값 추출
     public ResponseEntity<ArticleResponse> findArticle(@PathVariable long id) {
         Article article = blogService.findById(id);
 
