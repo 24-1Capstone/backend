@@ -21,6 +21,9 @@ spring:
             scope:
               - email
               - profile
+          github:
+            client-id: 5c168df99aa8aa86725b
+            client-secret: 49fd201a7c442fb35fe98ccd92205936d18791e6
 jwt:
   issuer: ajufresh@gmail.com
   secret_key: study-springboot
