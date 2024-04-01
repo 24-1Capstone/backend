@@ -24,6 +24,25 @@ spring:
           github:
             client-id: 5c168df99aa8aa86725b
             client-secret: 49fd201a7c442fb35fe98ccd92205936d18791e6
+
+
 jwt:
   issuer: ajufresh@gmail.com
   secret_key: study-springboot
+
+## cors 설정
+#cors:
+#  allowed-origins: 'http://localhost:3000'
+#  allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+#  allowed-headers: '*'
+#  max-age: 3600
+#
+## 토큰 관련 secret Key 및 RedirectUri 설정
+#app:
+#  auth:
+#    tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
+#    tokenExpiry: 1800000
+#    refreshTokenExpiry: 604800000
+#  oauth2:
+#    authorizedRedirectUris:
+#      - http://localhost:3000/oauth/redirec
