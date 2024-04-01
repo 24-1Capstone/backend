@@ -1,20 +1,22 @@
 package org.example.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@ToString
 @Entity
 public class User implements UserDetails { // UserDetails를 상속받아 인증 객체로 사용
 
@@ -23,30 +25,39 @@ public class User implements UserDetails { // UserDetails를 상속받아 인증
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    // 사용자 이름
+    @Column(name = "username", unique = true)
+    private String username;
+
+    @Column(nullable = false)
+    private String avatarUrl;
 
     @Column(name = "password")
     private String password;
 
-    // 사용자 이름
-    @Column(name = "nickname", unique = true)
-    private String nickname;
+    private String provider;
 
-    // 생성자에 nickname 추가
+    private String providerId;
+
+    @CreatedDate
+    private LocalDateTime createDate;
 
     @Builder
-    public User(String email, String password, String nickname) {
-        this.email = email;
+    public User(String username, String avatarUrl, String password, String provider, String providerId, LocalDateTime createDate) {
+        this.username = username;
+        this.avatarUrl = avatarUrl;
         this.password = password;
-        this.nickname = nickname;
+        this.provider = provider;
+        this.providerId = providerId;
+        this.createDate = createDate;
     }
 
     //사용자 이름 변경
-    public User update(String nickname) {
-        this.nickname = nickname;
+    public User update(String username) {
+        this.username = username;
         return this;
     }
+
 
     @Override // 권한 반환
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -56,7 +67,7 @@ public class User implements UserDetails { // UserDetails를 상속받아 인증
     // 사용자의 id를 반환(고유한 값)
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     // 사용자의 패스워드 반환
@@ -92,4 +103,6 @@ public class User implements UserDetails { // UserDetails를 상속받아 인증
         // 계정이 사용가능한지 확인하는 로직
         return true; // true -> 사용 가능
     }
+
+
 }

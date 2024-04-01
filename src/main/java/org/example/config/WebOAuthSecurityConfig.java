@@ -18,7 +18,6 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 @RequiredArgsConstructor
 @Configuration
@@ -30,11 +29,11 @@ public class WebOAuthSecurityConfig {
     private final UserService userService;
 
     @Bean
-    public WebSecurityCustomizer configure() { // 스프링 시큐리티 기능 비활성화
-        return (web) -> web.ignoring()
-                .requestMatchers(toH2Console())
-                .requestMatchers("/img/**", "/css/**", "/js/**");
+    public WebSecurityCustomizer configure() {
+        // 스프링 시큐리티에서 정적 자원에 대한 접근을 허용
+        return (web) -> web.ignoring().requestMatchers("/img/**", "/css/**", "/js/**");
     }
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -97,8 +96,4 @@ public class WebOAuthSecurityConfig {
         return new OAuth2AuthorizationRequestBasedOnCookieRepository();
     }
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }

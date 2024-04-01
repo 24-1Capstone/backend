@@ -2,6 +2,7 @@ package org.example.config.oauth;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.User;
 import org.example.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -15,6 +16,7 @@ import java.util.Map;
 public class OAuth2UserCustomService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -26,16 +28,23 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
 
     // ❷ 유저가 있으면 업데이트, 없으면 유저 생성
     private User saveOrUpdate(OAuth2User oAuth2User) {
-        Map<String, Object> attributes = oAuth2User.getAttributes();
+        System.out.println("getAttributes:" + oAuth2User.getAttributes());
+        OAuth2UserInfo oAuth2UserInfo = new GithubUserInfo(oAuth2User.getAttributes());
 
-        String email = (String) attributes.get("email");
-        String name = (String) attributes.get("name");
+        String provider = oAuth2UserInfo.getProvider(); //github
+        String providerId = oAuth2UserInfo.getProviderId(); //githubID
+        String username = oAuth2UserInfo.getUsername();
+        String password = passwordEncoder.encode("겟인데어");
+        String avatarUrl = oAuth2UserInfo.getAvatarUrl();
 
-        User user = userRepository.findByEmail(email)
-                .map(entity -> entity.update(name))
+        User user = userRepository.findByUsername(username)
+                .map(entity -> entity.update(username))
                 .orElse(User.builder()
-                        .email(email)
-                        .nickname(name)
+                        .username(username)
+                        .avatarUrl(avatarUrl)
+                        .password(password)
+                        .provider(provider)
+                        .providerId(providerId)
                         .build());
 
         return userRepository.save(user);
