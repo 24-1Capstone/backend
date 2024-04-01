@@ -1,6 +1,6 @@
 package org.example.config.oauth;
 import lombok.RequiredArgsConstructor;
-import org.example.domain.User;
+import org.example.member.domain.User;
 import org.example.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -8,8 +8,6 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Service

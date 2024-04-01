@@ -1,7 +1,7 @@
 package org.example.service;
 import lombok.RequiredArgsConstructor;
 import org.example.config.jwt.TokenProvider;
-import org.example.domain.User;
+import org.example.member.domain.User;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;

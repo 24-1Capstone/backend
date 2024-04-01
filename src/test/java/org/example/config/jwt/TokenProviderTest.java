@@ -1,7 +1,7 @@
 package org.example.config.jwt;
 
 import io.jsonwebtoken.Jwts;
-import org.example.domain.User;
+import org.example.member.domain.User;
 import org.example.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,8 +33,9 @@ class TokenProviderTest {
     void generateToken() {
         // given
         User testUser = userRepository.save(User.builder()
-                .email("user@gmail.com")
+                .username("user@gmail.com")
                 .password("test")
+                        .avatarUrl("image")
                 .build());
 
         // when

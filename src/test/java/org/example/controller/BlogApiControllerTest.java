@@ -1,7 +1,8 @@
 package org.example.controller;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.domain.Article;
-import org.example.domain.User;
+import org.example.member.domain.User;
 import org.example.dto.AddArticleRequest;
 import org.example.dto.UpdateArticleRequest;
 import org.example.repository.BlogRepository;
@@ -66,8 +67,9 @@ class BlogApiControllerTest {
     void setSecurityContext() {
         userRepository.deleteAll();
         user = userRepository.save(User.builder()
-                .email("user@gmail.com")
+                .username("username")
                 .password("test")
+                        .avatarUrl("avatar")
                 .build());
 
         SecurityContext context = SecurityContextHolder.getContext();

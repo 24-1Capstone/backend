@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.example.config.jwt.TokenProvider;
 import org.example.domain.RefreshToken;
-import org.example.domain.User;
+import org.example.member.domain.User;
 import org.example.repository.RefreshTokenRepository;
 import org.example.service.UserService;
 import org.example.util.CookieUtil;

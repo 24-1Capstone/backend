@@ -1,4 +1,4 @@
-package org.example.domain;
+package org.example.member.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -6,19 +6,17 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
 @Entity
-public class User implements UserDetails { // UserDetails를 상속받아 인증 객체로 사용
+public class User implements UserDetails{ // UserDetails를 상속받아 인증 객체로 사용
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -103,6 +101,4 @@ public class User implements UserDetails { // UserDetails를 상속받아 인증
         // 계정이 사용가능한지 확인하는 로직
         return true; // true -> 사용 가능
     }
-
-
 }
