@@ -1,7 +1,7 @@
 package org.example.config.oauth;
 import lombok.RequiredArgsConstructor;
-import org.example.member.domain.User;
-import org.example.repository.UserRepository;
+import org.example.domain.entity.member.User;
+import org.example.repository.member.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
