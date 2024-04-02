@@ -1,4 +1,4 @@
-package org.example.domain.entity.article;
+package org.example.blog.domain.entity.article;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

@@ -1,4 +1,4 @@
-package org.example.domain.dto.request.member;
+package org.example.user.domain.dto.request.member;
 
 import lombok.Getter;
 import lombok.Setter;

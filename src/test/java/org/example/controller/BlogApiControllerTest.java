@@ -1,12 +1,12 @@
 package org.example.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.domain.entity.article.Article;
-import org.example.domain.entity.member.User;
-import org.example.domain.dto.request.article.AddArticleRequest;
-import org.example.domain.dto.request.article.UpdateArticleRequest;
-import org.example.repository.article.BlogRepository;
-import org.example.repository.member.UserRepository;
+import org.example.blog.domain.entity.article.Article;
+import org.example.user.domain.entity.member.User;
+import org.example.blog.domain.dto.request.article.AddArticleRequest;
+import org.example.blog.domain.dto.request.article.UpdateArticleRequest;
+import org.example.blog.repository.article.BlogRepository;
+import org.example.user.repository.member.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

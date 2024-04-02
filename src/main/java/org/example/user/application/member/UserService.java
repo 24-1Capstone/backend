@@ -1,9 +1,9 @@
-package org.example.service.member;
+package org.example.user.application.member;
 
 import lombok.RequiredArgsConstructor;
 import org.example.user.domain.entity.member.User;
 import org.example.user.domain.dto.request.member.AddUserRequest;
-import org.example.repository.member.UserRepository;
+import org.example.user.repository.member.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

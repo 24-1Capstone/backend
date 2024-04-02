@@ -1,4 +1,4 @@
-package org.example.domain.dto.response.token;
+package org.example.user.domain.dto.response.token;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

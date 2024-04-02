@@ -1,4 +1,4 @@
-package org.example.repository.token;
+package org.example.user.repository.token;
 
 import org.example.user.domain.entity.token.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;

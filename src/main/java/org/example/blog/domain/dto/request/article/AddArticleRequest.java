@@ -1,9 +1,9 @@
-package org.example.domain.dto.request.article;
+package org.example.blog.domain.dto.request.article;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.domain.entity.article.Article;
+import org.example.blog.domain.entity.article.Article;
 
 @NoArgsConstructor
 @AllArgsConstructor

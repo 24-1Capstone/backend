@@ -1,11 +1,11 @@
-package org.example.service.article;
+package org.example.blog.application.article;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.blog.domain.entity.article.Article;
 import org.example.blog.domain.dto.request.article.AddArticleRequest;
 import org.example.blog.domain.dto.request.article.UpdateArticleRequest;
-import org.example.repository.article.BlogRepository;
+import org.example.blog.repository.article.BlogRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package org.example.controller.member;
+package org.example.user.presentation.member;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,4 +1,4 @@
-package org.example.controller.article;
+package org.example.blog.presentation.article;
 
 import lombok.RequiredArgsConstructor;
 import org.example.blog.domain.entity.article.Article;

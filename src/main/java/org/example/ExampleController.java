@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example;
 
 import lombok.Getter;
 import lombok.Setter;

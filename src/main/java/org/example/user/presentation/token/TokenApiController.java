@@ -1,4 +1,4 @@
-package org.example.controller.token;
+package org.example.user.presentation.token;
 
 import lombok.RequiredArgsConstructor;
 import org.example.user.domain.dto.request.token.CreateAccessTokenRequest;

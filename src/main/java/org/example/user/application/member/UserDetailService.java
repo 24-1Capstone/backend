@@ -1,7 +1,7 @@
-package org.example.service.member;
+package org.example.user.application.member;
 
 import lombok.RequiredArgsConstructor;
-import org.example.repository.member.UserRepository;
+import org.example.user.repository.member.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;

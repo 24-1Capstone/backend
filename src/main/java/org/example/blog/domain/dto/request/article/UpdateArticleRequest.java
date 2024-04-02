@@ -1,4 +1,4 @@
-package org.example.domain.dto.request.article;
+package org.example.blog.domain.dto.request.article;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

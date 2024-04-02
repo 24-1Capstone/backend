@@ -1,4 +1,4 @@
-package org.example.domain.entity.token;
+package org.example.user.domain.entity.token;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

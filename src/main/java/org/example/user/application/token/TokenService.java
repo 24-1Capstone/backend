@@ -1,7 +1,7 @@
-package org.example.service.token;
+package org.example.user.application.token;
 import lombok.RequiredArgsConstructor;
 import org.example.config.jwt.TokenProvider;
-import org.example.service.member.UserService;
+import org.example.user.application.member.UserService;
 import org.example.user.domain.entity.member.User;
 import org.springframework.stereotype.Service;
 

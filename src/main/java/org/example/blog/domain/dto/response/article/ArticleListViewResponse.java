@@ -1,7 +1,7 @@
-package org.example.domain.dto.response.article;
+package org.example.blog.domain.dto.response.article;
 
 import lombok.Getter;
-import org.example.domain.entity.article.Article;
+import org.example.blog.domain.entity.article.Article;
 
 @Getter
 public class ArticleListViewResponse {

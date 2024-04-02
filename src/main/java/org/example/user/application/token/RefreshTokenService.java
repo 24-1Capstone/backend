@@ -1,8 +1,8 @@
-package org.example.service.token;
+package org.example.user.application.token;
 
 import lombok.RequiredArgsConstructor;
 import org.example.user.domain.entity.token.RefreshToken;
-import org.example.repository.token.RefreshTokenRepository;
+import org.example.user.repository.token.RefreshTokenRepository;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor

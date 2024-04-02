@@ -1,4 +1,4 @@
-package org.example.domain.dto.request.token;
+package org.example.user.domain.dto.request.token;
 
 import lombok.Getter;
 import lombok.Setter;

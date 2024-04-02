@@ -1,8 +1,8 @@
 package org.example.config.jwt;
 
 import io.jsonwebtoken.Jwts;
-import org.example.domain.entity.member.User;
-import org.example.repository.member.UserRepository;
+import org.example.user.domain.entity.member.User;
+import org.example.user.repository.member.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
