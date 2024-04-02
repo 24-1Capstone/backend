@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.user.presentation.token;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.config.jwt.JwtFactory;
@@ -65,7 +65,7 @@ class TokenApiControllerTest {
         User testUser = userRepository.save(User.builder()
                 .username("user@gmail.com")
                 .password("test")
-                        .avatarUrl("image")
+                .avatarUrl("image")
                 .build());
 
         String refreshToken = JwtFactory.builder()

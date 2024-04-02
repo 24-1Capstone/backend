@@ -38,17 +38,13 @@ public class User extends BaseEntity implements UserDetails{ // UserDetails를 �
 
     private String providerId;
 
-    @CreatedDate
-    private LocalDateTime createDate;
-
     @Builder
-    public User(String username, String avatarUrl, String password, String provider, String providerId, LocalDateTime createDate) {
+    public User(String username, String avatarUrl, String password, String provider, String providerId) {
         this.username = username;
         this.avatarUrl = avatarUrl;
         this.password = password;
         this.provider = provider;
         this.providerId = providerId;
-        this.createDate = createDate;
     }
 
     //사용자 이름 변경

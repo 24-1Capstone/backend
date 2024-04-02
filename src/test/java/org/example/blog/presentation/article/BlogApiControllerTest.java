@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.blog.presentation.article;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.blog.domain.entity.article.Article;
@@ -69,7 +69,7 @@ class BlogApiControllerTest {
         user = userRepository.save(User.builder()
                 .username("username")
                 .password("test")
-                        .avatarUrl("avatar")
+                .avatarUrl("avatar")
                 .build());
 
         SecurityContext context = SecurityContextHolder.getContext();
