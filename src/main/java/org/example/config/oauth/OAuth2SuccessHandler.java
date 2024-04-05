@@ -42,7 +42,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String accessToken = tokenProvider.generateToken(user, ACCESS_TOKEN_DURATION);
         addAccessTokenToCookie(request, response, accessToken);
-        String targetUrl = getTargetUrl(accessToken);
+        String targetUrl = getTargetUrl();
 
         clearAuthenticationAttributes(request, response);
 
