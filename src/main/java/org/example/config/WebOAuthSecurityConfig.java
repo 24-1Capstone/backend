@@ -10,14 +10,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
+@EnableWebSecurity
 @RequiredArgsConstructor
 @Configuration
 public class WebOAuthSecurityConfig {
@@ -38,6 +43,8 @@ public class WebOAuthSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // 토큰 방식으로 인증을 하기 때문에 기존에 사용하던 폼로그인, 세션 비활성화
         http.csrf().disable()
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
                 .httpBasic().disable()
                 .formLogin().disable()
                 .logout().disable();
@@ -55,7 +62,7 @@ public class WebOAuthSecurityConfig {
 
 
         http.oauth2Login()
-                .loginPage("/login")
+//                .loginPage("/login")
                 .authorizationEndpoint()
                 .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository()) //Authorization 요청과 관련된 상태 저장
                 .and()
@@ -75,6 +82,21 @@ public class WebOAuthSecurityConfig {
         return http.build();
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.addAllowedOriginPattern("http://localhost:3000");
+        configuration.addAllowedOriginPattern("http://localhost:8080");
+        configuration.addAllowedOriginPattern("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration); // /api/**
+        return source;
+    }
 
     @Bean
     public OAuth2SuccessHandler oAuth2SuccessHandler() {

@@ -3,12 +3,10 @@ package org.example.user.domain.entity.member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.user.domain.entity.BaseEntity;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,15 +32,19 @@ public class User extends BaseEntity implements UserDetails{ // UserDetails를 �
     @Column(name = "password")
     private String password;
 
+    @Column(name = "followers_url")
+    private String followersUrl;
+
     private String provider;
 
     private String providerId;
 
     @Builder
-    public User(String username, String avatarUrl, String password, String provider, String providerId) {
+    public User(String username, String avatarUrl, String password, String followersUrl, String provider, String providerId) {
         this.username = username;
         this.avatarUrl = avatarUrl;
         this.password = password;
+        this.followersUrl = followersUrl;
         this.provider = provider;
         this.providerId = providerId;
     }
@@ -70,6 +72,7 @@ public class User extends BaseEntity implements UserDetails{ // UserDetails를 �
     public String getPassword() {
         return password;
     }
+
 
     // 계정 만료 여부 반환
     @Override

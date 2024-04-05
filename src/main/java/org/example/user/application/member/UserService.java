@@ -1,11 +1,14 @@
 package org.example.user.application.member;
 
 import lombok.RequiredArgsConstructor;
+import org.example.blog.domain.entity.article.Article;
 import org.example.user.domain.entity.member.User;
 import org.example.user.domain.dto.request.member.AddUserRequest;
 import org.example.user.repository.member.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -20,6 +23,7 @@ public class UserService {
                 .username(dto.getUsername())
                 .password(encoder.encode(dto.getPassword()))
                 .avatarUrl(dto.getAvatarUrl())
+                .followersUrl(dto.getFollowersUrl())
                 .build()).getId();
     }
 
@@ -31,6 +35,9 @@ public class UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("unexpected user"));
+    }
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
 }

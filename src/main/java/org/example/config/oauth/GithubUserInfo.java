@@ -34,4 +34,9 @@ public class GithubUserInfo implements OAuth2UserInfo {
     public String getAvatarUrl() {
         return (String) attributes.get("avatar_url");
     }
+
+    @Override
+    public String getFollowersUrl() {
+        return (String) attributes.get("followers_url");
+    }
 }

@@ -34,12 +34,14 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
         String username = oAuth2UserInfo.getUsername();
         String password = passwordEncoder.encode("겟인데어");
         String avatarUrl = oAuth2UserInfo.getAvatarUrl();
+        String followersUrl = oAuth2UserInfo.getFollowersUrl();
 
         User user = userRepository.findByUsername(username)
                 .map(entity -> entity.update(username))
                 .orElse(User.builder()
                         .username(username)
                         .avatarUrl(avatarUrl)
+                        .followersUrl(followersUrl)
                         .password(password)
                         .provider(provider)
                         .providerId(providerId)

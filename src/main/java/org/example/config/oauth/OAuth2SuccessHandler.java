@@ -27,6 +27,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     public static final Duration ACCESS_TOKEN_DURATION = Duration.ofDays(1);
     public static final String REDIRECT_PATH = "http://localhost:3000/"; //redirect 경로
 
+
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestRepository;
