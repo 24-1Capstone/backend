@@ -23,7 +23,11 @@ public class UserApiController {
         return "redirect:/login"; // 회원 가입이 완료된 이후에 로그인 페이지로 이동
     }
 
+<<<<<<< HEAD
     @GetMapping("/api/signout")
+=======
+    @GetMapping("/signout")
+>>>>>>> 61d51f10141046c8133e3a893065c32efb33e596
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
         return "redirect:/login";
