@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.2.4'
-    id 'io.spring.dependency-management' version '1.1.4'
+    id 'org.springframework.boot' version '3.0.2'
+    id 'io.spring.dependency-management' version '1.1.0'
 }
 
 group 'org.example'
@@ -19,6 +19,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-security' // 스프링 시큐리티를 사용하기 위한 스타터 추가
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6' // 타임리프에서 스프링시큐리티를 사용하기 위한 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'io.jsonwebtoken:jjwt:0.9.1' //자바 jwt  라이브러리
     implementation 'javax.xml.bind:jaxb-api:2.3.1' //xml 문서와 자바 객체 간 매핑을 자동화
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' //OAuth2 의존성 추가
