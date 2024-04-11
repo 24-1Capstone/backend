@@ -1,7 +1,7 @@
 package org.example.user.application.member;
 
 import lombok.RequiredArgsConstructor;
-import org.example.blog.domain.entity.article.Article;
+import org.example.exception.UserNotFoundException;
 import org.example.user.domain.entity.member.User;
 import org.example.user.domain.dto.request.member.AddUserRequest;
 import org.example.user.repository.member.UserRepository;
@@ -24,17 +24,18 @@ public class UserService {
                 .password(encoder.encode(dto.getPassword()))
                 .avatarUrl(dto.getAvatarUrl())
                 .followersUrl(dto.getFollowersUrl())
+                .followingsUrl(dto.getFollowingsUrl())
                 .build()).getId();
     }
 
     public User findById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
+                .orElseThrow(() -> new UserNotFoundException("Unexpected user"));
     }
 
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("unexpected user"));
+                .orElseThrow(() -> new UserNotFoundException("unexpected user"));
     }
     public List<User> findAll() {
         return userRepository.findAll();

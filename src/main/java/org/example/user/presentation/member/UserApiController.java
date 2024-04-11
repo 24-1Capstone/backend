@@ -1,5 +1,6 @@
 package org.example.user.presentation.member;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.example.user.application.member.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@Tag(name = "user-api-controller", description = "회원가입, 로그아웃을 위한 컨트롤러")
 @RequiredArgsConstructor
 @Controller
 public class UserApiController {

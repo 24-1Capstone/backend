@@ -7,15 +7,17 @@ import org.example.user.domain.entity.member.User;
 
 @Getter
 public class FollowerResponse {
-    private final String id;
+    private String id;
     private String username;
     private String avatarUrl;
-    private final String followers_url;
+    private String followers_url;
+    private String followings_url;
 
     public FollowerResponse(User user) {
         this.id = String.valueOf(user.getId());
         this.username = user.getUsername();
         this.avatarUrl = user.getAvatarUrl();
         this.followers_url = user.getFollowersUrl();
+        this.followings_url = user.getFollowingsUrl();
     }
 }

@@ -10,5 +10,6 @@ public class AddUserRequest {
     private String password;
     private String avatarUrl;
     private String followersUrl;
+    private String followingsUrl;
 
 }

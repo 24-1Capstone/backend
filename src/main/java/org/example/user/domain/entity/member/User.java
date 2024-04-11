@@ -1,5 +1,6 @@
 package org.example.user.domain.entity.member;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.user.domain.entity.BaseEntity;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+@Schema(description = "사용자 상세 정보를 위한 도메인 객체")
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -35,16 +37,20 @@ public class User extends BaseEntity implements UserDetails{ // UserDetails를 �
     @Column(name = "followers_url")
     private String followersUrl;
 
+    @Column(name = "followings_url")
+    private String followingsUrl;
+
     private String provider;
 
     private String providerId;
 
     @Builder
-    public User(String username, String avatarUrl, String password, String followersUrl, String provider, String providerId) {
+    public User(String username, String avatarUrl, String password, String followersUrl, String followingsUrl, String provider, String providerId) {
         this.username = username;
         this.avatarUrl = avatarUrl;
         this.password = password;
         this.followersUrl = followersUrl;
+        this.followingsUrl = followingsUrl;
         this.provider = provider;
         this.providerId = providerId;
     }

@@ -1,7 +1,9 @@
 package org.example.user.presentation.member;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.example.user.application.member.GitHubProfileService;
 import org.example.user.application.member.UserService;
@@ -11,11 +13,11 @@ import org.example.user.domain.entity.member.GitHubProfile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Tag(name = "user-restapi-controller", description = "회원 리스트를 보여주기 위한 RESTAPI")
 @RequiredArgsConstructor
 @RestController
 public class UserApiRestController {
@@ -23,7 +25,12 @@ public class UserApiRestController {
     private final UserService userService;
     private final GitHubProfileService gitHubProfileService;
 
-
+    @Operation(summary = "사용자 정보 조회API", description = "모든 사용자 상세 정보를 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "ok!!"),
+            @ApiResponse(responseCode = "404", description = "user not found!!"),
+            @ApiResponse(responseCode = "500", description = "internal server error!!"),
+    })
     @GetMapping("/api/users")
     public ResponseEntity<List<FollowerResponse>> findAllUsers() {
         List<FollowerResponse> users = userService.findAll()
@@ -36,7 +43,7 @@ public class UserApiRestController {
     }
 
 
-    @GetMapping("/api/userinfo")
+    @GetMapping("/api/users/userinfo")
     public ResponseEntity findUserInfo() {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
 
