@@ -1,0 +1,256 @@
+[33mcommit 4ca8cbbfa6783d6e164246a6c5cbf7425d1176d6[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mkim[m[33m, [m[1;31morigin/kim[m[33m)[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Thu Apr 11 22:54:54 2024 +0900
+
+    feat: GitHubProfile관련코드들 수정, CustomLogoutFilter클래스 추가
+
+[33mcommit 30e1b4daf78a4c667d4162264776bae3e8c7e973[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Wed Apr 10 19:51:02 2024 +0900
+
+    #
+
+[33mcommit eca8bbe02077e7a29f4612aead89c2f991a53128[m
+Author: 201912025 <michi2012@naver.com>
+Date:   Mon Apr 8 17:39:49 2024 +0900
+
+    #
+
+[33mcommit d56c1a154341e02b244ebe9becbb5db196eda59a[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Fri Apr 5 14:36:09 2024 +0900
+
+    docs: changed /logout -> /api/signout
+
+[33mcommit 53e5f76a8ffb53497c2347dd5596ecd0debbec54[m
+Merge: 887b136 61d51f1
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Fri Apr 5 14:35:25 2024 +0900
+
+    docs: changed /logout -> /api/signout
+
+[33mcommit 887b1367b8bf639dd0667003b3442a19c3316254[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Fri Apr 5 14:34:52 2024 +0900
+
+    docs: changed /logout -> /api/signout
+
+[33mcommit 61d51f10141046c8133e3a893065c32efb33e596[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Fri Apr 5 14:32:04 2024 +0900
+
+    docs: changed /signout -> /logout
+
+[33mcommit 732bb66cf769f9b66e780061c6df56822d287f30[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Fri Apr 5 13:45:29 2024 +0900
+
+    feat: follower 정보추가, /api/users로 사용자 정보 얻음
+
+[33mcommit 6dee69422dac0ace36e2e29e13b2adf478140299[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Fri Apr 5 11:46:44 2024 +0900
+
+    fix: OAuth2SuccessHandler getTargetUrl();
+
+[33mcommit 8c8e2d3f7caa69417eecd2b3202089390d4cbf2a[m
+Author: 조성원 <tjddnjsjo@kakao.com>
+Date:   Fri Apr 5 11:33:33 2024 +0900
+
+    feat: access_token 전달방식 변경
+
+[33mcommit 1a0ef72dff3de5d12072606c86dc62423f3b4715[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Fri Apr 5 09:01:25 2024 +0900
+
+    fix: gitignore file add
+
+[33mcommit 606f04f492b00de924737bee805bedf95dc9852f[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Fri Apr 5 08:09:23 2024 +0900
+
+    add
+
+[33mcommit 9fb0f1f64027c53d0c50761a1f8c5ee7242531bb[m
+Merge: 4462f42 bdfd03a
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Fri Apr 5 08:07:31 2024 +0900
+
+    Merge branch 'main' of https://github.com/24-1Capstone/backend
+
+[33mcommit 4462f42c086e314f3200314855c5b2054362f4a9[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Fri Apr 5 08:06:52 2024 +0900
+
+    clear git cache
+
+[33mcommit bdfd03ad2e4d624ee150d012421259f01ef87fe1[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Thu Apr 4 23:58:05 2024 +0900
+
+    fix: redundant files removed
+
+[33mcommit ac743f4b3fa66eb1705dd431d483a59d8fdf4b24[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Thu Apr 4 23:41:19 2024 +0900
+
+    .gradle file change
+
+[33mcommit e94ef67175b8abb594ee634c1dc08e8016a086d2[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Thu Apr 4 22:41:52 2024 +0900
+
+    fix: .gitignore file change
+
+[33mcommit 87430e43ab504df0502c2897ab8a4471b2b5da26[m[33m ([m[1;33mtag: [m[1;33mv1.0.0[m[33m)[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Tue Apr 2 10:47:37 2024 +0900
+
+    fix: 버그 수정 (bean 겹치는 오류 해결)
+
+[33mcommit e51eecc8fda95a9e6be916e1730f24f851d3e301[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Tue Apr 2 10:07:21 2024 +0900
+
+    fix: folder structure, add baseentity
+
+[33mcommit ac435fc253ea57f86ef9a60c0de301cc3e05d0d3[m
+Merge: f6c7a75 8724e1b
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Tue Apr 2 08:44:43 2024 +0900
+
+    Merge branch 'main' of https://github.com/limbaba1120/spring-developer-api
+
+[33mcommit f6c7a755401762f2626c04af3b0f54e7616c49d1[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Tue Apr 2 08:43:36 2024 +0900
+
+    style: folder structure changed
+    
+    bluserìr은 github 로그인 할 때 정보가 저장되는 user
+    blog는 무시하면됨
+    user안에 application은 service
+    domain - entity, dto
+    presentation - controller
+    repository - repository
+
+[33mcommit 8724e1ba68eec3574669996fd204e57c4d4c3bf7[m
+Merge: 8cb9024 3394a06
+Author: KeonWooLim <kwlim1120ss@gmail.com>
+Date:   Mon Apr 1 21:23:36 2024 +0900
+
+    Merge pull request #2 from limbaba1120/master
+    
+    Merge pull request #1 from limbaba1120/main
+
+[33mcommit 3394a06edad28c4ee2f62837df8d5cccc65e90c7[m
+Merge: edfcd81 8cb9024
+Author: KeonWooLim <kwlim1120ss@gmail.com>
+Date:   Mon Apr 1 21:22:10 2024 +0900
+
+    Merge pull request #1 from limbaba1120/main
+    
+    Main
+
+[33mcommit 8cb9024dcb24939b38220f6a07f10d95a9c30707[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Mon Apr 1 21:20:49 2024 +0900
+
+    setting finished, git oauth, jwt, folder structure done
+
+[33mcommit fd2494c0d5d015934c4473cfc4f69abce3bd03b6[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Mon Apr 1 20:58:00 2024 +0900
+
+    settings 1
+
+[33mcommit edfcd81e9568a6a880de3aca9d173bd4846993c7[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Mon Apr 1 18:17:20 2024 +0900
+
+    security + jwt finished
+
+[33mcommit 648d4a1bc78266b0926d98ea66c9eba2922a1817[m
+Author: KeonWooLim <kwlim1120ss@gmail.com>
+Date:   Mon Apr 1 14:40:24 2024 +0900
+
+    Delete src/.gitignore
+
+[33mcommit 2a899e0c9db0a91612affcc2ff100d52eaf3c591[m
+Merge: 623456d bc7f684
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Mon Apr 1 14:39:45 2024 +0900
+
+    Merge branch 'master' of https://github.com/limbaba1120/spring-developer-api
+
+[33mcommit 623456d362ef60704e98983435a2de623daa18c3[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Mon Apr 1 14:39:10 2024 +0900
+
+    123
+
+[33mcommit bc7f684e2ab47aa62efe8a31ce1511eca042ac83[m
+Author: KeonWooLim <kwlim1120ss@gmail.com>
+Date:   Mon Apr 1 14:38:14 2024 +0900
+
+    Delete src/.gitignore
+
+[33mcommit b0233a8ac7368f410e8bdd22048cf8d58f11b56e[m
+Author: KeonWooLim <kwlim1120ss@gmail.com>
+Date:   Mon Apr 1 14:36:30 2024 +0900
+
+    Delete src/main/resources/application.yml
+
+[33mcommit 7c74fb316d67968a564eb8506800014d77e9b4c8[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Mon Apr 1 14:33:58 2024 +0900
+
+    24.4.1 security
+
+[33mcommit c29751bda69b9c57de18b109a7c999369e18ce7a[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Sat Mar 30 18:31:14 2024 +0900
+
+    24.3.30 oauth
+
+[33mcommit 24d7b367eb4ea7c70ee270464978bcc9db9a79ca[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Fri Mar 29 21:58:45 2024 +0900
+
+    24.3.29 oauth
+
+[33mcommit 373d0ccd89d72fd776123f80c909873613310b79[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Fri Mar 29 19:51:30 2024 +0900
+
+    24.3.29 spring security?
+
+[33mcommit 2f25fc36f7b111ecad0524bede01366b0cabace3[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Wed Feb 21 16:40:26 2024 +0900
+
+    24.2.21 jwt started
+
+[33mcommit fb0cbb27f6f54880a379c57c685a999d34d7dfc4[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Tue Feb 20 17:22:49 2024 +0900
+
+    24.2.20 spring-developer login, logout with spring security
+
+[33mcommit 4d9a82620db6ba7e70526efbe215299d3a1f6d8a[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Sat Feb 17 12:58:02 2024 +0900
+
+    blog CRUD finished
+
+[33mcommit 752202e5ea9a2b5c937b27a65058dfc0458bb017[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Fri Feb 16 18:28:21 2024 +0900
+
+    24.2.16 api
+
+[33mcommit 0cfa881b30a23eeb5ac1dfe61363ec6177e9af73[m
+Author: limbaba1120 <kwlim1120ss@gmail.com>
+Date:   Fri Feb 16 18:28:02 2024 +0900
+
+    first commit

@@ -1,6 +1,8 @@
 package org.example.config.oauth;
 import lombok.RequiredArgsConstructor;
+import org.example.user.domain.entity.member.GitHubProfile;
 import org.example.user.domain.entity.member.User;
+import org.example.user.repository.member.GitHubProfileRepository;
 import org.example.user.repository.member.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -15,6 +17,7 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final GitHubProfileRepository gitHubProfileRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -29,25 +32,90 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
         System.out.println("getAttributes:" + oAuth2User.getAttributes());
         OAuth2UserInfo oAuth2UserInfo = new GithubUserInfo(oAuth2User.getAttributes());
 
-        String provider = oAuth2UserInfo.getProvider(); //github
-        String providerId = oAuth2UserInfo.getProviderId(); //githubID
-        String username = oAuth2UserInfo.getUsername();
+
+        String username = oAuth2UserInfo.getUserName();
         String password = passwordEncoder.encode("겟인데어");
-        String avatarUrl = oAuth2UserInfo.getAvatarUrl();
-        String followersUrl = oAuth2UserInfo.getFollowersUrl();
 
         User user = userRepository.findByUsername(username)
                 .map(entity -> entity.update(username))
                 .orElse(User.builder()
                         .username(username)
-                        .avatarUrl(avatarUrl)
-                        .followersUrl(followersUrl)
+                        .avatarUrl(oAuth2UserInfo.getAvatarUrl())
+                        .followersUrl(oAuth2UserInfo.getFollowersUrl())
                         .password(password)
-                        .provider(provider)
-                        .providerId(providerId)
+                        .provider(oAuth2UserInfo.getProvider())
+                        .providerId(oAuth2UserInfo.getProviderId())
                         .build());
+
+
+
+        GitHubProfile gitHubProfile = gitHubProfileRepository.findByUserName(username)
+                        .map(entity -> entity.update(username))
+                        .orElse(GitHubProfile.builder()
+
+                                .providerId(oAuth2UserInfo.getProviderId())
+                                .userName(oAuth2UserInfo.getUserName())
+                                .password(passwordEncoder.encode("겟인데어"))
+                                .avatarUrl(oAuth2UserInfo.getAvatarUrl())
+                                .followersUrl(oAuth2UserInfo.getFollowersUrl())
+                                .name(oAuth2UserInfo.getName())
+                                .company(oAuth2UserInfo.getCompany())
+                                .blog(oAuth2UserInfo.getBlog())
+                                .location(oAuth2UserInfo.getLocation())
+                                .email(oAuth2UserInfo.getEmail())
+                                .hireable(oAuth2UserInfo.isHireable())
+                                .bio(oAuth2UserInfo.getBio())
+                                .twitterUsername(oAuth2UserInfo.getTwitterUsername())
+                                .publicRepos(oAuth2UserInfo.getPublicRepos())
+                                .publicGists(oAuth2UserInfo.getPublicGists())
+                                .followers(oAuth2UserInfo.getFollowers())
+                                .following(oAuth2UserInfo.getFollowing())
+                                .createdAt(oAuth2UserInfo.getCreatedAt())
+                                .updatedAt(oAuth2UserInfo.getUpdatedAt())
+                                .privateGists(oAuth2UserInfo.getPrivateGists())
+                                .totalPrivateRepos(oAuth2UserInfo.getTotalPrivateRepos())
+                                .ownedPrivateRepos(oAuth2UserInfo.getOwnedPrivateRepos())
+                                .diskUsage(oAuth2UserInfo.getDiskUsage())
+                                .collaborators(oAuth2UserInfo.getCollaborators())
+                                .twoFactorAuthentication(oAuth2UserInfo.isTwoFactorAuthentication())
+                                .url(oAuth2UserInfo.getUrl())
+                                .htmlUrl(oAuth2UserInfo.getHtmlUrl())
+                                .followersUrl(oAuth2UserInfo.getFollowersUrl())
+                                .followingUrl(oAuth2UserInfo.getFollowingUrl())
+                                .gistsUrl(oAuth2UserInfo.getGistsUrl())
+                                .starredUrl(oAuth2UserInfo.getStarredUrl())
+                                .subscriptionsUrl(oAuth2UserInfo.getSubscriptionsUrl())
+                                .organizationsUrl(oAuth2UserInfo.getOrganizationsUrl())
+                                .reposUrl(oAuth2UserInfo.getReposUrl())
+                                .eventsUrl(oAuth2UserInfo.getEventsUrl())
+                                .receivedEventsUrl(oAuth2UserInfo.getReceivedEventsUrl())
+                                .type(oAuth2UserInfo.getType())
+                                .siteAdmin(oAuth2UserInfo.isSiteAdmin())
+                                .build());
+
+
+        gitHubProfileRepository.save(gitHubProfile);
+
+
+
+
 
         return userRepository.save(user);
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
