@@ -42,6 +42,7 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
                         .username(username)
                         .avatarUrl(oAuth2UserInfo.getAvatarUrl())
                         .followersUrl(oAuth2UserInfo.getFollowersUrl())
+                        .followingsUrl(oAuth2UserInfo.getFollowingUrl())
                         .password(password)
                         .provider(oAuth2UserInfo.getProvider())
                         .providerId(oAuth2UserInfo.getProviderId())
