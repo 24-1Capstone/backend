@@ -6,7 +6,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.example.user.domain.dto.request.member.AddUserRequest;
 import org.example.user.application.member.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Tag(name = "user-api-controller", description = "회원가입, 로그아웃을 위한 컨트롤러")
