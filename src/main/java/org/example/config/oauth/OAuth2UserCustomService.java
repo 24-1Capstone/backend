@@ -32,7 +32,6 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
         System.out.println("getAttributes:" + oAuth2User.getAttributes());
         OAuth2UserInfo oAuth2UserInfo = new GithubUserInfo(oAuth2User.getAttributes());
 
-
         String username = oAuth2UserInfo.getUserName();
         String password = passwordEncoder.encode("겟인데어");
 

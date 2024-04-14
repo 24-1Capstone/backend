@@ -2,8 +2,10 @@ package org.example.config;
 import lombok.RequiredArgsConstructor;
 import org.example.config.jwt.TokenProvider;
 import org.example.config.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
+import org.example.config.oauth.OAuth2LogoutSuccessHandler;
 import org.example.config.oauth.OAuth2SuccessHandler;
 import org.example.config.oauth.OAuth2UserCustomService;
+import org.example.user.application.token.RefreshTokenService;
 import org.example.user.repository.token.RefreshTokenRepository;
 import org.example.user.application.member.UserService;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +24,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
+
 @EnableWebSecurity
 @RequiredArgsConstructor
 @Configuration
@@ -31,6 +34,7 @@ public class WebOAuthSecurityConfig {
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserService userService;
+    private final RefreshTokenService refreshTokenService;
 
     @Bean
     public WebSecurityCustomizer configure() {
@@ -53,8 +57,7 @@ public class WebOAuthSecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         //헤더를 확인할 커스텀 필터 추가
         http
-                .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new CustomLogoutFilter(refreshTokenRepository), TokenAuthenticationFilter.class);
+                .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // 토큰 재발급 URL은 인증 없이 접근 가능하도록 설정. 나머지 API URL은 인증 필요
         http.authorizeRequests()
@@ -64,7 +67,7 @@ public class WebOAuthSecurityConfig {
 
 
         http.oauth2Login()
-//                .loginPage("/login")
+                .loginPage("/login")
                 .authorizationEndpoint()
                 .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository()) //Authorization 요청과 관련된 상태 저장
                 .and()
@@ -73,7 +76,12 @@ public class WebOAuthSecurityConfig {
                 .userService(oAuth2UserCustomService);
 
         http.logout()
-                .logoutSuccessUrl("/login");
+                .logoutUrl("/logout")
+                .logoutSuccessHandler(logoutSuccessHandler())
+                .deleteCookies("refresh_token", "access_token")
+                .clearAuthentication(true)
+                .invalidateHttpSession(true);
+
 
         // /api로 시작하는 url인 경우 401 상태 코드를 반환하도록 예외 처리
         http.exceptionHandling()
@@ -100,6 +108,13 @@ public class WebOAuthSecurityConfig {
         return source;
     }
 
+
+
+    @Bean
+    public OAuth2LogoutSuccessHandler logoutSuccessHandler() {
+        return new OAuth2LogoutSuccessHandler(refreshTokenRepository, tokenProvider);
+    }
+
     @Bean
     public OAuth2SuccessHandler oAuth2SuccessHandler() {
         return new OAuth2SuccessHandler(tokenProvider,
@@ -114,9 +129,9 @@ public class WebOAuthSecurityConfig {
         return new TokenAuthenticationFilter(tokenProvider);
     }
 
+
     @Bean
     public OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository() {
         return new OAuth2AuthorizationRequestBasedOnCookieRepository();
     }
-
 }

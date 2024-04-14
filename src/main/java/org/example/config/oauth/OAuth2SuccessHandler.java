@@ -25,13 +25,14 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     public static final String ACCESS_TOKEN_COOKIE_NAME = "token";
     public static final Duration REFRESH_TOKEN_DURATION = Duration.ofDays(14);
     public static final Duration ACCESS_TOKEN_DURATION = Duration.ofDays(1);
-    public static final String REDIRECT_PATH = "http://localhost:3000/"; //redirect 경로
+    public static final String REDIRECT_PATH = "/articles"; //redirect 경로
 
 
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestRepository;
     private final UserService userService;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
@@ -42,13 +43,13 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         addRefreshTokenToCookie(request, response, refreshToken);
 
         String accessToken = tokenProvider.generateToken(user, ACCESS_TOKEN_DURATION);
-        addAccessTokenToCookie(request, response, accessToken);
-        String targetUrl = getTargetUrl();
+        String targetUrl = getTargetUrl(accessToken);
 
         clearAuthenticationAttributes(request, response);
 
-        getRedirectStrategy().sendRedirect(request, response, targetUrl); //target url로 redirect
+        getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
+
 
     private void saveRefreshToken(Long userId, String newRefreshToken) {
         RefreshToken refreshToken = refreshTokenRepository.findByUserId(userId)
@@ -77,8 +78,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         authorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
     }
 
-    private String getTargetUrl() {
+    private String getTargetUrl(String token) {
         return UriComponentsBuilder.fromUriString(REDIRECT_PATH)
+                .queryParam("token", token)
                 .build()
                 .toUriString();
     }
