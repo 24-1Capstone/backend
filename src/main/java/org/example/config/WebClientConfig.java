@@ -8,7 +8,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class WebClientConfig {
 
     @Bean
-    public WebClient webClient() {
-        return WebClient.create();
+    public WebClient.Builder webClientBuilder() {
+        return WebClient.builder()
+                .defaultHeader("User-Agent", "spring-developer");
+    }
+
+    @Bean
+    public WebClient webClient(WebClient.Builder builder) {
+        return builder.build();
     }
 }

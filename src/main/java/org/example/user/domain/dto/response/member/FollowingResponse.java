@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Getter
-public class FollowerResponse {
+public class FollowingResponse {
     private String login;
     private Long id;
     private String avatar_url;
@@ -26,7 +26,7 @@ public class FollowerResponse {
     private String type;
     private boolean siteAdmin;
 
-    public FollowerResponse(String login, Long id, String avatar_url, String gravatar_id, String url, String html_url, String followers_url, String following_url, String gists_url, String starred_url, String subscriptions_url, String organizations_url, String repos_url, String events_url, String receivedEvents_url, String type, boolean siteAdmin) {
+    public FollowingResponse(String login, Long id, String avatar_url, String gravatar_id, String url, String html_url, String followers_url, String following_url, String gists_url, String starred_url, String subscriptions_url, String organizations_url, String repos_url, String events_url, String receivedEvents_url, String type, boolean siteAdmin) {
         this.login = login;
         this.id = id;
         this.avatar_url = avatar_url;
