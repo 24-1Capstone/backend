@@ -41,23 +41,6 @@ public class UserApiRestController {
     private final static String HEADER_AUTHORIZATION = "Authorization";
     private final static String TOKEN_PREFIX = "Bearer ";
 
-    @Operation(summary = "모든 사용자 정보 조회API", description = "모든 사용자 상세 정보를 조회")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "ok!!"),
-            @ApiResponse(responseCode = "404", description = "user not found!!"),
-            @ApiResponse(responseCode = "500", description = "internal server error!!"),
-    })
-    @GetMapping("/api/user")
-    public ResponseEntity<List<AllUsersResponse>> findAllUsers() {
-        List<AllUsersResponse> users = userService.findAll()
-                .stream()
-                .map(u -> new AllUsersResponse(u))
-                .toList();
-
-        return ResponseEntity.ok()
-                .body(users);
-    }
-
     @Operation(summary = "깃허브 사용자 정보 조회API", description = "깃허브 사용자 상세 정보 모두 조회")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "ok!!"),
@@ -92,15 +75,13 @@ public class UserApiRestController {
             return null;
         }
     }
+
     @Operation(summary = "깃허브 사용자 Follower 정보 조회API", description = "깃허브 사용자 Follower 정보 모두 조회")
     @GetMapping("/user/followers")
     public Flux<FollowerResponse> getFollower(HttpServletRequest request) {
         final String token = extractToken(request);
-        log.info("Access token retrieved:{}", token);
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        log.info("username:{}", userName);
         String url = "https://api.github.com/users/" + userName + "/followers";
-        log.info("url:{}", url);
         return webClient.get()
                 .uri(url)
                 .retrieve()
@@ -119,6 +100,35 @@ public class UserApiRestController {
             throw new RuntimeException("No token provided");
         }
     }
+
+//    @Operation(summary = "모든 사용자 정보 조회API", description = "모든 사용자 상세 정보를 조회")
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "200", description = "ok!!"),
+//            @ApiResponse(responseCode = "404", description = "user not found!!"),
+//            @ApiResponse(responseCode = "500", description = "internal server error!!"),
+//    })
+//    @GetMapping("/api/user")
+//    public ResponseEntity<List<AllUsersResponse>> findAllUsers() {
+//        List<AllUsersResponse> users = userService.findAll()
+//                .stream()
+//                .map(u -> new AllUsersResponse(u))
+//                .toList();
+//
+//        return ResponseEntity.ok()
+//                .body(users);
+//    }
+
+//    @Operation(summary = "깃허브 사용자 정보 조회API", description = "깃허브 사용자 Follower 정보 모두 조회")
+//    @GetMapping("/api/user")
+//    public Flux<String> getUserInfo(HttpServletRequest request) {
+//        final String token = extractToken(request);
+//        return webClient.get()
+//                .uri("https://api.github.com/users")
+//                .header("Authorization", "Bearer " + token)
+//                .header("User-Agent", "spring-developer")
+//                .retrieve()
+//                .bodyToFlux(String.class);
+//    }
 }
 
 

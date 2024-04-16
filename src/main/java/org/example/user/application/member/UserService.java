@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.exception.UserNotFoundException;
 import org.example.user.domain.dto.response.member.FollowerResponse;
 import org.example.user.domain.dto.response.member.FollowingResponse;
+import org.example.user.domain.dto.response.member.GithubProfileResponse;
 import org.example.user.domain.entity.member.User;
 import org.example.user.domain.dto.request.member.AddUserRequest;
 import org.example.user.repository.member.UserRepository;
@@ -27,6 +28,16 @@ public class UserService {
         this.userRepository = userRepository;
         this.webClient = webClient;
     }
+
+    public Flux<GithubProfileResponse> fetchUserInfo(String accessToken) {
+        return webClient.get()
+                .uri("/user")
+                .header("Authorization", "token " + accessToken)
+                .header("User-Agent", "YourApp")
+                .retrieve()
+                .bodyToFlux(GithubProfileResponse.class);
+    }
+
 
     public Flux<FollowerResponse> fetchFollowers(String followersUrl) {
         return webClient.get()

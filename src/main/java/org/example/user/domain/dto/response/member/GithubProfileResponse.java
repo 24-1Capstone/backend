@@ -1,9 +1,11 @@
 package org.example.user.domain.dto.response.member;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.example.user.domain.entity.member.GitHubProfile;
 
 @Getter
+@AllArgsConstructor
 public class GithubProfileResponse {
 
     private Long id;
