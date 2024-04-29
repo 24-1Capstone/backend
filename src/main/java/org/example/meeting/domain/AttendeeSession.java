@@ -18,20 +18,16 @@ public class AttendeeSession {
     private Long id;
 
     private String attendeeId;
-    private String audio;
-    private String content;
-    private String video;
+
     private String externalUserId;
+
     private String joinToken;
 
 
     @Builder
-    public AttendeeSession(Long id, String attendeeId, String audio, String content, String video, String externalUserId, String joinToken) {
+    public AttendeeSession(Long id, String attendeeId, String externalUserId, String joinToken) {
         this.id = id;
         this.attendeeId = attendeeId;
-        this.audio = audio;
-        this.content = content;
-        this.video = video;
         this.externalUserId = externalUserId;
         this.joinToken = joinToken;
     }

@@ -9,11 +9,13 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.chimesdkmeetings.ChimeSdkMeetingsClient;
 
 
+
+
 @Configuration
 public class ChimeConfig {
 
-    private static final String ACCESS_KEY = "AKIA2UC3DREQRN2KSIXS";
-    private static final String SECRET_KEY = "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";
+    private static final String ACCESS_KEY = "AKIA2UC3DREQQO4K5GHG";
+    private static final String SECRET_KEY = "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";
 
     AwsBasicCredentials awsCredentials = AwsBasicCredentials.create(ACCESS_KEY, SECRET_KEY);
 
@@ -27,6 +29,4 @@ public class ChimeConfig {
                 .build();
 
     }
-
-
 }

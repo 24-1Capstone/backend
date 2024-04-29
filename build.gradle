@@ -28,8 +28,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-hateoas'
     implementation 'org.springframework.boot:spring-boot-starter-webflux' // Spring Boot WebFlux 의존성
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
-    implementation 'software.amazon.awssdk:sdk-core:2.25.32'
-    implementation 'software.amazon.awssdk:chimesdkmeetings:2.25.32'
+
+    implementation 'software.amazon.awssdk:chimesdkmeetings:2.25.33'
+
+
 
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     compileOnly 'org.projectlombok:lombok'

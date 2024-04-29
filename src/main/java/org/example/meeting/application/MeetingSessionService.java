@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.example.meeting.domain.MeetingSession;
 import org.example.meeting.repository.MeetingSessionRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MeetingSessionService {
 
     private final MeetingSessionRepository meetingSessionRepository;

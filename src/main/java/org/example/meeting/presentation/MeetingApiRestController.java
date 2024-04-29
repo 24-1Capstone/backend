@@ -1,7 +1,9 @@
 package org.example.meeting.presentation;
 
+
 import lombok.RequiredArgsConstructor;
 import org.example.meeting.application.ChimeService;
+import org.example.meeting.domain.CreateMeetingResponseDTO;
 import org.springframework.web.bind.annotation.*;
 import software.amazon.awssdk.services.chimesdkmeetings.ChimeSdkMeetingsClient;
 import software.amazon.awssdk.services.chimesdkmeetings.model.*;
@@ -13,18 +15,21 @@ import software.amazon.awssdk.services.chimesdkmeetings.model.*;
 @RequiredArgsConstructor
 public class MeetingApiRestController {
 
-    private final ChimeSdkMeetingsClient chimeSdkMeetingsClient;
     private final ChimeService chimeService;
+    private final ChimeSdkMeetingsClient chimeSdkMeetingsClient;
+
+
 
     //회의 생성
+
     @PostMapping("/meetings")
+    public CreateMeetingResponseDTO createMeeting() {
 
-    public CreateMeetingResponse createMeeting(@RequestBody CreateMeetingRequest request){
+        return chimeService.createMeetingResponseDTO();
 
-        return chimeService.createMeetingResponse(request);
+        }
 
 
-    }
 
 
     //참가자 생성

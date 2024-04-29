@@ -2,15 +2,19 @@ package org.example.meeting.application;
 
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.meeting.domain.AttendeeSession;
 import org.example.meeting.repository.AttendeeSessionRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Transactional
 public class AttendeeSessionService {
 
     private final AttendeeSessionRepository attendeeSessionRepository;
