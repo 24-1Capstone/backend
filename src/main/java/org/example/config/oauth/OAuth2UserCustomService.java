@@ -22,6 +22,10 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User user = super.loadUser(userRequest); // ❶ 요청을 바탕으로 유저 정보를 담은 객체 반환
+        System.out.println("userRequest:"+userRequest);
+        System.out.println("getClientRegistraion:"+userRequest.getClientRegistration());  //client에 대한 정보들이 받아짐
+        System.out.println("getAccessToken:"+userRequest.getAccessToken());
+        System.out.println("getAttributes:"+super.loadUser(userRequest).getAttributes()); //유저 정보를 받아옴
         saveOrUpdate(user);
 
         return user; //사용자 객체는 식별자, 이름, 이메일, 프로필 사진 링크 등의 정보를 담고 있다
@@ -104,17 +108,6 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,6 +1,5 @@
 package org.example.user.application.member;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.exception.UserNotFoundException;
 import org.example.user.domain.dto.response.member.FollowerResponse;
@@ -9,7 +8,6 @@ import org.example.user.domain.dto.response.member.GithubProfileResponse;
 import org.example.user.domain.entity.member.User;
 import org.example.user.domain.dto.request.member.AddUserRequest;
 import org.example.user.repository.member.UserRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -60,10 +58,10 @@ public class UserService {
                 .bodyToFlux(FollowerResponse.class);
     }
 
-    public Flux<FollowingResponse> fetchFollowings(String followingsUrl) {
+    public Flux<FollowingResponse> fetchFollowings(String followingsUrl, int pageSize, int page) {
         String processedUrl = followingsUrl.replace("{/other_user}", "");
         return webClient.get()
-                .uri(processedUrl)
+                .uri(processedUrl +  "?per_page=" + pageSize + "&page=" + page)
                 .retrieve()
                 .onStatus(status -> status.is4xxClientError(), response -> {
                     // 4xx 오류 로깅

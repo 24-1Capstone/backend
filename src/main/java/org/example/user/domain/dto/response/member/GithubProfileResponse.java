@@ -4,10 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.example.user.domain.entity.member.GitHubProfile;
 
+
 @Getter
 @AllArgsConstructor
 public class GithubProfileResponse {
-
     private Long id;
     private String password;
     private String followersUrl;
