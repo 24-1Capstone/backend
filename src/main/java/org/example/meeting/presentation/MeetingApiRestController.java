@@ -3,13 +3,15 @@ package org.example.meeting.presentation;
 
 import lombok.RequiredArgsConstructor;
 import org.example.meeting.application.ChimeService;
+import org.example.meeting.domain.MeetingSession;
 import org.example.meeting.domain.dto.CreateAttendeeResponseDTO;
 import org.example.meeting.domain.dto.CreateMeetingResponseDTO;
+import org.example.meeting.domain.dto.CreateMeetingWithAttendeesResponseDTO;
+import org.example.meeting.domain.dto.ListAttendeesResponseDTO;
 import org.springframework.web.bind.annotation.*;
 import software.amazon.awssdk.services.chimesdkmeetings.ChimeSdkMeetingsClient;
-import software.amazon.awssdk.services.chimesdkmeetings.model.*;
 
-
+import java.util.List;
 
 
 @RestController
@@ -32,13 +34,22 @@ public class MeetingApiRestController {
 
 
 
-
-    //참가자 생성
+    //해당 회의에 참가자 생성
     @PostMapping("/meetings/{meetingId}/attendees")
     public CreateAttendeeResponseDTO createAttendee(@PathVariable String meetingId) {
 
         return chimeService.createAttendeeResponseDTO(meetingId);
     }
+
+
+    //회의 생성 동시에 참가자 생성
+    @PostMapping("meetings/attendees")
+    public CreateMeetingWithAttendeesResponseDTO createMeetingWithAttendees(){
+
+        return chimeService.createMeetingWithAttendees();
+
+    }
+
 
 
     //회의 삭제
@@ -55,17 +66,21 @@ public class MeetingApiRestController {
 
 
 
-    //회의 참가자 조회
+    //해당 회의의 참가자 조회
     @GetMapping("/meetings/{meetingId}/attendees")
-    public ListAttendeesResponse listAttendees(@PathVariable String meetingId,
-                                               @RequestParam(required = false) Integer maxResults,
-                                               @RequestParam(required = false) String nextToken) {
-        ListAttendeesRequest request = ListAttendeesRequest.builder()
-                .meetingId(meetingId)
-                .maxResults(maxResults)
-                .nextToken(nextToken)
-                .build();
-        return chimeSdkMeetingsClient.listAttendees(request);
+    public ListAttendeesResponseDTO listAttendees(@PathVariable String meetingId) {
+
+        return chimeService.listAttendeesResponseDTO(meetingId);
+
     }
+
+    // 열려 있는 모든 회의 조회
+    @GetMapping("/meetings")
+    public List<CreateMeetingResponseDTO> listMeetings(){
+
+        return chimeService.listMeetings();
+    }
+
+
 
 }
