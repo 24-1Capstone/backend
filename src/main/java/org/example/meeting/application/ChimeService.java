@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.example.meeting.domain.AttendeeSession;
 import org.example.meeting.domain.dto.*;
 import org.example.meeting.domain.MeetingSession;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.services.chimesdkmeetings.ChimeSdkMeetingsClient;
 import software.amazon.awssdk.services.chimesdkmeetings.model.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -22,11 +24,14 @@ public class ChimeService {
 
 
 
+
     // MeetingSession 엔티티에 저장 및 createMeetingResponseDTO 반환
     public CreateMeetingResponseDTO createMeetingResponseDTO(){
+
+
         CreateMeetingRequest request = CreateMeetingRequest.builder()
-                .clientRequestToken("abc123")
-                .externalMeetingId("meeting123")
+                .clientRequestToken(getRandomString())
+                .externalMeetingId(getRandomString())
                 .mediaRegion("ap-northeast-2")
                 .build();
 
@@ -65,9 +70,10 @@ public class ChimeService {
     // AttendeeSession 엔티티에 저장 및 createAttendeeResponseDTO 반환
     public CreateAttendeeResponseDTO createAttendeeResponseDTO(String meetingID){
 
+        //externalUserId 내 아이디로 설정
         CreateAttendeeRequest request = CreateAttendeeRequest.builder()
                 .meetingId(meetingID)
-                .externalUserId("meeting122144")
+                .externalUserId(getRandomString())
                 .build();
 
 
@@ -160,6 +166,8 @@ public class ChimeService {
                 .build();
     }
 
+    
+    // 열려있는 모든 회의 조회
 
     public List<CreateMeetingResponseDTO> listMeetings(){
         List<MeetingSession> meetingSessions = meetingSessionService.findAll();
@@ -178,15 +186,19 @@ public class ChimeService {
         return responseDTOs;
     }
 
-
+    
+    
+    // 회의 생성 동시에 참가자 생성
     public CreateMeetingWithAttendeesResponseDTO createMeetingWithAttendees(){
 
-        // Chime SDK를 사용하여 회의 및 참가자 생성 요청
+
+
+        // Chime SDK 를 사용하여 회의 및 참가자 생성 요청
         CreateMeetingWithAttendeesRequest createMeetingWithAttendeesRequest = CreateMeetingWithAttendeesRequest.builder()
-                .clientRequestToken("abc123")
-                .externalMeetingId("meeting123")
+                .clientRequestToken(getRandomString())
+                .externalMeetingId(getRandomString())
                 .mediaRegion("ap-northeast-2")
-                .attendees(builder -> builder.externalUserId("user12314"))
+                .attendees(builder -> builder.externalUserId(getRandomString()))
                 .build();
 
         CreateMeetingWithAttendeesResponse createMeetingWithAttendeesResponse = chimeSdkMeetingsClient.createMeetingWithAttendees(createMeetingWithAttendeesRequest);
@@ -239,39 +251,26 @@ public class ChimeService {
 
 
 
+    public static String getRandomString() {
+        return getRandomString(2, 64);
+    }
+
+    public static String getRandomString(int minLength, int maxLength) {
+        String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
+        Random random = new Random();
+        int length = random.nextInt(maxLength - minLength + 1) + minLength;
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(characters.length());
+            sb.append(characters.charAt(randomIndex));
+        }
+        return sb.toString();
+    }
+
+
+
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

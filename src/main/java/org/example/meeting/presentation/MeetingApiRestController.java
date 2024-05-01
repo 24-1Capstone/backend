@@ -3,14 +3,12 @@ package org.example.meeting.presentation;
 
 import lombok.RequiredArgsConstructor;
 import org.example.meeting.application.ChimeService;
-import org.example.meeting.domain.MeetingSession;
 import org.example.meeting.domain.dto.CreateAttendeeResponseDTO;
 import org.example.meeting.domain.dto.CreateMeetingResponseDTO;
 import org.example.meeting.domain.dto.CreateMeetingWithAttendeesResponseDTO;
 import org.example.meeting.domain.dto.ListAttendeesResponseDTO;
 import org.springframework.web.bind.annotation.*;
 import software.amazon.awssdk.services.chimesdkmeetings.ChimeSdkMeetingsClient;
-
 import java.util.List;
 
 
@@ -19,12 +17,10 @@ import java.util.List;
 public class MeetingApiRestController {
 
     private final ChimeService chimeService;
-    private final ChimeSdkMeetingsClient chimeSdkMeetingsClient;
 
 
 
     //회의 생성
-
     @PostMapping("/meetings")
     public CreateMeetingResponseDTO createMeeting() {
 
@@ -43,7 +39,7 @@ public class MeetingApiRestController {
 
 
     //회의 생성 동시에 참가자 생성
-    @PostMapping("meetings/attendees")
+    @PostMapping("/meetings/attendees")
     public CreateMeetingWithAttendeesResponseDTO createMeetingWithAttendees(){
 
         return chimeService.createMeetingWithAttendees();
