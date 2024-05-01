@@ -19,9 +19,25 @@ public class AttendeeSessionService {
 
     private final AttendeeSessionRepository attendeeSessionRepository;
 
+    public void save(AttendeeSession attendeeSession){
+
+        attendeeSessionRepository.save(AttendeeSession.builder()
+                .attendeeId(attendeeSession.getAttendeeId())
+                .externalUserId(attendeeSession.getExternalUserId())
+                .joinToken(attendeeSession.getJoinToken())
+                .build());
+
+
+
+    }
+
     public Optional<AttendeeSession> findById(Long attendeeSessionId) {
         return attendeeSessionRepository.findById(attendeeSessionId);
 
+    }
+
+    public void deleteByAttendeeId(String attendeeId){
+        attendeeSessionRepository.deleteByAttendeeId(attendeeId);
     }
 
     public Optional<AttendeeSession> findByAttendeeId(String attendeeId){

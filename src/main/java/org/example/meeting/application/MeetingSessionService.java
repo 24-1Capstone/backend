@@ -17,6 +17,18 @@ public class MeetingSessionService {
     private final MeetingSessionRepository meetingSessionRepository;
 
 
+    public void save(MeetingSession meetingSession) {
+        meetingSessionRepository.save(MeetingSession.builder()
+                .externalMeetingId(meetingSession.getExternalMeetingId())
+                .mediaRegion(meetingSession.getMediaRegion())
+                .meetingArn(meetingSession.getMeetingArn())
+                .meetingId(meetingSession.getMeetingId())
+                .build());
+    }
+
+    public void deleteByMeetingId(String meetingId){
+        meetingSessionRepository.deleteByMeetingId(meetingId);
+    }
 
     public Optional<MeetingSession> findById(Long meetingSessionId){
        return meetingSessionRepository.findById(meetingSessionId);

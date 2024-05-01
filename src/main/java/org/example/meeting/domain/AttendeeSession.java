@@ -24,11 +24,13 @@ public class AttendeeSession {
     private String joinToken;
 
 
+
+
     @Builder
-    public AttendeeSession(Long id, String attendeeId, String externalUserId, String joinToken) {
-        this.id = id;
+    public AttendeeSession(String attendeeId, String externalUserId, String joinToken) {
         this.attendeeId = attendeeId;
         this.externalUserId = externalUserId;
         this.joinToken = joinToken;
+
     }
 }

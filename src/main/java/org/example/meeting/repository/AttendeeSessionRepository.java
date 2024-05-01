@@ -10,4 +10,6 @@ public interface AttendeeSessionRepository extends JpaRepository<AttendeeSession
     Optional<AttendeeSession> findByAttendeeId(String attendeeId);
 
     Optional<AttendeeSession> findByJoinToken(String attendeeId);
+
+    void deleteByAttendeeId(String attendeeId);
 }

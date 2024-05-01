@@ -1,4 +1,4 @@
-package org.example.meeting.domain;
+package org.example.meeting.domain.dto;
 
 import lombok.Builder;
 import lombok.Getter;
