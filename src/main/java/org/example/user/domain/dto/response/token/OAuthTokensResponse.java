@@ -8,9 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OAuthTokensResponse {
 
-    @JsonProperty("access_token")
-    private String accessToken;
-
     @JsonProperty("expires_in")
     private Long accessTokenExp;
 
