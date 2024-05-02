@@ -11,11 +11,10 @@ import org.example.user.application.member.UserService;
 import org.example.user.domain.dto.response.member.FollowerResponse;
 import org.example.user.domain.dto.response.member.FollowingResponse;
 import org.example.user.domain.entity.member.User;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -28,6 +27,7 @@ public class GithubFollowerApiRestController {
     private final TokenProvider tokenProvider;
     private final UserService userService;
     private final WebClient webClient;
+
 
     @Operation(summary = "깃허브 사용자 Following 정보 조회API", description = "깃허브 사용자 Following 정보 모두 조회")
     @GetMapping("/user/following")
@@ -62,5 +62,30 @@ public class GithubFollowerApiRestController {
                     log.error("Failed to retrieve followers due to: {}", e.getMessage());
                     return Mono.error(new RuntimeException("API request failed with error "));  // API 오류 메시지 반환
                 });
+    }
+
+    @PutMapping("/user/following/{username}")
+    public Flux<String> followUser(HttpServletRequest request, @PathVariable String username) {
+
+        final String token = extractToken(request);
+        String url = "https://api.github.com/user/following/";
+        return webClient.put()
+                .uri(url + username)
+                .header("Accept", "application/vnd.github.v3+json")
+                .header("X-GitHub-Api-Version", "2022-11-28")
+                .header("Authorization", "Bearer " + token)
+                .retrieve()
+                .bodyToFlux(String.class)
+                .onErrorResume(e -> {
+                    return Mono.just("Failed to follow user: " + e.getMessage());
+                });
+    }
+    private String extractToken(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7); // "Bearer " 다음부터의 문자열을 추출
+        } else {
+            throw new RuntimeException("No token provided");
+        }
     }
 }

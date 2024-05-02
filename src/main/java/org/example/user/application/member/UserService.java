@@ -10,11 +10,14 @@ import org.example.user.domain.dto.request.member.AddUserRequest;
 import org.example.user.repository.member.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Optional;
+
 @Slf4j
 @Service
 public class UserService {
@@ -105,6 +108,13 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    @Transactional
+    public void update(String username, String accessToken) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("unexpected user"));
+        user.setAccessToken(accessToken);
+
+    }
 
 
 }

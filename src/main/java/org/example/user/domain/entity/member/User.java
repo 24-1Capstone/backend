@@ -1,5 +1,6 @@
 package org.example.user.domain.entity.member;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
@@ -44,6 +45,8 @@ public class User extends BaseEntity implements UserDetails{ // UserDetails를 �
 
     private String providerId;
 
+    private String accessToken;
+
     @Builder
     public User(String username, String avatarUrl, String password, String followersUrl, String followingsUrl, String provider, String providerId) {
         this.username = username;
@@ -61,6 +64,17 @@ public class User extends BaseEntity implements UserDetails{ // UserDetails를 �
         return this;
     }
 
+    public User addAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+        return this;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
 
     @Override // 권한 반환
     public Collection<? extends GrantedAuthority> getAuthorities() {

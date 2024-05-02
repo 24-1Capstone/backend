@@ -68,7 +68,11 @@ public class WebOAuthSecurityConfig {
 
         http.oauth2Login()
                 .loginPage("/login")
+                .redirectionEndpoint()
+                .baseUri("/oauth2/callback/*")
+                .and()
                 .authorizationEndpoint()
+                .baseUri("/auth/authorize")
                 .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository()) //Authorization 요청과 관련된 상태 저장
                 .and()
                 .successHandler(oAuth2SuccessHandler()) // 인증 성공 시 실행할 핸들러

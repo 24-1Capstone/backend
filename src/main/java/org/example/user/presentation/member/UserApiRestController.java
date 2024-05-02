@@ -1,20 +1,28 @@
 package org.example.user.presentation.member;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.config.jwt.TokenProvider;
 import org.example.user.application.member.GitHubProfileService;
 import org.example.user.domain.dto.response.member.*;
 import org.example.user.domain.entity.member.GitHubProfile;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -28,6 +36,7 @@ public class UserApiRestController {
 
     private final GitHubProfileService gitHubProfileService;
     private final WebClient webClient;
+    private final TokenProvider tokenProvider;
 
     @Operation(summary = "깃허브 사용자 정보 조회API", description = "깃허브 사용자 상세 정보 모두 조회")
     @ApiResponses({
@@ -56,7 +65,6 @@ public class UserApiRestController {
     })
     @GetMapping("/users/{username}")
     public Flux<GithubUserResponse> getUserInfo(HttpServletRequest request, @PathVariable("username") String userName) {
-        final String token = extractToken(request);
         String url = "https://api.github.com/users/" + userName;
         return webClient.get()
                 .uri(url)
@@ -77,16 +85,28 @@ public class UserApiRestController {
         }
     }
 
-    @GetMapping("/user")
-    public Flux<String> getUserInfo(HttpServletRequest request) {
-        final String token = extractToken(request); // 'Bearer'가 포함되지 않은 순수 토큰 값이어야 함
-        System.out.println("token used: " + token);
-        return webClient.get()
-                .uri("https://api.github.com/user")
-//                .header("Authorization", "Bearer " + token)
-                .retrieve()
-                .bodyToFlux(String.class);
-    }
+//    @GetMapping("/user")
+//    public String getUserInfo(HttpServletRequest request) {
+//        final String token = extractToken(request); // 'Bearer'가 포함되지 않은 순수 토큰 값이어야 함
+//        System.out.println("token used: " + token);
+//        HttpHeaders headers = new HttpHeaders();
+//        RestTemplate restTemplate = new RestTemplate();
+//        headers.setBearerAuth(token);
+//        HttpEntity<Void> requests = new HttpEntity<>(headers);
+//
+//        return restTemplate.exchange(
+//                "https://api.github.com/user",
+//                HttpMethod.GET,
+//                requests,
+//                OAuthMemberInfoResponse.class
+//        ).getBody().getName();
+
+//        return webClient.get()
+//                .uri("https://api.github.com/user")
+////                .header("Authorization", "Bearer " + token)
+//                .retrieve()
+//                .bodyToFlux(String.class);
+
 
 //    @Operation(summary = "모든 사용자 정보 조회API", description = "모든 사용자 상세 정보를 조회")
 //    @ApiResponses({
@@ -94,7 +114,7 @@ public class UserApiRestController {
 //            @ApiResponse(responseCode = "404", description = "user not found!!"),
 //            @ApiResponse(responseCode = "500", description = "internal server error!!"),
 //    })
-//    @GetMapping("/api/user")
+//    @GetMapping("/ser")
 //    public ResponseEntity<List<AllUsersResponse>> findAllUsers() {
 //        List<AllUsersResponse> users = userService.findAll()
 //                .stream()
@@ -104,18 +124,19 @@ public class UserApiRestController {
 //        return ResponseEntity.ok()
 //                .body(users);
 //    }
+//}
 
-//    @Operation(summary = "깃허브 사용자 정보 조회API", description = "깃허브 사용자 Follower 정보 모두 조회")
-//    @GetMapping("/api/user")
-//    public Flux<String> getUserInfo(HttpServletRequest request) {
-//        final String token = extractToken(request);
-//        return webClient.get()
-//                .uri("https://api.github.com/users")
-//                .header("Authorization", "Bearer " + token)
-//                .header("User-Agent", "spring-developer")
-//                .retrieve()
-//                .bodyToFlux(String.class);
-//    }
+    @Operation(summary = "깃허브 사용자 정보 조회API", description = "깃허브 사용자 Follower 정보 모두 조회")
+    @GetMapping("/user")
+    public Flux<GithubProfileResponse> getUserInfo(HttpServletRequest request) {
+        final String token = extractToken(request);
+        return webClient.get()
+                .uri("https://api.github.com/users")
+                .header("Authorization", "Bearer " + token)
+                .header("User-Agent", "spring-developer")
+                .retrieve()
+                .bodyToFlux(GithubProfileResponse.class);
+    }
 }
 
 
