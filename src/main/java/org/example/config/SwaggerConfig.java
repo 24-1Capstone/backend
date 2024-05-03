@@ -32,7 +32,7 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
     @Bean
     public GroupedOpenApi customTestOpenAPI() {
-        String[] paths = {"/api/user/**", "/logout", "/api/user/**", "/api/users/**", "/meetings/**"};
+        String[] paths = {"/api/user/**", "/logout", "/api/user/**", "/api/users/**", "/api/meetings/**"};
 
         return GroupedOpenApi.builder()
                 .group("사용자를 위한 API")
