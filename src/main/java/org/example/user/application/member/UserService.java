@@ -82,7 +82,20 @@ public class UserService {
                         return Mono.error(new RuntimeException("Server error on API request"));
                     });
                 })
-                .bodyToFlux(FollowingResponse.class);
+                .bodyToFlux(FollowingResponse.class)
+                .flatMap(followingResponse -> Mono.just(followingResponse)
+                        .flatMap(response -> {
+                            try {
+                                findByUsername(response.getLogin());
+                                return Mono.just(response);
+                            } catch (UserNotFoundException e) {
+                                return Mono.empty(); // 데이터베이스에 없는 사용자는 무시
+                            }
+                        }))
+                .onErrorResume(e -> {
+                    log.error("Failed to retrieve followings due to: {}", e.getMessage());
+                    return Flux.error(new RuntimeException("API request failed with error "));  // API 오류 메시지 반환
+                });
     }
 
     public Long save(AddUserRequest dto) {

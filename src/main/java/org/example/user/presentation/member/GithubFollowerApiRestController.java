@@ -6,12 +6,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.config.jwt.TokenProvider;
-import org.example.user.application.member.GitHubProfileService;
+import org.example.exception.UserNotFoundException;
 import org.example.user.application.member.UserService;
 import org.example.user.domain.dto.response.member.FollowerResponse;
 import org.example.user.domain.dto.response.member.FollowingResponse;
 import org.example.user.domain.entity.member.User;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -62,9 +61,18 @@ public class GithubFollowerApiRestController {
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .bodyToFlux(FollowerResponse.class)
+                .flatMap(followerResponse -> Mono.just(followerResponse)
+                        .flatMap(response -> {
+                            try {
+                                userService.findByUsername(response.getLogin());
+                                return Mono.just(response);
+                            } catch (UserNotFoundException e) {
+                                return Mono.empty(); // 데이터베이스에 없는 사용자는 무시
+                            }
+                        }))
                 .onErrorResume(e -> {
                     log.error("Failed to retrieve followers due to: {}", e.getMessage());
-                    return Mono.error(new RuntimeException("API request failed with error "));  // API 오류 메시지 반환
+                    return Flux.error(new RuntimeException("API request failed with error "));  // API 오류 메시지 반환
                 });
     }
 
@@ -75,7 +83,6 @@ public class GithubFollowerApiRestController {
         User user = userService.findByUsername(userName);
 
         final String token = user.getAccessToken();
-        log.info("token:{}", token);
         String url = "https://api.github.com/user/following/";
         return webClient.put()
                 .uri(url + username)

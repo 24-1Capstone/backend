@@ -1,3 +1,14 @@
-INSERT INTO article (title, content, author, created_at, updated_at) VALUES ('제목 1', '내용 1', 'limbaba1120', NOW(), NOW())
-INSERT INTO article (title, content, author, created_at, updated_at) VALUES ('제목 2', '내용 2', 'user2', NOW(), NOW())
-INSERT INTO article (title, content, author, created_at, updated_at) VALUES ('제목 3', '내용 3', 'user3', NOW(), NOW())
+INSERT INTO users (username, avatarUrl, followers_url, followings_url)
+VALUES ('bbjbc', 'https://avatars.githubusercontent.com/u/102457140?v=4', 'https://api.github.com/users/bbjbc/followers', 'https://api.github.com/users/bbjbc/following{/other_user}');
+
+INSERT INTO users (username, avatarUrl, followers_url, followings_url)
+VALUES ('fbehddn', 'https://avatars.githubusercontent.com/u/108855080?v=4', 'https://api.github.com/users/fbehddn/followers', 'https://api.github.com/users/fbehddn/following{/other_user}');
+
+INSERT INTO users (username, avatarUrl, followers_url, followings_url)
+VALUES ('Gongjjin', 'https://avatars.githubusercontent.com/u/116998029?v=4', 'https://api.github.com/users/Gongjjin/followers', 'https://api.github.com/users/Gongjjin/following{/other_user}');
+
+INSERT INTO users (username, avatarUrl, followers_url, followings_url)
+VALUES ('eukddan', 'https://avatars.githubusercontent.com/u/117348447?v=4', 'https://api.github.com/users/eukddan/followers', 'https://api.github.com/users/eukddan/following{/other_user}');
+
+INSERT INTO users (username, avatarUrl, followers_url, followings_url)
+VALUES ('smpark00', 'https://avatars.githubusercontent.com/u/126854215?v=4', 'https://api.github.com/users/smpark00/followers', 'https://api.github.com/users/smpark00/following{/other_user}');

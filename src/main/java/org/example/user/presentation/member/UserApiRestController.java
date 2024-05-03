@@ -7,13 +7,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.config.jwt.TokenProvider;
-import org.example.user.application.member.GitHubProfileService;
 import org.example.user.application.member.UserService;
 import org.example.user.domain.dto.response.member.*;
-import org.example.user.domain.entity.member.GitHubProfile;
 import org.example.user.domain.entity.member.User;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,28 +25,28 @@ import reactor.core.publisher.Mono;
 @RestController
 public class UserApiRestController {
 
-    private final GitHubProfileService gitHubProfileService;
     private final WebClient webClient;
-    private final TokenProvider tokenProvider;
     private final UserService userService;
 
     @Operation(summary = "깃허브 사용자 정보 조회API", description = "깃허브 사용자 상세 정보 모두 조회")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "ok!!"),
-            @ApiResponse(responseCode = "404", description = "user not found!!"),
-            @ApiResponse(responseCode = "500", description = "internal server error!!"),
+            @ApiResponse(responseCode = "304", description = "Not Modified"),
+            @ApiResponse(responseCode = "401", description = "Requires authentication"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
     })
-    @GetMapping("/api/userinfo")
-    public ResponseEntity findUserInfo() {
+    @GetMapping("/api/user/userinfo")
+    public Flux<GithubUserResponse> getUserInfo(HttpServletRequest request) {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(userName);
+        final String token = user.getAccessToken();
 
-        System.out.println(userName);
-        GitHubProfile gitHubProfile = gitHubProfileService.findByUserName(userName);
-
-        GithubProfileResponse githubProfileResponse = new GithubProfileResponse(gitHubProfile);
-
-        return ResponseEntity.ok()
-                .body(githubProfileResponse);
+        return webClient.get()
+                .uri("https://api.github.com/user")
+                .header("Authorization", "Bearer " + token)
+                .header("User-Agent", "spring-developer")
+                .retrieve()
+                .bodyToFlux(GithubUserResponse.class);
     }
 
 
@@ -84,6 +80,25 @@ public class UserApiRestController {
             throw new RuntimeException("No token provided");
         }
     }
+
+//    @Operation(summary = "깃허브 사용자 정보 조회API", description = "깃허브 사용자 상세 정보 모두 조회")
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "200", description = "ok!!"),
+//            @ApiResponse(responseCode = "404", description = "user not found!!"),
+//            @ApiResponse(responseCode = "500", description = "internal server error!!"),
+//    })
+////    @GetMapping("/api/userinfo")
+//    public ResponseEntity findUserInfo() {
+//        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+//
+//        System.out.println(userName);
+//        GitHubProfile gitHubProfile = gitHubProfileService.findByUserName(userName);
+//
+//        GithubProfileResponse githubProfileResponse = new GithubProfileResponse(gitHubProfile);
+//
+//        return ResponseEntity.ok()
+//                .body(githubProfileResponse);
+//    }
 
 //    @GetMapping("/user")
 //    public String getUserInfo(HttpServletRequest request) {
@@ -126,17 +141,7 @@ public class UserApiRestController {
 //    }
 //}
 
-    @Operation(summary = "깃허브 사용자 정보 조회API", description = "깃허브 사용자 Follower 정보 모두 조회")
-    @GetMapping("/user")
-    public Flux<GithubUserResponse> getUserInfo(HttpServletRequest request) {
-        final String token = extractToken(request);
-        return webClient.get()
-                .uri("https://api.github.com/users")
-                .header("Authorization", "Bearer " + token)
-                .header("User-Agent", "spring-developer")
-                .retrieve()
-                .bodyToFlux(GithubUserResponse.class);
-    }
+
 }
 
 
