@@ -23,7 +23,7 @@ public class MeetingApiRestController {
             @ApiResponse(responseCode = "400", description = "입력 매개변수가 서비스 제한과 일치하지 않음"),
             @ApiResponse(responseCode = "500", description = "서비스가 예기치 않은 오류를 만남")
     })
-    @PostMapping("/meetings")
+    @PostMapping("/api/meetings")
     public CreateMeetingResponseDTO createMeeting() {
         return chimeService.createMeetingResponseDTO();
     }
@@ -36,7 +36,7 @@ public class MeetingApiRestController {
             @ApiResponse(responseCode = "404", description = "요청한 리소스를 찾을 수 없음"),
             @ApiResponse(responseCode = "500", description = "서비스가 예기치 않은 오류를 만남")
     })
-    @PostMapping("/meetings/{meetingId}/attendees")
+    @PostMapping("/api/meetings/{meetingId}/attendees")
     public CreateAttendeeResponseDTO createAttendee(@PathVariable String meetingId) {
         return chimeService.createAttendeeResponseDTO(meetingId);
     }
@@ -48,7 +48,7 @@ public class MeetingApiRestController {
             @ApiResponse(responseCode = "400", description = "입력 매개변수가 서비스 제한과 일치하지 않음"),
             @ApiResponse(responseCode = "500", description = "서비스가 예기치 않은 오류를 만남")
     })
-    @PostMapping("/meetings/attendees")
+    @PostMapping("/api/meetings/attendees")
     public CreateMeetingWithAttendeesResponseDTO createMeetingWithAttendees() {
         return chimeService.createMeetingWithAttendees();
     }
@@ -61,7 +61,7 @@ public class MeetingApiRestController {
             @ApiResponse(responseCode = "404", description = "요청한 리소스를 찾을 수 없음"),
             @ApiResponse(responseCode = "500", description = "서비스가 예기치 않은 오류를 만남")
     })
-    @DeleteMapping("/meetings/{meetingId}")
+    @DeleteMapping("/api/meetings/{meetingId}")
     public void deleteMeeting(@PathVariable String meetingId) {
         chimeService.deleteMeeting(meetingId);
     }
@@ -74,7 +74,7 @@ public class MeetingApiRestController {
             @ApiResponse(responseCode = "404", description = "요청한 리소스를 찾을 수 없음"),
             @ApiResponse(responseCode = "500", description = "서비스가 예기치 않은 오류를 만남")
     })
-    @DeleteMapping("/meetings/{meetingId}/attendees/{attendeeId}")
+    @DeleteMapping("/api/meetings/{meetingId}/attendees/{attendeeId}")
     public void deleteAttendee(@PathVariable String meetingId, @PathVariable String attendeeId) {
         chimeService.deleteAttendee(meetingId, attendeeId);
     }
@@ -87,7 +87,7 @@ public class MeetingApiRestController {
             @ApiResponse(responseCode = "404", description = "요청한 리소스를 찾을 수 없음"),
             @ApiResponse(responseCode = "500", description = "서비스가 예기치 않은 오류를 만남")
     })
-    @GetMapping("/meetings/{meetingId}/attendees")
+    @GetMapping("/api/meetings/{meetingId}/attendees")
     public ListAttendeesResponseDTO listAttendees(@PathVariable String meetingId) {
         return chimeService.listAttendeesResponseDTO(meetingId);
     }
@@ -98,8 +98,17 @@ public class MeetingApiRestController {
             @ApiResponse(responseCode = "200", description = "회의 목록 조회 성공"),
             @ApiResponse(responseCode = "500", description = "서비스가 예기치 않은 오류를 만남")
     })
-    @GetMapping("/meetings")
+    @GetMapping("/api/meetings")
     public List<CreateMeetingResponseDTO> listMeetings() {
+
         return chimeService.listMeetings();
     }
+
+
+
+
+
 }
+
+
+
