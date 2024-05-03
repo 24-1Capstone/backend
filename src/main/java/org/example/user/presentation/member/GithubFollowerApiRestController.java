@@ -30,10 +30,11 @@ public class GithubFollowerApiRestController {
 
 
     @Operation(summary = "깃허브 사용자 Following 정보 조회API", description = "깃허브 사용자 Following 정보 모두 조회")
-    @GetMapping("/user/following")
+    @GetMapping("/api/user/following")
     public Flux<FollowingResponse> getFollowings(Authentication authentication,
                                                  @RequestParam(value = "per_page", defaultValue = "100") int pageSize,
                                                  @RequestParam(value = "page", defaultValue = "1") int page) {
+
         if (authentication != null && authentication.isAuthenticated()) {
             String token = (String) authentication.getCredentials();
             log.info("token:{}",token);
@@ -41,21 +42,24 @@ public class GithubFollowerApiRestController {
             User user = userService.findById(userId);
             log.info("userId:{}", userId);
             log.info("user:{}",user);
-            return userService.fetchFollowings(user.getFollowingsUrl(), pageSize, page);
+            return userService.fetchFollowings(user, pageSize, page);
         } else {
             return null;
         }
     }
 
     @Operation(summary = "깃허브 사용자 Follower 정보 조회API", description = "깃허브 사용자 Follower 정보 모두 조회")
-    @GetMapping("/user/followers")
+    @GetMapping("/api/user/followers")
     public Flux<FollowerResponse> getFollower(HttpServletRequest request,
                                               @RequestParam(value = "per_page", defaultValue = "100") int pageSize,
                                               @RequestParam(value = "page", defaultValue = "1") int page) {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(userName);
+        final String token = user.getAccessToken();
         String url = "https://api.github.com/users/" + userName + "/followers";
         return webClient.get()
                 .uri(url + "?per_page=" + pageSize + "&page=" + page)
+                .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .bodyToFlux(FollowerResponse.class)
                 .onErrorResume(e -> {
@@ -64,15 +68,17 @@ public class GithubFollowerApiRestController {
                 });
     }
 
-    @PutMapping("/user/following/{username}")
+    @PutMapping("/api/user/following/{username}")
     public Flux<String> followUser(HttpServletRequest request, @PathVariable String username) {
 
-        final String token = extractToken(request);
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(userName);
+
+        final String token = user.getAccessToken();
+        log.info("token:{}", token);
         String url = "https://api.github.com/user/following/";
         return webClient.put()
                 .uri(url + username)
-                .header("Accept", "application/vnd.github.v3+json")
-                .header("X-GitHub-Api-Version", "2022-11-28")
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .bodyToFlux(String.class)

@@ -22,17 +22,22 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User user = super.loadUser(userRequest); // ❶ 요청을 바탕으로 유저 정보를 담은 객체 반환
-        System.out.println("userRequest:"+userRequest);
-        System.out.println("getClientRegistraion:"+userRequest.getClientRegistration());  //client에 대한 정보들이 받아짐
-        System.out.println("getAccessToken:"+userRequest.getAccessToken());
-        System.out.println("getAttributes:"+super.loadUser(userRequest).getAttributes()); //유저 정보를 받아옴
-        saveOrUpdate(user);
+//        System.out.println("userRequest:"+userRequest);
+//        System.out.println("getClientRegistraion:"+userRequest.getClientRegistration());  //client에 대한 정보들이 받아짐
+//        System.out.println("getAccessToken:"+userRequest.getAccessToken().getTokenValue());
+//        System.out.println("getAccessToken:"+userRequest.getAccessToken().getScopes());
+//        System.out.println("getAccessToken:"+userRequest.getAccessToken().getTokenType());
+//        System.out.println("getAccessToken:"+userRequest.getAccessToken().getExpiresAt());
+//        System.out.println("getAccessToken:"+userRequest.getAccessToken().getIssuedAt());
+//        System.out.println("getAccessToken:"+userRequest.getAccessToken().getClass());
+//        System.out.println("getAttributes:"+super.loadUser(userRequest).getAttributes()); //유저 정보를 받아옴
+        saveOrUpdate(user, userRequest);
 
         return user; //사용자 객체는 식별자, 이름, 이메일, 프로필 사진 링크 등의 정보를 담고 있다
     }
 
     // ❷ 유저가 있으면 업데이트, 없으면 유저 생성
-    private User saveOrUpdate(OAuth2User oAuth2User) {
+    private User saveOrUpdate(OAuth2User oAuth2User, OAuth2UserRequest userRequest) {
         System.out.println("getAttributes:" + oAuth2User.getAttributes());
         OAuth2UserInfo oAuth2UserInfo = new GithubUserInfo(oAuth2User.getAttributes());
 
@@ -51,7 +56,7 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
                         .providerId(oAuth2UserInfo.getProviderId())
                         .build());
 
-
+        user.setAccessToken(String.valueOf(userRequest.getAccessToken().getTokenValue()));
 
         GitHubProfile gitHubProfile = gitHubProfileRepository.findByUserName(username)
                         .map(entity -> entity.update(username))

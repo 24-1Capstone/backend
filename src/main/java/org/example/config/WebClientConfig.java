@@ -11,8 +11,8 @@ public class WebClientConfig {
     public WebClient.Builder webClientBuilder() {
         return WebClient.builder()
                 .defaultHeader("User-Agent", "spring-developer")
-                .defaultHeader("Accept", "application/vnd.github.v3+json");
-//                .defaultHeader("X-GitHub-Api-Version", "2022-11-28");
+                .defaultHeader("Accept", "application/vnd.github.v3+json")
+                .defaultHeader("X-GitHub-Api-Version", "2022-11-28");
     }
 
     @Bean

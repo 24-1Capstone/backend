@@ -72,6 +72,7 @@ public class GithubUserInfo implements OAuth2UserInfo {
         return (String) attributes.get("email");
     }
 
+
     @Override
     public boolean isHireable() {
         Object hireableObject = attributes.get("hireable");

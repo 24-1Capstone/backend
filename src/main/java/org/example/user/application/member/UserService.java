@@ -61,10 +61,12 @@ public class UserService {
                 .bodyToFlux(FollowerResponse.class);
     }
 
-    public Flux<FollowingResponse> fetchFollowings(String followingsUrl, int pageSize, int page) {
-        String processedUrl = followingsUrl.replace("{/other_user}", "");
+    public Flux<FollowingResponse> fetchFollowings(User user, int pageSize, int page) {
+        String processedUrl = user.getFollowingsUrl().replace("{/other_user}", "");
+
         return webClient.get()
                 .uri(processedUrl +  "?per_page=" + pageSize + "&page=" + page)
+                .header("Authorization", "Bearer " + user.getAccessToken())
                 .retrieve()
                 .onStatus(status -> status.is4xxClientError(), response -> {
                     // 4xx 오류 로깅
