@@ -35,36 +35,36 @@ public class ChimeService {
                 .mediaRegion("ap-northeast-2")
                 .build();
 
-    CreateMeetingResponse createMeetingResponse = chimeSdkMeetingsClient.createMeeting(request);
+        CreateMeetingResponse createMeetingResponse = chimeSdkMeetingsClient.createMeeting(request);
 
-    String externalMeetingId = createMeetingResponse.meeting().externalMeetingId();
-    String mediaRegion = createMeetingResponse.meeting().mediaRegion();
-    String metingArn = createMeetingResponse.meeting().meetingArn();
-    String meetingId = createMeetingResponse.meeting().meetingId();
+        String externalMeetingId = createMeetingResponse.meeting().externalMeetingId();
+        String mediaRegion = createMeetingResponse.meeting().mediaRegion();
+        String metingArn = createMeetingResponse.meeting().meetingArn();
+        String meetingId = createMeetingResponse.meeting().meetingId();
 
-    CreateMeetingResponseDTO createMeetingResponseDTO = CreateMeetingResponseDTO.builder()
-            .externalMeetingId(externalMeetingId)
-            .mediaRegion(mediaRegion)
-            .meetingArn(metingArn)
-            .meetingId(meetingId)
-            .build();
+        CreateMeetingResponseDTO createMeetingResponseDTO = CreateMeetingResponseDTO.builder()
+                .externalMeetingId(externalMeetingId)
+                .mediaRegion(mediaRegion)
+                .meetingArn(metingArn)
+                .meetingId(meetingId)
+                .build();
 
-    MeetingSession meetingSession = MeetingSession.builder()
-            .externalMeetingId(externalMeetingId)
-            .mediaRegion(mediaRegion)
-            .meetingArn(metingArn)
-            .meetingId(meetingId)
-            .build();
+        MeetingSession meetingSession = MeetingSession.builder()
+                .externalMeetingId(externalMeetingId)
+                .mediaRegion(mediaRegion)
+                .meetingArn(metingArn)
+                .meetingId(meetingId)
+                .build();
 
 
-    meetingSessionService.save(meetingSession);
+        meetingSessionService.save(meetingSession);
 
 
 
 
         return createMeetingResponseDTO;
 
-}
+    }
 
 
     // AttendeeSession 엔티티에 저장 및 createAttendeeResponseDTO 반환
@@ -78,11 +78,11 @@ public class ChimeService {
 
 
 
-         CreateAttendeeResponse createAttendeeResponse = chimeSdkMeetingsClient.createAttendee(request);
+        CreateAttendeeResponse createAttendeeResponse = chimeSdkMeetingsClient.createAttendee(request);
 
 
         String attendeeId = createAttendeeResponse.attendee().attendeeId();
-        String externalUserId = createAttendeeResponse.attendee().externalUserId();
+        String externalUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         String joinToken = createAttendeeResponse.attendee().joinToken();
 
 
@@ -166,7 +166,7 @@ public class ChimeService {
                 .build();
     }
 
-    
+
     // 열려있는 모든 회의 조회
 
     public List<CreateMeetingResponseDTO> listMeetings(){
@@ -186,8 +186,8 @@ public class ChimeService {
         return responseDTOs;
     }
 
-    
-    
+
+
     // 회의 생성 동시에 참가자 생성
     public CreateMeetingWithAttendeesResponseDTO createMeetingWithAttendees(){
 
@@ -198,7 +198,7 @@ public class ChimeService {
                 .clientRequestToken(getRandomString())
                 .externalMeetingId(getRandomString())
                 .mediaRegion("ap-northeast-2")
-                .attendees(builder -> builder.externalUserId(getRandomString()))
+                .attendees(builder -> builder.externalUserId(SecurityContextHolder.getContext().getAuthentication().getName()))
                 .build();
 
         CreateMeetingWithAttendeesResponse createMeetingWithAttendeesResponse = chimeSdkMeetingsClient.createMeetingWithAttendees(createMeetingWithAttendeesRequest);
