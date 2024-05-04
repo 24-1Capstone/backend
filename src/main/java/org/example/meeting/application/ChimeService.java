@@ -1,6 +1,7 @@
 package org.example.meeting.application;
 
 import lombok.RequiredArgsConstructor;
+import org.example.exception.AttendeeAlreadyExistsException;
 import org.example.meeting.domain.AttendeeSession;
 import org.example.meeting.domain.dto.*;
 import org.example.meeting.domain.MeetingSession;
@@ -11,6 +12,7 @@ import software.amazon.awssdk.services.chimesdkmeetings.ChimeSdkMeetingsClient;
 import software.amazon.awssdk.services.chimesdkmeetings.model.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -34,7 +36,6 @@ public class ChimeService {
                 .externalMeetingId(getRandomString())
                 .mediaRegion("ap-northeast-2")
                 .build();
-
 
         CreateMeetingResponse createMeetingResponse = chimeSdkMeetingsClient.createMeeting(request);
 
@@ -71,10 +72,21 @@ public class ChimeService {
     // AttendeeSession 엔티티에 저장 및 createAttendeeResponseDTO 반환
     public CreateAttendeeResponseDTO createAttendeeResponseDTO(String meetingID){
 
+
+        String externalUserId = SecurityContextHolder.getContext().getAuthentication().getName();
+
+
+        // 이미 존재하는 참여자인지 확인
+        Optional<AttendeeSession> existingAttendee = attendeeSessionService.findByExternalUserId(externalUserId);
+        if (existingAttendee.isPresent()) {
+            throw new AttendeeAlreadyExistsException("You are already an attendee of this meeting.");
+        }
+
+
         //externalUserId 내 아이디로 설정
         CreateAttendeeRequest request = CreateAttendeeRequest.builder()
                 .meetingId(meetingID)
-                .externalUserId(getRandomString())
+                .externalUserId(externalUserId)
                 .build();
 
 
@@ -83,7 +95,6 @@ public class ChimeService {
 
 
         String attendeeId = createAttendeeResponse.attendee().attendeeId();
-        String externalUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         String joinToken = createAttendeeResponse.attendee().joinToken();
 
 
@@ -272,7 +283,3 @@ public class ChimeService {
 
 
 }
-
-
-
-

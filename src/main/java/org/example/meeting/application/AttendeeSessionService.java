@@ -29,7 +29,12 @@ public class AttendeeSessionService {
 
 
     }
-    
+
+    public Optional<AttendeeSession> findByExternalUserId(String externalUserId){
+        return attendeeSessionRepository.findByExternalUserId(externalUserId);
+    }
+
+
 
     public Optional<AttendeeSession> findById(Long attendeeSessionId) {
         return attendeeSessionRepository.findById(attendeeSessionId);
