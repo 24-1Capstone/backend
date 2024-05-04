@@ -29,6 +29,7 @@ public class AttendeeSessionService {
 
 
     }
+    
 
     public Optional<AttendeeSession> findById(Long attendeeSessionId) {
         return attendeeSessionRepository.findById(attendeeSessionId);

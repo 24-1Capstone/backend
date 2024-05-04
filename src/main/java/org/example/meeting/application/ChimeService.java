@@ -35,6 +35,7 @@ public class ChimeService {
                 .mediaRegion("ap-northeast-2")
                 .build();
 
+
         CreateMeetingResponse createMeetingResponse = chimeSdkMeetingsClient.createMeeting(request);
 
         String externalMeetingId = createMeetingResponse.meeting().externalMeetingId();
