@@ -61,7 +61,7 @@ public class WebOAuthSecurityConfig {
 
         // 토큰 재발급 URL은 인증 없이 접근 가능하도록 설정. 나머지 API URL은 인증 필요
         http.authorizeRequests()
-                .requestMatchers("/api/token", "/api/user/**", "/api/users/**", "/api/meetings/**").permitAll()
+                .requestMatchers("/","/api/token", "/api/user/**", "/api/users/**", "/api/meetings/**").permitAll()
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll();
 
@@ -102,6 +102,8 @@ public class WebOAuthSecurityConfig {
 
         configuration.addAllowedOriginPattern("http://localhost:3000");
         configuration.addAllowedOriginPattern("http://localhost:8080");
+        configuration.addAllowedOriginPattern("http://prod-coffeechat-ui-service.ap-northeast-2.elasticbeanstalk.com/");
+        configuration.addAllowedOriginPattern("http://prod-coffeechat-api-service.ap-northeast-2.elasticbeanstalk.com/");
         configuration.addAllowedOriginPattern("*");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
