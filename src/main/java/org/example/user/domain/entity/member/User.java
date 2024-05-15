@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.reservation.domain.entity.Reservation;
 import org.example.user.domain.entity.BaseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,6 +26,13 @@ public class User extends BaseEntity implements UserDetails{ // UserDetails를 �
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
+
+    @OneToMany(mappedBy = "createUser", fetch = FetchType.LAZY)
+    private List<Reservation> createdReservations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "applyUser", fetch = FetchType.LAZY)
+    private List<Reservation> appliedReservations = new ArrayList<>();
+
 
     // 사용자 이름
     @Column(name = "username", unique = true)
