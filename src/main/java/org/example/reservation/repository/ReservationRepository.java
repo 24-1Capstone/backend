@@ -21,4 +21,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     Page<Reservation> findByTitleOrContentContaining(String keyword1, String keyword2, Pageable pageable);
 
     Page<Reservation> findByCreateUserUsernameContaining(String username, Pageable pageable);
+
+    Page<Reservation> findByUser(User user);
 }

@@ -37,7 +37,7 @@ public class ReservationDTO {
 
     /* Page<Entity> -> Page<Dto> 변환처리 */
     public Page<ReservationDTO> toDtoList(Page<Reservation> reservationList){
-        Page<ReservationDTO> boardDtoList = reservationList.map(m -> ReservationDTO.builder()
+        Page<ReservationDTO> reservationDtoList = reservationList.map(m -> ReservationDTO.builder()
                 .title(m.getTitle())
                 .content(m.getContent())
                 .createdAt(m.getCreatedAt())
@@ -47,7 +47,7 @@ public class ReservationDTO {
                 .endTime(m.getEndTime())
                 .reservationStatus(m.getReservationStatus())
                 .build());
-        return boardDtoList;
+        return reservationDtoList;
     }
 
 }

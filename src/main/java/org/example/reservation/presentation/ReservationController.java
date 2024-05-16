@@ -24,21 +24,28 @@ public class ReservationController {
 
     private final ReservationService reservationService;
 
-    @Operation(summary = "모든 예약 조회", description = "시스템에 등록된 모든 예약을 조회")
+    @Operation(summary = "모든 예약 조회 및 키워드로 특정 예약 조회", description = "시스템에 등록된 모든 예약 조회 및 키워드로 특정 예약 조회")
     @GetMapping("/api/reservation/list")
     public Page<ReservationDTO> reservationList(@RequestParam(value= "query", defaultValue = "subject") String query,
                                                 @RequestParam(value = "keyword", defaultValue = "") String kw ,
                                                 @RequestParam(value = "page", defaultValue = "0") int page) {
 
-        Page<ReservationDTO> reservationList = reservationService.reservationList(query, kw, page);
+        return reservationService.reservationList(query, kw, page);
 
-        return reservationList;
+    }
+
+
+    @Operation(summary = "내 예약들 조회", description = "내 예약들 조회")
+    @GetMapping("api/reservation/{userId}")
+    public Page<ReservationDTO> getReservation(@RequestParam(defaultValue = "0") int page) {
+
+        return reservationService.getReservation(page);
+
     }
 
 
 
-
-    @Operation(summary = "새로운 예약 생성", description = "새로운 예약을 생성")
+    @Operation(summary = "새로운 예약서 생성", description = "새로운 예약서 생성")
     @PostMapping("/api/reservation")
     public void createReservation(@RequestBody CreateReservationRequestDTO createReservationRequestDTO) {
 
@@ -61,6 +68,15 @@ public class ReservationController {
     public void approveReservation(@PathVariable Long reservationId) {
 
         reservationService.approveReservation(reservationId);
+
+    }
+
+
+    @Operation(summary = "작성자가 본인 예약 취소", description = "작성자가 본인 예약 취소")
+    @PostMapping("api/reservation/delete/{reservationId}")
+    public void deleteReservation(@PathVariable Long reservationId) {
+
+        reservationService.deleteReservation(reservationId);
 
     }
 

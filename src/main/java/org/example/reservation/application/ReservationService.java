@@ -49,6 +49,22 @@ public class ReservationService {
     }
 
 
+    //내 에약들 조회
+    public Page<ReservationDTO> getReservation(int page) {
+
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        User user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).orElse(null);
+
+        Page<Reservation> reservationPage = reservationRepository.findByUser(user);
+
+        Page<ReservationDTO> reservationDtoList = new ReservationDTO().toDtoList(reservationPage);
+
+        return reservationDtoList;
+
+    }
+
+
 
 
 
@@ -90,13 +106,27 @@ public class ReservationService {
     public void approveReservation(Long reservationId) {
 
         authorizeReservationAuthor(reservationId);
-        Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new ReservationNotFoundException("Reservation not found"));
 
         reservation.approve();
 
         reservationRepository.save(reservation);
 
     }
+
+
+    // 작성자가 본인 예약 취소
+    public void deleteReservation(Long reservationId) {
+
+        authorizeReservationAuthor(reservationId);
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new ReservationNotFoundException("Reservation not found"));
+
+        reservationRepository.delete(reservation);
+
+    }
+
 
 
 
