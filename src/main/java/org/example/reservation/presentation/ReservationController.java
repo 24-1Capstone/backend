@@ -35,11 +35,21 @@ public class ReservationController {
     }
 
 
-    @Operation(summary = "내 예약들 조회", description = "내 예약들 조회")
-    @GetMapping("api/reservation/{userId}")
+    @Operation(summary = "내가 생성한 예약들 조회", description = "내가 생성한 예약들 조회")
+    @GetMapping("api/reservation")
     public Page<ReservationDTO> getReservation(@RequestParam(defaultValue = "0") int page) {
 
         return reservationService.getReservation(page);
+
+    }
+
+
+    @Operation(summary = "신청 대기중인 예약들만 조회", description = "신청 대기중인 예약들만 조회")
+    @GetMapping("api/reservation/waiting")
+    public Page<ReservationDTO> getWaitingReservation(@RequestParam(defaultValue = "0") int page) {
+
+        return reservationService.getWaitingReservation(page);
+
 
     }
 

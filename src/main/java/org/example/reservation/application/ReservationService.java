@@ -5,6 +5,7 @@ import org.example.exception.ReservationNotFoundException;
 import org.example.reservation.domain.dto.CreateReservationRequestDTO;
 import org.example.reservation.domain.dto.ReservationDTO;
 import org.example.reservation.domain.entity.Reservation;
+import org.example.reservation.domain.entity.ReservationStatus;
 import org.example.reservation.repository.ReservationRepository;
 import org.example.user.domain.entity.member.User;
 import org.example.user.repository.member.UserRepository;
@@ -49,20 +50,38 @@ public class ReservationService {
     }
 
 
-    //내 에약들 조회
+    //내가 만든 에약들 조회
     public Page<ReservationDTO> getReservation(int page) {
 
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
 
         User user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).orElse(null);
 
-        Page<Reservation> reservationPage = reservationRepository.findByUser(user);
+        Page<Reservation> reservationPage = reservationRepository.findByCreateUser(user, pageable);
 
         Page<ReservationDTO> reservationDtoList = new ReservationDTO().toDtoList(reservationPage);
 
         return reservationDtoList;
 
     }
+
+
+
+     //신청 대기중인 예약들만 조회
+    public Page<ReservationDTO> getWaitingReservation(int page) {
+
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        Page<Reservation> reservationPage = reservationRepository.findByReservationStatusEquals(ReservationStatus.WAITING, pageable);
+
+        Page<ReservationDTO> reservationDtoList = new ReservationDTO().toDtoList(reservationPage);
+
+        return reservationDtoList;
+
+
+    }
+
+
 
 
 
