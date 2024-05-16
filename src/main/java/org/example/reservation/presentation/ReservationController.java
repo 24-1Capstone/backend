@@ -83,10 +83,18 @@ public class ReservationController {
 
 
     @Operation(summary = "작성자가 본인 예약 취소", description = "작성자가 본인 예약 취소")
-    @PostMapping("api/reservation/delete/{reservationId}")
+    @PostMapping("/api/reservation/delete/{reservationId}")
     public void deleteReservation(@PathVariable Long reservationId) {
 
         reservationService.deleteReservation(reservationId);
+
+    }
+
+    @Operation(summary = "작성자 예약서 수정", description = "작성자 예약서 수정")
+    @PostMapping("/api/reservation/edit/{reservationId}")
+    public void editReservation(@PathVariable Long reservationId, @RequestBody  CreateReservationRequestDTO createReservationRequestDTO){
+
+        reservationService.editReservation(reservationId, createReservationRequestDTO);
 
     }
 

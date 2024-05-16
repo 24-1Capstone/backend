@@ -2,6 +2,7 @@ package org.example.reservation.application;
 
 import lombok.RequiredArgsConstructor;
 import org.example.exception.ReservationNotFoundException;
+import org.example.exception.ReservationNotWaitingException;
 import org.example.reservation.domain.dto.CreateReservationRequestDTO;
 import org.example.reservation.domain.dto.ReservationDTO;
 import org.example.reservation.domain.entity.Reservation;
@@ -124,9 +125,10 @@ public class ReservationService {
 
     public void approveReservation(Long reservationId) {
 
-        authorizeReservationAuthor(reservationId);
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new ReservationNotFoundException("Reservation not found"));
+
+        authorizeReservationAuthor(reservationId);
 
         reservation.approve();
 
@@ -138,13 +140,39 @@ public class ReservationService {
     // 작성자가 본인 예약 취소
     public void deleteReservation(Long reservationId) {
 
-        authorizeReservationAuthor(reservationId);
+
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new ReservationNotFoundException("Reservation not found"));
+
+        authorizeReservationAuthor(reservationId);
 
         reservationRepository.delete(reservation);
 
     }
+
+
+    // 작성자가 예약 수정
+    public void editReservation(Long reservationId, CreateReservationRequestDTO createReservationRequestDTO){
+
+        // 예약이 존재하는지 확인하고, 존재하지 않으면 예외를 던집니다.
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new ReservationNotFoundException("Reservation not found"));
+
+        // 예약의 작성자인지 확인합니다.
+        authorizeReservationAuthor(reservationId);
+
+        // 예약이 대기 중인지 확인하고, 아니면 수정할 수 없습니다.
+        if (reservation.getReservationStatus() != ReservationStatus.WAITING) {
+            throw new ReservationNotWaitingException("Reservation cannot be edited because it's not in WAITING status");
+        }
+
+        // 예약 정보를 업데이트합니다.
+        reservation.update(createReservationRequestDTO.getTitle(), createReservationRequestDTO.getContent(), createReservationRequestDTO.getStartTime(), createReservationRequestDTO.getEndTime());
+
+        // 수정된 예약을 저장합니다.
+        reservationRepository.save(reservation);
+    }
+
 
 
 
