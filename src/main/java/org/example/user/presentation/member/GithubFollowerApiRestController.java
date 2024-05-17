@@ -47,24 +47,24 @@ public class GithubFollowerApiRestController {
         }
     }
 
-    @Operation(summary = "깃허브 비회원 Following 정보 조회API", description = "회원가입하지 않은 깃허브 사용자 Following 정보 조회")
-    @GetMapping("/api/user/non-registered-following")
-    public Flux<FollowingResponse> getNonRegisteredFollowings(Authentication authentication,
-                                                              @RequestParam(value = "per_page", defaultValue = "100") int pageSize,
-                                                              @RequestParam(value = "page", defaultValue = "1") int page) {
-
-        if (authentication != null && authentication.isAuthenticated()) {
-            String token = (String) authentication.getCredentials();
-            log.info("token:{}", token);
-            Long userId = tokenProvider.getUserId(token);
-            User user = userService.findById(userId);
-            log.info("userId:{}", userId);
-            log.info("user:{}", user);
-            return userService.fetchNonRegisteredFollowings(user, pageSize, page);
-        } else {
-            return Flux.empty();
-        }
-    }
+//    @Operation(summary = "깃허브 비회원 Following 정보 조회API", description = "회원가입하지 않은 깃허브 사용자 Following 정보 조회")
+//    @GetMapping("/api/user/non-registered-following")
+//    public Flux<FollowingResponse> getNonRegisteredFollowings(Authentication authentication,
+//                                                              @RequestParam(value = "per_page", defaultValue = "100") int pageSize,
+//                                                              @RequestParam(value = "page", defaultValue = "1") int page) {
+//
+//        if (authentication != null && authentication.isAuthenticated()) {
+//            String token = (String) authentication.getCredentials();
+//            log.info("token:{}", token);
+//            Long userId = tokenProvider.getUserId(token);
+//            User user = userService.findById(userId);
+//            log.info("userId:{}", userId);
+//            log.info("user:{}", user);
+//            return userService.fetchNonRegisteredFollowings(user, pageSize, page);
+//        } else {
+//            return Flux.empty();
+//        }
+//    }
 
 
     @Operation(summary = "깃허브 사용자 Follower 정보 조회API", description = "깃허브 사용자 Follower 정보 모두 조회")
@@ -96,34 +96,34 @@ public class GithubFollowerApiRestController {
                 });
     }
 
-    @Operation(summary = "깃허브 사용자 비회원 Follower 정보 조회API", description = "회원가입하지 않은 깃허브 사용자 Follower 정보 조회")
-    @GetMapping("/api/user/non-registered-followers")
-    public Flux<FollowerResponse> getNonRegisteredFollowers(HttpServletRequest request,
-                                                            @RequestParam(value = "per_page", defaultValue = "100") int pageSize,
-                                                            @RequestParam(value = "page", defaultValue = "1") int page) {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userService.findByUsername(userName);
-        final String token = user.getAccessToken();
-        String url = "https://api.github.com/users/" + userName + "/followers";
-        return webClient.get()
-                .uri(url + "?per_page=" + pageSize + "&page=" + page)
-                .header("Authorization", "Bearer " + token)
-                .retrieve()
-                .bodyToFlux(FollowerResponse.class)
-                .flatMap(followerResponse -> Mono.just(followerResponse)
-                        .flatMap(response -> {
-                            try {
-                                userService.findByUsername(response.getLogin());
-                                return Mono.empty(); // 회원가입한 사용자는 무시
-                            } catch (UserNotFoundException e) {
-                                return Mono.just(response); // 회원가입하지 않은 사용자만 반환
-                            }
-                        }))
-                .onErrorResume(e -> {
-                    log.error("Failed to retrieve followers due to: {}", e.getMessage());
-                    return Flux.error(new RuntimeException("API request failed with error"));  // API 오류 메시지 반환
-                });
-    }
+//    @Operation(summary = "깃허브 사용자 비회원 Follower 정보 조회API", description = "회원가입하지 않은 깃허브 사용자 Follower 정보 조회")
+//    @GetMapping("/api/user/non-registered-followers")
+//    public Flux<FollowerResponse> getNonRegisteredFollowers(HttpServletRequest request,
+//                                                            @RequestParam(value = "per_page", defaultValue = "100") int pageSize,
+//                                                            @RequestParam(value = "page", defaultValue = "1") int page) {
+//        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+//        User user = userService.findByUsername(userName);
+//        final String token = user.getAccessToken();
+//        String url = "https://api.github.com/users/" + userName + "/followers";
+//        return webClient.get()
+//                .uri(url + "?per_page=" + pageSize + "&page=" + page)
+//                .header("Authorization", "Bearer " + token)
+//                .retrieve()
+//                .bodyToFlux(FollowerResponse.class)
+//                .flatMap(followerResponse -> Mono.just(followerResponse)
+//                        .flatMap(response -> {
+//                            try {
+//                                userService.findByUsername(response.getLogin());
+//                                return Mono.empty(); // 회원가입한 사용자는 무시
+//                            } catch (UserNotFoundException e) {
+//                                return Mono.just(response); // 회원가입하지 않은 사용자만 반환
+//                            }
+//                        }))
+//                .onErrorResume(e -> {
+//                    log.error("Failed to retrieve followers due to: {}", e.getMessage());
+//                    return Flux.error(new RuntimeException("API request failed with error"));  // API 오류 메시지 반환
+//                });
+//    }
 
 
     @PutMapping("/api/user/following/{username}")
