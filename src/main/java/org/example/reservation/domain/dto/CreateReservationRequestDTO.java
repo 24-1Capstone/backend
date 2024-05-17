@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Getter
 public class CreateReservationRequestDTO {
 
-    private String title;
 
     private String content;
 
@@ -18,8 +17,7 @@ public class CreateReservationRequestDTO {
 
 
     @Builder
-    public CreateReservationRequestDTO(String title, String content, LocalDateTime startTime, LocalDateTime endTime) {
-        this.title = title;
+    public CreateReservationRequestDTO(String content, LocalDateTime startTime, LocalDateTime endTime) {
         this.content = content;
         this.startTime = startTime;
         this.endTime = endTime;

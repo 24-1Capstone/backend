@@ -27,11 +27,12 @@ public class User extends BaseEntity implements UserDetails{ // UserDetails를 �
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @OneToMany(mappedBy = "createUser", fetch = FetchType.LAZY)
-    private List<Reservation> createdReservations = new ArrayList<>();
 
     @OneToMany(mappedBy = "applyUser", fetch = FetchType.LAZY)
     private List<Reservation> appliedReservations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "receiveUser", fetch = FetchType.LAZY)
+    private List<Reservation> receivedReservations = new ArrayList<>();
 
 
     // 사용자 이름
