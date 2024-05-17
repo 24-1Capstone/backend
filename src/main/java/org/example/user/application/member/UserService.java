@@ -98,6 +98,44 @@ public class UserService {
                 });
     }
 
+    public Flux<FollowingResponse> fetchNonRegisteredFollowings(User user, int pageSize, int page) {
+        String processedUrl = user.getFollowingsUrl().replace("{/other_user}", "");
+
+        return webClient.get()
+                .uri(processedUrl + "?per_page=" + pageSize + "&page=" + page)
+                .header("Authorization", "Bearer " + user.getAccessToken())
+                .retrieve()
+                .onStatus(status -> status.is4xxClientError(), response -> {
+                    // 4xx 오류 로깅
+                    return response.bodyToMono(String.class).flatMap(body -> {
+                        log.error("API request failed with 4xx error: " + body);
+                        return Mono.error(new RuntimeException("API request failed with error: " + body));
+                    });
+                })
+                .onStatus(status -> status.is5xxServerError(), response -> {
+                    // 5xx 오류 처리
+                    return response.bodyToMono(String.class).flatMap(body -> {
+                        log.error("Server error on API request: " + body);
+                        return Mono.error(new RuntimeException("Server error on API request"));
+                    });
+                })
+                .bodyToFlux(FollowingResponse.class)
+                .flatMap(followingResponse -> Mono.just(followingResponse)
+                        .flatMap(response -> {
+                            try {
+                                findByUsername(response.getLogin());
+                                return Mono.empty(); // 회원가입한 사용자는 무시
+                            } catch (UserNotFoundException e) {
+                                return Mono.just(response); // 회원가입하지 않은 사용자만 반환
+                            }
+                        }))
+                .onErrorResume(e -> {
+                    log.error("Failed to retrieve followings due to: {}", e.getMessage());
+                    return Flux.error(new RuntimeException("API request failed with error"));  // API 오류 메시지 반환
+                });
+    }
+
+
     public Long save(AddUserRequest dto) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
