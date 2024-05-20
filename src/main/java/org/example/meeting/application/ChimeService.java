@@ -43,12 +43,29 @@ public class ChimeService {
         String mediaRegion = createMeetingResponse.meeting().mediaRegion();
         String metingArn = createMeetingResponse.meeting().meetingArn();
         String meetingId = createMeetingResponse.meeting().meetingId();
+        String audioFallbackUrl = createMeetingResponse.meeting().mediaPlacement().audioFallbackUrl();
+        String audioHostUrl = createMeetingResponse.meeting().mediaPlacement().audioHostUrl();
+        String eventIngestionUrl = createMeetingResponse.meeting().mediaPlacement().eventIngestionUrl();
+        String screenDataUrl = createMeetingResponse.meeting().mediaPlacement().screenDataUrl();
+        String screenSharingUrl = createMeetingResponse.meeting().mediaPlacement().screenSharingUrl();
+        String screenViewingUrl = createMeetingResponse.meeting().mediaPlacement().screenViewingUrl();
+        String signalingUrl = createMeetingResponse.meeting().mediaPlacement().signalingUrl();
+        String turnControlUrl = createMeetingResponse.meeting().mediaPlacement().turnControlUrl();
+
 
         CreateMeetingResponseDTO createMeetingResponseDTO = CreateMeetingResponseDTO.builder()
                 .externalMeetingId(externalMeetingId)
                 .mediaRegion(mediaRegion)
                 .meetingArn(metingArn)
                 .meetingId(meetingId)
+                .audioFallbackUrl(audioFallbackUrl)
+                .audioHostUrl(audioHostUrl)
+                .eventIngestionUrl(eventIngestionUrl)
+                .screenDataUrl(screenDataUrl)
+                .screenSharingUrl(screenSharingUrl)
+                .screenViewingUrl(screenViewingUrl)
+                .signalingUrl(signalingUrl)
+                .turnControllerUrl(turnControlUrl)
                 .build();
 
         MeetingSession meetingSession = MeetingSession.builder()
@@ -56,6 +73,14 @@ public class ChimeService {
                 .mediaRegion(mediaRegion)
                 .meetingArn(metingArn)
                 .meetingId(meetingId)
+                .audioFallbackUrl(audioFallbackUrl)
+                .audioHostUrl(audioHostUrl)
+                .eventIngestionUrl(eventIngestionUrl)
+                .screenDataUrl(screenDataUrl)
+                .screenSharingUrl(screenSharingUrl)
+                .screenViewingUrl(screenViewingUrl)
+                .signalingUrl(signalingUrl)
+                .turnControllerUrl(turnControlUrl)
                 .build();
 
 
@@ -218,8 +243,16 @@ public class ChimeService {
         // 회의 및 참가자 정보 추출
         String externalMeetingId = createMeetingWithAttendeesResponse.meeting().externalMeetingId();
         String mediaRegion = createMeetingWithAttendeesResponse.meeting().mediaRegion();
-        String meetingArn = createMeetingWithAttendeesResponse.meeting().meetingArn();
+        String metingArn = createMeetingWithAttendeesResponse.meeting().meetingArn();
         String meetingId = createMeetingWithAttendeesResponse.meeting().meetingId();
+        String audioFallbackUrl = createMeetingWithAttendeesResponse.meeting().mediaPlacement().audioFallbackUrl();
+        String audioHostUrl = createMeetingWithAttendeesResponse.meeting().mediaPlacement().audioHostUrl();
+        String eventIngestionUrl = createMeetingWithAttendeesResponse.meeting().mediaPlacement().eventIngestionUrl();
+        String screenDataUrl = createMeetingWithAttendeesResponse.meeting().mediaPlacement().screenDataUrl();
+        String screenSharingUrl = createMeetingWithAttendeesResponse.meeting().mediaPlacement().screenSharingUrl();
+        String screenViewingUrl = createMeetingWithAttendeesResponse.meeting().mediaPlacement().screenViewingUrl();
+        String signalingUrl = createMeetingWithAttendeesResponse.meeting().mediaPlacement().signalingUrl();
+        String turnControlUrl = createMeetingWithAttendeesResponse.meeting().mediaPlacement().turnControlUrl();
         List<Attendee> attendeeList = createMeetingWithAttendeesResponse.attendees();
 
         // CreateAttendeeResponseDTO 리스트 생성
@@ -246,8 +279,16 @@ public class ChimeService {
         MeetingSession meetingSession = MeetingSession.builder()
                 .externalMeetingId(externalMeetingId)
                 .mediaRegion(mediaRegion)
-                .meetingArn(meetingArn)
+                .meetingArn(metingArn)
                 .meetingId(meetingId)
+                .audioFallbackUrl(audioFallbackUrl)
+                .audioHostUrl(audioHostUrl)
+                .eventIngestionUrl(eventIngestionUrl)
+                .screenDataUrl(screenDataUrl)
+                .screenSharingUrl(screenSharingUrl)
+                .screenViewingUrl(screenViewingUrl)
+                .signalingUrl(signalingUrl)
+                .turnControllerUrl(turnControlUrl)
                 .build();
         meetingSessionService.save(meetingSession);
 
@@ -255,8 +296,16 @@ public class ChimeService {
         return CreateMeetingWithAttendeesResponseDTO.builder()
                 .externalMeetingId(externalMeetingId)
                 .mediaRegion(mediaRegion)
-                .meetingArn(meetingArn)
+                .meetingArn(metingArn)
                 .meetingId(meetingId)
+                .audioFallbackUrl(audioFallbackUrl)
+                .audioHostUrl(audioHostUrl)
+                .eventIngestionUrl(eventIngestionUrl)
+                .screenDataUrl(screenDataUrl)
+                .screenSharingUrl(screenSharingUrl)
+                .screenViewingUrl(screenViewingUrl)
+                .signalingUrl(signalingUrl)
+                .turnControllerUrl(turnControlUrl)
                 .attendees(createAttendeeResponseDTOList)
                 .build();
     }
