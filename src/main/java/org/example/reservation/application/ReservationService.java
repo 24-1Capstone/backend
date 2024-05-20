@@ -47,11 +47,15 @@ public class ReservationService {
                 .orElseThrow(() -> new ReservationNotFoundException("Reservation not found"));
 
         return ReservationDTO.builder()
+                .id(reservation.getId())
                 .content(reservation.getContent())
                 .createdAt(reservation.getCreatedAt())
                 .updatedAt(reservation.getUpdatedAt())
                 .applyUserName(reservation.getApplyUser().getUsername())
                 .receiveUserName(reservation.getReceiveUser().getUsername())
+                .startTime(reservation.getStartTime())
+                .endTime(reservation.getEndTime())
+                .reservationStatus(reservation.getReservationStatus())
                 .build();
 
     }
@@ -75,7 +79,7 @@ public class ReservationService {
 
 
 
-     //신청 대기중인 예약들만 조회
+     //내 신청받은이의 신청응답 대기중인 예약들만 조회
     public Page<ReservationDTO> getWaitingReservation(int page) {
 
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
@@ -143,7 +147,7 @@ public class ReservationService {
 
         authorizeReservationReceiveUser(reservationId);
 
-        reservation.cancel();
+        reservation.refuse();
 
         reservationRepository.save(reservation);
 

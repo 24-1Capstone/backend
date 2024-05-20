@@ -79,10 +79,10 @@ public class Reservation {
     }
 
 
-    //예약 신청 승인
-    public void cancel() {
+    //예약 신청 거절
+    public void refuse() {
 
-        this.reservationStatus = ReservationStatus.CANCEL;
+        this.reservationStatus = ReservationStatus.REFUSE;
 
     }
 
@@ -95,7 +95,7 @@ public class Reservation {
     }
 
 
-    //연관관계 메소드
+    //신청을 받은 사용자 설정
     public void setReceiveUser(User receiveUser) {
         this.receiveUser = receiveUser;
         receiveUser.getReceivedReservations().add(this); // 해당 사용자의 생성 예약 목록에 현재 예약 추가

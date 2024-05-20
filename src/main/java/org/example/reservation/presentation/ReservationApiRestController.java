@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "reservation-api-controller", description = "예약 처리 컨트롤러")
 @RequiredArgsConstructor
 @RestController
-public class ReservationController {
+public class ReservationApiRestController {
 
     private final ReservationService reservationService;
 
@@ -39,7 +39,6 @@ public class ReservationController {
 
 
 
-
     @Operation(summary = "내 예약들 조회", description = "내 예약들 조회")
     @GetMapping("api/reservation")
     public Page<ReservationDTO> getMyReservation(@RequestParam(defaultValue = "0") int page) {
@@ -49,7 +48,7 @@ public class ReservationController {
     }
 
 
-    @Operation(summary = "내 신청 대기중인 예약들만 조회", description = "내 신청 대기중인 예약들만 조회")
+    @Operation(summary = "내 신청받은이의 신청응답 대기중인 예약들만 조회", description = "내 신청받은이의 신청응답 대기중인 예약들만 조회")
     @GetMapping("api/reservation/waiting")
     public Page<ReservationDTO> getWaitingReservation(@RequestParam(defaultValue = "0") int page) {
 
@@ -96,7 +95,7 @@ public class ReservationController {
 
     }
 
-    @Operation(summary = "작성자 예약서 수정", description = "작성자 예약서 수정")
+    @Operation(summary = "신청자 예약서 수정", description = "신청자 예약서 수정")
     @PostMapping("/api/reservation/edit/{reservationId}")
     public void editReservation(@PathVariable Long reservationId, @RequestBody  CreateReservationRequestDTO createReservationRequestDTO){
 
@@ -106,20 +105,4 @@ public class ReservationController {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
