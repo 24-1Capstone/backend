@@ -19,7 +19,6 @@ public class CookieUtil {
 
         response.addCookie(cookie);
 
-        // Set-Cookie 헤더에 SameSite 속성을 추가
 //        addSameSiteCookieAttribute(response, cookie, "Lax");
     }
 
@@ -41,7 +40,6 @@ public class CookieUtil {
                 cookie.setAttribute("SameSite", "None");
                 response.addCookie(cookie);
 
-                // Set-Cookie 헤더에 SameSite 속성을 추가
 //                addSameSiteCookieAttribute(response, cookie, "Lax");
             }
         }
