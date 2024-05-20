@@ -8,6 +8,8 @@ import org.example.config.oauth.OAuth2UserCustomService;
 import org.example.user.application.token.RefreshTokenService;
 import org.example.user.repository.token.RefreshTokenRepository;
 import org.example.user.application.member.UserService;
+import org.example.util.SameSiteCookieFilter;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -55,9 +57,9 @@ public class WebOAuthSecurityConfig {
 
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         //헤더를 확인할 커스텀 필터 추가
-        http
-                .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // 토큰 재발급 URL은 인증 없이 접근 가능하도록 설정. 나머지 API URL은 인증 필요
         http.authorizeRequests()
@@ -102,8 +104,8 @@ public class WebOAuthSecurityConfig {
 
         configuration.addAllowedOriginPattern("http://localhost:3000");
         configuration.addAllowedOriginPattern("http://localhost:8080");
-        configuration.addAllowedOriginPattern("http://prod-coffeechat-ui-service.ap-northeast-2.elasticbeanstalk.com/");
-        configuration.addAllowedOriginPattern("http://prod-coffeechat-api-service.ap-northeast-2.elasticbeanstalk.com/");
+        configuration.addAllowedOriginPattern("http://prod-coffeechat-api-service.ap-northeast-2.elasticbeanstalk.com");
+        configuration.addAllowedOriginPattern("http://frontend-lovat-psi-83.vercel.app");
         configuration.addAllowedOriginPattern("*");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
@@ -140,4 +142,12 @@ public class WebOAuthSecurityConfig {
     public OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository() {
         return new OAuth2AuthorizationRequestBasedOnCookieRepository();
     }
+
+//    @Bean
+//    public FilterRegistrationBean<SameSiteCookieFilter> sameSiteCookieFilter() {
+//        FilterRegistrationBean<SameSiteCookieFilter> registrationBean = new FilterRegistrationBean<>();
+//        registrationBean.setFilter(new SameSiteCookieFilter());
+//        registrationBean.addUrlPatterns("/*");
+//        return registrationBean;
+//    }
 }

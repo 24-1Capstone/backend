@@ -40,6 +40,8 @@ out/
 
 
 # Elastic Beanstalk Files
+.platform/*
+.ebextensions/*
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
