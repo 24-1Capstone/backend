@@ -42,7 +42,7 @@ out/
 ### VS Code ###
 .vscode/
 
-
+.gitattributes
 # Elastic Beanstalk Files
 #.platform/*
 #.ebextensions/*
