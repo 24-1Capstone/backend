@@ -62,13 +62,13 @@ public class WebOAuthSecurityConfig {
 
         // 토큰 재발급 URL은 인증 없이 접근 가능하도록 설정. 나머지 API URL은 인증 필요
         http.authorizeRequests()
-                .requestMatchers("/","/api/token", "/api/user/**", "/api/users/**", "/api/meetings/**").permitAll()
+                .requestMatchers("/","/api/token", "/api/user/**", "/api/users/**", "/api/meetings/**", "/api/auth/login").permitAll()
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll();
 
 
         http.oauth2Login()
-                .loginPage("/login")
+//                .loginPage("/login")
                 .redirectionEndpoint()
                 .baseUri("/oauth2/callback/*")
                 .and()
@@ -103,7 +103,6 @@ public class WebOAuthSecurityConfig {
 
         configuration.addAllowedOriginPattern("http://localhost:3000");
         configuration.addAllowedOriginPattern("http://localhost:8080");
-        configuration.addAllowedOriginPattern("http://coffeechat-service.ap-northeast-2.elasticbeanstalk.com");
         configuration.addAllowedOriginPattern("https://coffeechat.shop");
         configuration.addAllowedOriginPattern("https://frontend-lovat-psi-83.vercel.app");
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Authorization-refresh", "Cache-Control", "Content-Type"));

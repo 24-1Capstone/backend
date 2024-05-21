@@ -19,7 +19,6 @@ public class CookieUtil {
 
         response.addCookie(cookie);
 
-//        addSameSiteCookieAttribute(response, cookie, "Lax");
     }
 
     // 쿠키의 이름을 입력받아 쿠키 삭제
@@ -40,16 +39,10 @@ public class CookieUtil {
                 cookie.setAttribute("SameSite", "None");
                 response.addCookie(cookie);
 
-//                addSameSiteCookieAttribute(response, cookie, "Lax");
             }
         }
     }
-    // SameSite 속성을 추가하는 메서드
-    private static void addSameSiteCookieAttribute(HttpServletResponse response, Cookie cookie, String sameSite) {
-        String cookieHeader = String.format("%s=%s; Path=%s; Max-Age=%d; HttpOnly; SameSite=%s",
-                cookie.getName(), cookie.getValue(), cookie.getPath(), cookie.getMaxAge(), sameSite);
-        response.addHeader("Set-Cookie", cookieHeader);
-    }
+
     //객체를 직렬화해 쿠키의 값으로 변환
     public static String serialize(Object obj) {
         return Base64.getUrlEncoder()
