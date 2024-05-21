@@ -105,7 +105,7 @@ public class WebOAuthSecurityConfig {
         configuration.addAllowedOriginPattern("http://localhost:3000");
         configuration.addAllowedOriginPattern("http://localhost:8080");
         configuration.addAllowedOriginPattern("http://coffeechat-service.ap-northeast-2.elasticbeanstalk.com");
-        configuration.addAllowedOriginPattern("http://frontend-lovat-psi-83.vercel.app");
+        configuration.addAllowedOriginPattern("https://frontend-lovat-psi-83.vercel.app");
         configuration.addAllowedOriginPattern("*");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
