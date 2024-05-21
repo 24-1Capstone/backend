@@ -3,37 +3,30 @@ package org.example.meeting.domain.dto;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 public class CreateMeetingResponseDTO {
 
     private String externalMeetingId;
-    private String audioFallbackUrl;
-    private String audioHostUrl;
-    private String eventIngestionUrl;
-    private String screenDataUrl;
-    private String screenSharingUrl;
-    private String screenViewingUrl;
-    private String signalingUrl;
-    private String turnControllerUrl;
+    private MediaPlacement mediaPlacement;
     private String mediaRegion;
     private String meetingArn;
+    private String meetingHostId;
     private String meetingId;
+    private String primaryMeetingId;
+
 
 
     @Builder
-
-    public CreateMeetingResponseDTO(String externalMeetingId, String audioFallbackUrl, String audioHostUrl, String eventIngestionUrl, String screenDataUrl, String screenSharingUrl, String screenViewingUrl, String signalingUrl, String turnControllerUrl, String mediaRegion, String meetingArn, String meetingId) {
+    public CreateMeetingResponseDTO(String externalMeetingId, MediaPlacement mediaPlacement, String mediaRegion, String meetingArn, String meetingHostId, String meetingId, String primaryMeetingId) {
         this.externalMeetingId = externalMeetingId;
-        this.audioFallbackUrl = audioFallbackUrl;
-        this.audioHostUrl = audioHostUrl;
-        this.eventIngestionUrl = eventIngestionUrl;
-        this.screenDataUrl = screenDataUrl;
-        this.screenSharingUrl = screenSharingUrl;
-        this.screenViewingUrl = screenViewingUrl;
-        this.signalingUrl = signalingUrl;
-        this.turnControllerUrl = turnControllerUrl;
+        this.mediaPlacement = mediaPlacement;
         this.mediaRegion = mediaRegion;
         this.meetingArn = meetingArn;
+        this.meetingHostId = meetingHostId;
         this.meetingId = meetingId;
+        this.primaryMeetingId = primaryMeetingId;
+
     }
 }

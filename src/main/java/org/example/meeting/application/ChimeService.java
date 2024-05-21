@@ -5,6 +5,7 @@ import org.example.exception.AttendeeAlreadyExistsException;
 import org.example.meeting.domain.AttendeeSession;
 import org.example.meeting.domain.dto.*;
 import org.example.meeting.domain.MeetingSession;
+import org.example.meeting.domain.dto.MediaPlacement;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,48 +40,43 @@ public class ChimeService {
 
         CreateMeetingResponse createMeetingResponse = chimeSdkMeetingsClient.createMeeting(request);
 
-        String externalMeetingId = createMeetingResponse.meeting().externalMeetingId();
-        String mediaRegion = createMeetingResponse.meeting().mediaRegion();
-        String metingArn = createMeetingResponse.meeting().meetingArn();
-        String meetingId = createMeetingResponse.meeting().meetingId();
-        String audioFallbackUrl = createMeetingResponse.meeting().mediaPlacement().audioFallbackUrl();
-        String audioHostUrl = createMeetingResponse.meeting().mediaPlacement().audioHostUrl();
-        String eventIngestionUrl = createMeetingResponse.meeting().mediaPlacement().eventIngestionUrl();
-        String screenDataUrl = createMeetingResponse.meeting().mediaPlacement().screenDataUrl();
-        String screenSharingUrl = createMeetingResponse.meeting().mediaPlacement().screenSharingUrl();
-        String screenViewingUrl = createMeetingResponse.meeting().mediaPlacement().screenViewingUrl();
-        String signalingUrl = createMeetingResponse.meeting().mediaPlacement().signalingUrl();
-        String turnControlUrl = createMeetingResponse.meeting().mediaPlacement().turnControlUrl();
+
+
+        MediaPlacement mediaPlacement = MediaPlacement.builder()
+                .audioFallbackUrl(createMeetingResponse.meeting().mediaPlacement().audioFallbackUrl())
+                .audioHostUrl(createMeetingResponse.meeting().mediaPlacement().audioHostUrl())
+                .eventIngestionUrl(createMeetingResponse.meeting().mediaPlacement().eventIngestionUrl())
+                .screenDataUrl(createMeetingResponse.meeting().mediaPlacement().screenDataUrl())
+                .screenSharingUrl(createMeetingResponse.meeting().mediaPlacement().screenSharingUrl())
+                .screenViewingUrl(createMeetingResponse.meeting().mediaPlacement().screenViewingUrl())
+                .signalingUrl(createMeetingResponse.meeting().mediaPlacement().signalingUrl())
+                .turnControlUrl(createMeetingResponse.meeting().mediaPlacement().turnControlUrl())
+                .build();
+
+
 
 
         CreateMeetingResponseDTO createMeetingResponseDTO = CreateMeetingResponseDTO.builder()
-                .externalMeetingId(externalMeetingId)
-                .mediaRegion(mediaRegion)
-                .meetingArn(metingArn)
-                .meetingId(meetingId)
-                .audioFallbackUrl(audioFallbackUrl)
-                .audioHostUrl(audioHostUrl)
-                .eventIngestionUrl(eventIngestionUrl)
-                .screenDataUrl(screenDataUrl)
-                .screenSharingUrl(screenSharingUrl)
-                .screenViewingUrl(screenViewingUrl)
-                .signalingUrl(signalingUrl)
-                .turnControllerUrl(turnControlUrl)
+                .externalMeetingId(createMeetingResponse.meeting().externalMeetingId())
+                .mediaRegion(createMeetingResponse.meeting().mediaRegion())
+                .meetingArn(createMeetingResponse.meeting().meetingArn())
+                .meetingId(createMeetingResponse.meeting().meetingId())
+                .mediaPlacement(mediaPlacement)
                 .build();
 
         MeetingSession meetingSession = MeetingSession.builder()
-                .externalMeetingId(externalMeetingId)
-                .mediaRegion(mediaRegion)
-                .meetingArn(metingArn)
-                .meetingId(meetingId)
-                .audioFallbackUrl(audioFallbackUrl)
-                .audioHostUrl(audioHostUrl)
-                .eventIngestionUrl(eventIngestionUrl)
-                .screenDataUrl(screenDataUrl)
-                .screenSharingUrl(screenSharingUrl)
-                .screenViewingUrl(screenViewingUrl)
-                .signalingUrl(signalingUrl)
-                .turnControllerUrl(turnControlUrl)
+                .externalMeetingId(createMeetingResponse.meeting().externalMeetingId())
+                .mediaRegion(createMeetingResponse.meeting().mediaRegion())
+                .meetingArn(createMeetingResponse.meeting().meetingArn())
+                .meetingId(createMeetingResponse.meeting().meetingId())
+                .audioFallbackUrl(createMeetingResponse.meeting().mediaPlacement().audioFallbackUrl())
+                .audioHostUrl(createMeetingResponse.meeting().mediaPlacement().audioHostUrl())
+                .eventIngestionUrl(createMeetingResponse.meeting().mediaPlacement().eventIngestionUrl())
+                .screenDataUrl(createMeetingResponse.meeting().mediaPlacement().screenDataUrl())
+                .screenSharingUrl(createMeetingResponse.meeting().mediaPlacement().screenSharingUrl())
+                .screenViewingUrl(createMeetingResponse.meeting().mediaPlacement().screenViewingUrl())
+                .signalingUrl(createMeetingResponse.meeting().mediaPlacement().signalingUrl())
+                .turnControllerUrl(createMeetingResponse.meeting().mediaPlacement().turnControlUrl())
                 .build();
 
 
@@ -245,14 +241,18 @@ public class ChimeService {
         String mediaRegion = createMeetingWithAttendeesResponse.meeting().mediaRegion();
         String metingArn = createMeetingWithAttendeesResponse.meeting().meetingArn();
         String meetingId = createMeetingWithAttendeesResponse.meeting().meetingId();
-        String audioFallbackUrl = createMeetingWithAttendeesResponse.meeting().mediaPlacement().audioFallbackUrl();
-        String audioHostUrl = createMeetingWithAttendeesResponse.meeting().mediaPlacement().audioHostUrl();
-        String eventIngestionUrl = createMeetingWithAttendeesResponse.meeting().mediaPlacement().eventIngestionUrl();
-        String screenDataUrl = createMeetingWithAttendeesResponse.meeting().mediaPlacement().screenDataUrl();
-        String screenSharingUrl = createMeetingWithAttendeesResponse.meeting().mediaPlacement().screenSharingUrl();
-        String screenViewingUrl = createMeetingWithAttendeesResponse.meeting().mediaPlacement().screenViewingUrl();
-        String signalingUrl = createMeetingWithAttendeesResponse.meeting().mediaPlacement().signalingUrl();
-        String turnControlUrl = createMeetingWithAttendeesResponse.meeting().mediaPlacement().turnControlUrl();
+
+        MediaPlacement mediaPlacement = MediaPlacement.builder()
+                .audioFallbackUrl(createMeetingWithAttendeesResponse.meeting().mediaPlacement().audioFallbackUrl())
+                .audioHostUrl(createMeetingWithAttendeesResponse.meeting().mediaPlacement().audioHostUrl())
+                .eventIngestionUrl(createMeetingWithAttendeesResponse.meeting().mediaPlacement().eventIngestionUrl())
+                .screenDataUrl(createMeetingWithAttendeesResponse.meeting().mediaPlacement().screenDataUrl())
+                .screenSharingUrl(createMeetingWithAttendeesResponse.meeting().mediaPlacement().screenSharingUrl())
+                .screenViewingUrl(createMeetingWithAttendeesResponse.meeting().mediaPlacement().screenViewingUrl())
+                .signalingUrl(createMeetingWithAttendeesResponse.meeting().mediaPlacement().signalingUrl())
+                .turnControlUrl(createMeetingWithAttendeesResponse.meeting().mediaPlacement().turnControlUrl())
+                .build();
+
         List<Attendee> attendeeList = createMeetingWithAttendeesResponse.attendees();
 
         // CreateAttendeeResponseDTO 리스트 생성
@@ -277,35 +277,32 @@ public class ChimeService {
 
         // MeetingSession 객체 생성 및 저장
         MeetingSession meetingSession = MeetingSession.builder()
-                .externalMeetingId(externalMeetingId)
-                .mediaRegion(mediaRegion)
-                .meetingArn(metingArn)
-                .meetingId(meetingId)
-                .audioFallbackUrl(audioFallbackUrl)
-                .audioHostUrl(audioHostUrl)
-                .eventIngestionUrl(eventIngestionUrl)
-                .screenDataUrl(screenDataUrl)
-                .screenSharingUrl(screenSharingUrl)
-                .screenViewingUrl(screenViewingUrl)
-                .signalingUrl(signalingUrl)
-                .turnControllerUrl(turnControlUrl)
+                .externalMeetingId(createMeetingWithAttendeesResponse.meeting().externalMeetingId())
+                .mediaRegion(createMeetingWithAttendeesResponse.meeting().mediaRegion())
+                .meetingArn(createMeetingWithAttendeesResponse.meeting().meetingArn())
+                .meetingId(createMeetingWithAttendeesResponse.meeting().meetingId())
+                .audioFallbackUrl(createMeetingWithAttendeesResponse.meeting().mediaPlacement().audioFallbackUrl())
+                .audioHostUrl(createMeetingWithAttendeesResponse.meeting().mediaPlacement().audioHostUrl())
+                .eventIngestionUrl(createMeetingWithAttendeesResponse.meeting().mediaPlacement().eventIngestionUrl())
+                .screenDataUrl(createMeetingWithAttendeesResponse.meeting().mediaPlacement().screenDataUrl())
+                .screenSharingUrl(createMeetingWithAttendeesResponse.meeting().mediaPlacement().screenSharingUrl())
+                .screenViewingUrl(createMeetingWithAttendeesResponse.meeting().mediaPlacement().screenViewingUrl())
+                .signalingUrl(createMeetingWithAttendeesResponse.meeting().mediaPlacement().signalingUrl())
+                .turnControllerUrl(createMeetingWithAttendeesResponse.meeting().mediaPlacement().turnControlUrl())
                 .build();
         meetingSessionService.save(meetingSession);
 
         // CreateMeetingWithAttendeesResponseDTO 객체 생성하여 반환
         return CreateMeetingWithAttendeesResponseDTO.builder()
-                .externalMeetingId(externalMeetingId)
-                .mediaRegion(mediaRegion)
-                .meetingArn(metingArn)
-                .meetingId(meetingId)
-                .audioFallbackUrl(audioFallbackUrl)
-                .audioHostUrl(audioHostUrl)
-                .eventIngestionUrl(eventIngestionUrl)
-                .screenDataUrl(screenDataUrl)
-                .screenSharingUrl(screenSharingUrl)
-                .screenViewingUrl(screenViewingUrl)
-                .signalingUrl(signalingUrl)
-                .turnControllerUrl(turnControlUrl)
+                .externalMeetingId(createMeetingWithAttendeesResponse.meeting().externalMeetingId())
+                .mediaRegion(createMeetingWithAttendeesResponse.meeting().mediaRegion())
+                .meetingArn(createMeetingWithAttendeesResponse.meeting().meetingArn())
+                .meetingId(createMeetingWithAttendeesResponse.meeting().meetingId())
+                .externalMeetingId(createMeetingWithAttendeesResponse.meeting().externalMeetingId())
+                .mediaRegion(createMeetingWithAttendeesResponse.meeting().mediaRegion())
+                .meetingArn(createMeetingWithAttendeesResponse.meeting().meetingArn())
+                .meetingId(createMeetingWithAttendeesResponse.meeting().meetingId())
+                .mediaPlacement(mediaPlacement)
                 .attendees(createAttendeeResponseDTOList)
                 .build();
     }
