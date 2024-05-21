@@ -18,7 +18,6 @@ import java.util.List;
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString //연관관계 필드는 제거하도록 하기
 @Entity
 public class User extends BaseEntity implements UserDetails{ // UserDetails를 상속받아 인증 객체로 사용
 

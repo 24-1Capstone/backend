@@ -8,8 +8,6 @@ import org.example.config.oauth.OAuth2UserCustomService;
 import org.example.user.application.token.RefreshTokenService;
 import org.example.user.repository.token.RefreshTokenRepository;
 import org.example.user.application.member.UserService;
-import org.example.util.SameSiteCookieFilter;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -25,6 +23,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 
 
 @EnableWebSecurity
@@ -105,7 +104,10 @@ public class WebOAuthSecurityConfig {
         configuration.addAllowedOriginPattern("http://localhost:3000");
         configuration.addAllowedOriginPattern("http://localhost:8080");
         configuration.addAllowedOriginPattern("http://coffeechat-service.ap-northeast-2.elasticbeanstalk.com");
+        configuration.addAllowedOriginPattern("https://coffeechat.shop");
         configuration.addAllowedOriginPattern("https://frontend-lovat-psi-83.vercel.app");
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Authorization-refresh", "Cache-Control", "Content-Type"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Authorization-refresh"));
         configuration.addAllowedOriginPattern("*");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
