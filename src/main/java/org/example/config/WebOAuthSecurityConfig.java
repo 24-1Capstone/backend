@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -62,10 +63,9 @@ public class WebOAuthSecurityConfig {
 
         // 토큰 재발급 URL은 인증 없이 접근 가능하도록 설정. 나머지 API URL은 인증 필요
         http.authorizeRequests()
-                .requestMatchers("/","/api/token", "/api/user/**", "/api/users/**", "/api/meetings/**").permitAll()
+                .requestMatchers("/","/api/token", "/api/user/**", "/api/users/**", "/api/meetings/**", "/auth/**", "/oauth2/**").permitAll()
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll();
-
 
         http.oauth2Login()
 //                .loginPage("/login")
@@ -76,9 +76,14 @@ public class WebOAuthSecurityConfig {
                 .baseUri("/auth/authorize")
                 .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository()) //Authorization 요청과 관련된 상태 저장
                 .and()
-                .successHandler(oAuth2SuccessHandler()) // 인증 성공 시 실행할 핸들러
                 .userInfoEndpoint()
-                .userService(oAuth2UserCustomService);
+                .userService(oAuth2UserCustomService)
+                .and()
+                .successHandler(oAuth2SuccessHandler())
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new Http403ForbiddenEntryPoint());// 인증 성공 시 실행할 핸들러
+
 
         http.logout()
                 .logoutUrl("/logout")
