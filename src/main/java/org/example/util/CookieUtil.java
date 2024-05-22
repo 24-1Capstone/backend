@@ -18,7 +18,6 @@ public class CookieUtil {
         cookie.setAttribute("SameSite", "None");
 
         response.addCookie(cookie);
-
     }
 
     // 쿠키의 이름을 입력받아 쿠키 삭제
@@ -38,18 +37,21 @@ public class CookieUtil {
                 cookie.setSecure(true);
                 cookie.setAttribute("SameSite", "None");
                 response.addCookie(cookie);
-
             }
         }
     }
 
-    //객체를 직렬화해 쿠키의 값으로 변환
+    // 객체를 직렬화해 쿠키의 값으로 변환
     public static String serialize(Object obj) {
         return Base64.getUrlEncoder()
                 .encodeToString(SerializationUtils.serialize(obj));
     }
-    //쿠키를 역직렬화해 객체로 변환
+
+    // 쿠키를 역직렬화해 객체로 변환
     public static <T> T deserialize(Cookie cookie, Class<T> cls) {
+        if (cookie == null || cookie.getValue() == null) {
+            return null;
+        }
         return cls.cast(
                 SerializationUtils.deserialize(
                         Base64.getUrlDecoder().decode(cookie.getValue())
