@@ -117,10 +117,11 @@ public class WebOAuthSecurityConfig {
 
         configuration.addAllowedOriginPattern("http://localhost:3000");
         configuration.addAllowedOriginPattern("http://localhost:8080");
-        configuration.addAllowedOriginPattern("https://coffeechat.shop");
-        configuration.addAllowedOriginPattern("https://frontend-lovat-psi-83.vercel.app");
+        configuration.addAllowedOriginPattern("https://www.coffeechat.shop");
+        configuration.addAllowedOriginPattern("https://api.coffeechat.shop");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
