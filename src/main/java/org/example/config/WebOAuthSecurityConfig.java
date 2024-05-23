@@ -63,7 +63,7 @@ public class WebOAuthSecurityConfig {
 
         // 토큰 재발급 URL은 인증 없이 접근 가능하도록 설정. 나머지 API URL은 인증 필요
         http.authorizeRequests()
-                .requestMatchers("/","/api/token", "/api/user/**", "/api/users/**", "/api/meetings/**"/* "/auth/**", "/oauth2/**"*/).permitAll()
+                .requestMatchers("/","/api/token", "/api/user/**", "/api/users/**", "/api/meetings/**", "/auth/**", "/oauth2/**", "/api/auth/**").permitAll()
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll();
 
@@ -90,6 +90,7 @@ public class WebOAuthSecurityConfig {
                 .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())//Authorization 요청과 관련된 상태 저장
                 .and()
                 .successHandler(oAuth2SuccessHandler()) // 인증 성공 시 실행할 핸들러
+                .defaultSuccessUrl("https://frontend-lovat-psi-83.vercel.app/api/auth/login", true)
                 .userInfoEndpoint()
                 .userService(oAuth2UserCustomService);
 
