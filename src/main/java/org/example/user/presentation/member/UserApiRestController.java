@@ -44,7 +44,6 @@ public class UserApiRestController {
         return webClient.get()
                 .uri("https://api.github.com/user")
                 .header("Authorization", "Bearer " + token)
-                .header("User-Agent", "spring-developer")
                 .retrieve()
                 .bodyToFlux(GithubUserResponse.class);
     }
