@@ -38,11 +38,11 @@ public class WebOAuthSecurityConfig {
     private final UserService userService;
     private final RefreshTokenService refreshTokenService;
 
-    @Bean
-    public WebSecurityCustomizer configure() {
-        // 스프링 시큐리티에서 정적 자원에 대한 접근을 허용
-        return (web) -> web.ignoring().requestMatchers("/img/**", "/css/**", "/js/**");
-    }
+//    @Bean
+//    public WebSecurityCustomizer configure() {
+//        // 스프링 시큐리티에서 정적 자원에 대한 접근을 허용
+//        return (web) -> web.ignoring().requestMatchers();
+//    }
 
 
     @Bean
@@ -118,9 +118,7 @@ public class WebOAuthSecurityConfig {
         configuration.addAllowedOriginPattern("http://localhost:3000");
         configuration.addAllowedOriginPattern("http://localhost:8080");
         configuration.addAllowedOriginPattern("https://coffeechat.shop");
-        configuration.addAllowedOriginPattern("http://coffeechat.shop");
         configuration.addAllowedOriginPattern("https://frontend-lovat-psi-83.vercel.app");
-        configuration.addAllowedOriginPattern("http://frontend-lovat-psi-83.vercel.app");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
