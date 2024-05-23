@@ -16,7 +16,6 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-webflux' // Spring Boot WebFlux 의존성
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-security' // 스프링 시큐리티를 사용하기 위한 스타터 추가
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6' // 타임리프에서 스프링시큐리티를 사용하기 위한 의존성 추가
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -55,29 +54,29 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-task('release') {
-    /* ./gradlew build를 먼저 실행하라는 뜻이다. */
-    dependsOn("build")
-
-    doLast {
-        def stdout = new ByteArrayOutputStream()
-        /* exec - 커맨드 라인 프로세서; 파워셸/터미널에서 실행하는 것과 같다. */
-        exec {
-            /* $eb setenv SPRING_PROFILES_ACTIVE=prod */
-            commandLine 'eb', 'setenv', 'SPRING_PROFILES_ACTIVE=prod'
-            standardOutput = stdout
-        }
-        /* 결과 로깅을 위한 작업 */
-        println "eb setenv SPRING_PROFILES_ACTIVE=prod :\n$stdout";
-        exec {
-            /* $eb deploy */
-            commandLine 'eb', 'deploy'
-            standardOutput = stdout
-        }
-        println "eb deploy :\n$stdout";
-        println "Release succeeded."
-    }
-}
+//task('release') {
+//    /* ./gradlew build를 먼저 실행하라는 뜻이다. */
+//    dependsOn("build")
+//
+//    doLast {
+//        def stdout = new ByteArrayOutputStream()
+//        /* exec - 커맨드 라인 프로세서; 파워셸/터미널에서 실행하는 것과 같다. */
+//        exec {
+//            /* $eb setenv SPRING_PROFILES_ACTIVE=prod */
+//            commandLine 'eb', 'setenv', 'SPRING_PROFILES_ACTIVE=prod'
+//            standardOutput = stdout
+//        }
+//        /* 결과 로깅을 위한 작업 */
+//        println "eb setenv SPRING_PROFILES_ACTIVE=prod :\n$stdout";
+//        exec {
+//            /* $eb deploy */
+//            commandLine 'eb', 'deploy'
+//            standardOutput = stdout
+//        }
+//        println "eb deploy :\n$stdout";
+//        println "Release succeeded."
+//    }
+//}
 
 clean {
     delete file('src/main/generated')
