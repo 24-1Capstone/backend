@@ -53,7 +53,7 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
                         .providerId(oAuth2UserInfo.getProviderId())
                         .build());
 
-//        user.setAccessToken(String.valueOf(userRequest.getAccessToken().getTokenValue()));
+        user.setAccessToken(String.valueOf(userRequest.getAccessToken().getTokenValue()));
 //
 //        GitHubProfile gitHubProfile = gitHubProfileRepository.findByUserName(username)
 //                        .map(entity -> entity.update(username))
