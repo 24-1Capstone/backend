@@ -38,4 +38,42 @@ public class OAuth2AuthorizationRequestBasedOnCookieRepository implements Author
     public void removeAuthorizationRequestCookies(HttpServletRequest request, HttpServletResponse response) {
         CookieUtil.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
     }
+
+//    public static final String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
+//    public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
+//    private static final int cookieExpireSeconds = 180;
+//
+//    @Override
+//    public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
+//        OAuth2AuthorizationRequest oAuth2AuthorizationRequest =  CookieUtil.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
+//                .map(cookie -> CookieUtil.deserialize(cookie, OAuth2AuthorizationRequest.class))
+//                .orElse(null);
+//        return oAuth2AuthorizationRequest;
+//    }
+//
+//    @Override
+//    public void saveAuthorizationRequest(OAuth2AuthorizationRequest authorizationRequest, HttpServletRequest request, HttpServletResponse response) {
+//        if (authorizationRequest == null) {
+//            removeAuthorizationRequest(request, response);
+//            return;
+//        }
+//
+//        CookieUtil.addCookie(response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME, CookieUtil.serialize(authorizationRequest), cookieExpireSeconds);
+//        String redirectUriAfterLogin = request.getParameter(REDIRECT_URI_PARAM_COOKIE_NAME);
+//        if (StringUtils.isNotBlank(redirectUriAfterLogin)) {
+//            CookieUtil.addCookie(response, REDIRECT_URI_PARAM_COOKIE_NAME, redirectUriAfterLogin, cookieExpireSeconds);
+//        }
+//    }
+//
+//    @Override
+//    public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest request, HttpServletResponse response) {
+//        return this.loadAuthorizationRequest(request);
+//    }
+//
+//
+//
+//    public void removeAuthorizationRequestCookies(HttpServletRequest request, HttpServletResponse response) {
+//        CookieUtil.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
+//        CookieUtil.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
+//    }
 }
