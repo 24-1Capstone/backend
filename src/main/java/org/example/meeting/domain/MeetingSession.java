@@ -30,11 +30,12 @@ public class MeetingSession {
     private String mediaRegion;
     private String meetingArn;
     private String meetingId;
+    private String applyUserName;
+    private String receiveUserName;
 
 
     @Builder
-    public MeetingSession(Long id, String externalMeetingId, String audioFallbackUrl, String audioHostUrl, String eventIngestionUrl, String screenDataUrl, String screenSharingUrl, String screenViewingUrl, String signalingUrl, String turnControllerUrl, String mediaRegion, String meetingArn, String meetingId) {
-        this.id = id;
+    public MeetingSession(String externalMeetingId, String audioFallbackUrl, String audioHostUrl, String eventIngestionUrl, String screenDataUrl, String screenSharingUrl, String screenViewingUrl, String signalingUrl, String turnControllerUrl, String mediaRegion, String meetingArn, String meetingId, String applyUserName, String receiveUserName) {
         this.externalMeetingId = externalMeetingId;
         this.audioFallbackUrl = audioFallbackUrl;
         this.audioHostUrl = audioHostUrl;
@@ -47,5 +48,7 @@ public class MeetingSession {
         this.mediaRegion = mediaRegion;
         this.meetingArn = meetingArn;
         this.meetingId = meetingId;
+        this.applyUserName = applyUserName;
+        this.receiveUserName = receiveUserName;
     }
 }

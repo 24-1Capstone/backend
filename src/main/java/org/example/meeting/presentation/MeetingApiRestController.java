@@ -24,8 +24,9 @@ public class MeetingApiRestController {
             @ApiResponse(responseCode = "500", description = "서비스가 예기치 않은 오류를 만남")
     })
     @PostMapping("/api/meetings")
-    public CreateMeetingResponseDTO createMeeting() {
-        return chimeService.createMeetingResponseDTO();
+    public void createMeeting(@RequestBody CreateMeetingRequestDTO createMeetingRequestDTO) {
+
+        chimeService.createMeeting(createMeetingRequestDTO.getApplyUserName(), createMeetingRequestDTO.getReceiveUserName());
     }
 
 
@@ -38,20 +39,10 @@ public class MeetingApiRestController {
     })
     @PostMapping("/api/meetings/{meetingId}/attendees")
     public CreateAttendeeResponseDTO createAttendee(@PathVariable String meetingId) {
-        return chimeService.createAttendeeResponseDTO(meetingId);
+        return chimeService.createAttendee(meetingId);
     }
 
 
-    @Operation(summary = "회의 생성 동시에 참가자 생성 API", description = "회의를 생성하면서 동시에 참가자를 추가")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "회의 및 참가자 생성 성공"),
-            @ApiResponse(responseCode = "400", description = "입력 매개변수가 서비스 제한과 일치하지 않음"),
-            @ApiResponse(responseCode = "500", description = "서비스가 예기치 않은 오류를 만남")
-    })
-    @PostMapping("/api/meetings/attendees")
-    public CreateMeetingWithAttendeesResponseDTO createMeetingWithAttendees() {
-        return chimeService.createMeetingWithAttendees();
-    }
 
 
     @Operation(summary = "회의 삭제 API", description = "특정 회의를 삭제")
@@ -67,30 +58,7 @@ public class MeetingApiRestController {
     }
 
 
-    @Operation(summary = "참가자 삭제 API", description = "특정 회의의 특정 참가자를 삭제")
-    @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "참가자 삭제 성공"),
-            @ApiResponse(responseCode = "400", description = "입력 매개변수가 서비스 제한과 일치하지 않음"),
-            @ApiResponse(responseCode = "404", description = "요청한 리소스를 찾을 수 없음"),
-            @ApiResponse(responseCode = "500", description = "서비스가 예기치 않은 오류를 만남")
-    })
-    @DeleteMapping("/api/meetings/{meetingId}/attendees/{attendeeId}")
-    public void deleteAttendee(@PathVariable String meetingId, @PathVariable String attendeeId) {
-        chimeService.deleteAttendee(meetingId, attendeeId);
-    }
 
-
-    @Operation(summary = "특정 회의의 참가자 조회 API", description = "특정 회의의 참가자 목록을 조회")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "참가자 조회 성공"),
-            @ApiResponse(responseCode = "400", description = "입력 매개변수가 서비스 제한과 일치하지 않음"),
-            @ApiResponse(responseCode = "404", description = "요청한 리소스를 찾을 수 없음"),
-            @ApiResponse(responseCode = "500", description = "서비스가 예기치 않은 오류를 만남")
-    })
-    @GetMapping("/api/meetings/{meetingId}/attendees")
-    public ListAttendeesResponseDTO listAttendees(@PathVariable String meetingId) {
-        return chimeService.listAttendeesResponseDTO(meetingId);
-    }
 
 
     @Operation(summary = "열려 있는 모든 회의 조회 API", description = "현재 열려 있는 모든 회의를 조회")
