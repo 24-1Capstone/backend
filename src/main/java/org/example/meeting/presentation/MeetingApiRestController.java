@@ -54,7 +54,9 @@ public class MeetingApiRestController {
     })
     @DeleteMapping("/api/meetings/{meetingId}")
     public void deleteMeeting(@PathVariable String meetingId) {
+
         chimeService.deleteMeeting(meetingId);
+
     }
 
 
@@ -71,9 +73,6 @@ public class MeetingApiRestController {
 
         return chimeService.listMeetings();
     }
-
-
-
 
 
 }
