@@ -20,11 +20,29 @@ public class MeetingSessionService {
     public void save(MeetingSession meetingSession) {
         meetingSessionRepository.save(MeetingSession.builder()
                 .externalMeetingId(meetingSession.getExternalMeetingId())
+                .audioFallbackUrl(meetingSession.getAudioFallbackUrl())
+                .audioHostUrl(meetingSession.getAudioHostUrl())
+                .eventIngestionUrl(meetingSession.getEventIngestionUrl())
+                .screenDataUrl(meetingSession.getScreenDataUrl())
+                .screenSharingUrl(meetingSession.getScreenSharingUrl())
+                .screenViewingUrl(meetingSession.getScreenViewingUrl())
+                .signalingUrl(meetingSession.getSignalingUrl())
+                .turnControllerUrl(meetingSession.getTurnControllerUrl())
                 .mediaRegion(meetingSession.getMediaRegion())
                 .meetingArn(meetingSession.getMeetingArn())
                 .meetingId(meetingSession.getMeetingId())
+                .applyUserName(meetingSession.getApplyUserName())
+                .receiveUserName(meetingSession.getReceiveUserName())
                 .build());
     }
+
+    public List<MeetingSession> listMeetings(String userName) {
+
+        return meetingSessionRepository.findByApplyUserNameOrReceiveUserName(userName);
+
+    }
+
+
 
     public void deleteByMeetingId(String meetingId){
         meetingSessionRepository.deleteByMeetingId(meetingId);
