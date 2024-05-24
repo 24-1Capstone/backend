@@ -120,8 +120,7 @@ public class WebOAuthSecurityConfig {
         configuration.addAllowedOriginPattern("https://www.coffeechat.shop");
         configuration.addAllowedOriginPattern("http://www.coffeechat.shop");
         configuration.addAllowedOriginPattern("https://api.coffeechat.shop");
-        configuration.addAllowedOriginPattern("https://api.coffeechat.shop:443");
-        configuration.addAllowedOriginPattern("http://api.coffeechat.shop:443");
+        configuration.addAllowedOrigin("https://www.coffeechat.shop");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));

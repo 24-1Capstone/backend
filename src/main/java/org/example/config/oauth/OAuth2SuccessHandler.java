@@ -1,4 +1,5 @@
 package org.example.config.oauth;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     public static final String REFRESH_TOKEN_COOKIE_NAME = "refresh_token";
     public static final String ACCESS_TOKEN_COOKIE_NAME = "token";
-    public static final Duration REFRESH_TOKEN_DURATION = Duration.ofDays(14);
+    public static final Duration REFRESH_TOKEN_DURATION = Duration.ofDays(3);
     public static final Duration ACCESS_TOKEN_DURATION = Duration.ofDays(1);
 
     public static final String REDIRECT_PATH = "https://www.coffeechat.shop/api/auth/login"; //redirect 경로
@@ -47,7 +48,17 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String accessToken = tokenProvider.generateToken(user, ACCESS_TOKEN_DURATION);
         addAccessTokenToCookie(request, response, accessToken);
-        String targetUrl = getTargetUrl();
+        String targetUrl = getTargetUrl(accessToken);
+
+        Cookie refreshTokenCookie = new Cookie("refresh_token", refreshToken);
+        refreshTokenCookie.setHttpOnly(false);
+        refreshTokenCookie.setSecure(true); // HTTPS에서만 전송
+        refreshTokenCookie.setAttribute("SameSite","None");
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setDomain("https://www.coffeechat.shop");
+        refreshTokenCookie.setMaxAge(3600);
+
+        response.addCookie(refreshTokenCookie);
 
         clearAuthenticationAttributes(request, response);
 
@@ -82,9 +93,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         authorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
     }
 
-    private String getTargetUrl() {
+    private String getTargetUrl(String token) {
         return UriComponentsBuilder.fromUriString(REDIRECT_PATH)
-//                .queryParam("token", token)
+                .queryParam("token", token)
                 .build()
                 .toUriString();
     }
