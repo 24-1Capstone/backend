@@ -12,7 +12,7 @@ public interface MeetingSessionRepository extends JpaRepository<MeetingSession, 
 
     Optional<MeetingSession> findByMeetingId(String meetingId);
 
-    @Query("SELECT m FROM MeetingSession m WHERE m.applyUser = :userName OR m.receiveUser = :userName")
+    @Query("SELECT m FROM MeetingSession m WHERE m.applyUserName = :userName OR m.receiveUserName = :userName")
     List<MeetingSession> findByApplyUserNameOrReceiveUserName(@Param("userName") String userName);
 
     void deleteByMeetingId(String meetingId);
