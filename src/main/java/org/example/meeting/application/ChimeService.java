@@ -145,18 +145,32 @@ public class ChimeService {
     }
 
 
-    // 열려있는 모든 회의 조회
+    // 열려있는 내 모든 회의 조회
 
     public List<CreateMeetingResponseDTO> listMeetings() {
-        List<MeetingSession> meetingSessions = meetingSessionService.findAll();
+        List<MeetingSession> meetingSessions = meetingSessionService.listMeetings(SecurityContextHolder.getContext().getAuthentication().getName());
         List<CreateMeetingResponseDTO> responseDTOs = new ArrayList<>();
 
         for (MeetingSession meetingSession : meetingSessions) {
+            MediaPlacement mediaPlacement = MediaPlacement.builder()
+                    .audioFallbackUrl(meetingSession.getAudioFallbackUrl())
+                    .audioHostUrl(meetingSession.getAudioHostUrl())
+                    .eventIngestionUrl(meetingSession.getEventIngestionUrl())
+                    .screenDataUrl(meetingSession.getScreenDataUrl())
+                    .screenSharingUrl(meetingSession.getScreenSharingUrl())
+                    .screenViewingUrl(meetingSession.getScreenViewingUrl())
+                    .signalingUrl(meetingSession.getSignalingUrl())
+                    .turnControlUrl(meetingSession.getTurnControllerUrl())
+                    .build();
+
             CreateMeetingResponseDTO responseDTO = CreateMeetingResponseDTO.builder()
                     .externalMeetingId(meetingSession.getExternalMeetingId())
+                    .mediaPlacement(mediaPlacement)
                     .mediaRegion(meetingSession.getMediaRegion())
                     .meetingArn(meetingSession.getMeetingArn())
                     .meetingId(meetingSession.getMeetingId())
+                    .applyUserName(meetingSession.getApplyUserName())
+                    .receiveUserName(meetingSession.getReceiveUserName())
                     .build();
             responseDTOs.add(responseDTO);
         }

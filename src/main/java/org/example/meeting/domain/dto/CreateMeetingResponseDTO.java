@@ -12,21 +12,19 @@ public class CreateMeetingResponseDTO {
     private MediaPlacement mediaPlacement;
     private String mediaRegion;
     private String meetingArn;
-    private String meetingHostId;
     private String meetingId;
-    private String primaryMeetingId;
-
+    private String applyUserName;
+    private String receiveUserName;
 
 
     @Builder
-    public CreateMeetingResponseDTO(String externalMeetingId, MediaPlacement mediaPlacement, String mediaRegion, String meetingArn, String meetingHostId, String meetingId, String primaryMeetingId) {
+    public CreateMeetingResponseDTO(String externalMeetingId, MediaPlacement mediaPlacement, String mediaRegion, String meetingArn, String meetingId, String applyUserName, String receiveUserName) {
         this.externalMeetingId = externalMeetingId;
         this.mediaPlacement = mediaPlacement;
         this.mediaRegion = mediaRegion;
         this.meetingArn = meetingArn;
-        this.meetingHostId = meetingHostId;
         this.meetingId = meetingId;
-        this.primaryMeetingId = primaryMeetingId;
-
+        this.applyUserName = applyUserName;
+        this.receiveUserName = receiveUserName;
     }
 }

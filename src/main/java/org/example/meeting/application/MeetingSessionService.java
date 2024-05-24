@@ -36,6 +36,14 @@ public class MeetingSessionService {
                 .build());
     }
 
+    public List<MeetingSession> listMeetings(String userName) {
+
+        return meetingSessionRepository.findByApplyUserNameOrReceiveUserName(userName);
+
+    }
+
+
+
     public void deleteByMeetingId(String meetingId){
         meetingSessionRepository.deleteByMeetingId(meetingId);
     }
