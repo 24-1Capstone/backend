@@ -16,4 +16,6 @@ public interface AttendeeSessionRepository extends JpaRepository<AttendeeSession
     void deleteByAttendeeId(String attendeeId);
 
     void deleteByMeetingId(String meetingId);
+
+    boolean existsByMeetingId(String meetingId);
 }
