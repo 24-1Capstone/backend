@@ -50,12 +50,12 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         addAccessTokenToCookie(request, response, accessToken);
         String targetUrl = getTargetUrl(accessToken);
 
+
         Cookie refreshTokenCookie = new Cookie("refresh_token", refreshToken);
         refreshTokenCookie.setHttpOnly(false);
         refreshTokenCookie.setSecure(true); // HTTPS에서만 전송
         refreshTokenCookie.setAttribute("SameSite","None");
         refreshTokenCookie.setPath("/");
-        refreshTokenCookie.setDomain("https://www.coffeechat.shop");
         refreshTokenCookie.setMaxAge(3600);
 
         response.addCookie(refreshTokenCookie);

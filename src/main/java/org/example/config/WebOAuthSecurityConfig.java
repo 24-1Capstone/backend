@@ -114,13 +114,14 @@ public class WebOAuthSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-
-        configuration.addAllowedOriginPattern("http://localhost:3000");
-        configuration.addAllowedOriginPattern("http://localhost:8080");
-        configuration.addAllowedOriginPattern("https://www.coffeechat.shop");
-        configuration.addAllowedOriginPattern("http://www.coffeechat.shop");
-        configuration.addAllowedOriginPattern("https://api.coffeechat.shop");
+        configuration.addAllowedOriginPattern("*");
+//        configuration.addAllowedOriginPattern("http://localhost:3000");
+//        configuration.addAllowedOriginPattern("http://localhost:8080");
+//        configuration.addAllowedOriginPattern("https://www.coffeechat.shop");
+//        configuration.addAllowedOriginPattern("http://www.coffeechat.shop");
+//        configuration.addAllowedOriginPattern("https://api.coffeechat.shop");
         configuration.addAllowedOrigin("https://www.coffeechat.shop");
+        configuration.addAllowedOrigin("https://api.coffeechat.shop");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
