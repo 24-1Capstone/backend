@@ -11,22 +11,21 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.reactive.result.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
-
-@RestControllerAdvice(basePackages = "org.example")
 @Slf4j
+@RestControllerAdvice(basePackages = "org.example")
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDateTime.now(), ex.getMessage(), request.getDescription(true));
-        log.error("Error message: {}", ex.getMessage());
-        ex.printStackTrace();
+        log.error("Error message: {}", ex.getMessage(), ex); // 여기에 ex 추가
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public final ResponseEntity<ExceptionResponse> handleIllegalArgumentExceptions(IllegalArgumentException ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDateTime.now(), ex.getMessage(), request.getDescription(true));
+        log.warn("IllegalArgumentException: {}", ex.getMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }

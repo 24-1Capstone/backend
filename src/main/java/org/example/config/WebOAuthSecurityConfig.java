@@ -85,7 +85,7 @@ public class WebOAuthSecurityConfig {
 //                .authenticationEntryPoint(new Http403ForbiddenEntryPoint());// 인증 성공 시 실행할 핸들러
         http.oauth2Login()
 //                .loginPage("/login")
-                .authorizationEndpoint()
+                .authorizationEndpoint().baseUri("/oauth2/authorization")
 //                .baseUri("/oauth2/authorization")
                 .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())//Authorization 요청과 관련된 상태 저장
                 .and()
