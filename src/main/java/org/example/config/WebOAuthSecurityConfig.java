@@ -124,6 +124,8 @@ public class WebOAuthSecurityConfig {
         configuration.addAllowedOrigin("http://localhost:8080");
         configuration.addAllowedOrigin("https://www.coffeechat.shop");
         configuration.addAllowedOrigin("http://www.coffeechat.shop");
+        configuration.addAllowedOrigin("https://coffeechat.shop");
+        configuration.addAllowedOrigin("http://coffeechat.shop");
         configuration.addAllowedOrigin("https://api.coffeechat.shop");
         configuration.addAllowedOrigin("http://api.coffeechat.shop");
         configuration.addAllowedHeader("*");
