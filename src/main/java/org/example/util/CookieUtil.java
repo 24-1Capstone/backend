@@ -21,7 +21,8 @@ public class CookieUtil {
 //                .build();
 //        response.addHeader("Set-Cookie", cookie.toString());
         Cookie cookie = new Cookie(name, value);
-        cookie.setPath("https://www.coffeechat.shop");
+        cookie.setPath("/");
+        cookie.setDomain("coffeechat.shop");
         cookie.setMaxAge(maxAge);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
