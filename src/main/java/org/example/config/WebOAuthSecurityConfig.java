@@ -25,6 +25,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 
 @EnableWebSecurity
@@ -121,17 +122,15 @@ public class WebOAuthSecurityConfig {
 //        configuration.addAllowedOriginPattern("http://www.coffeechat.shop");
 //        configuration.addAllowedOriginPattern("https://api.coffeechat.shop");
         configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.addAllowedOrigin("http://localhost:8080");
         configuration.addAllowedOrigin("https://www.coffeechat.shop");
         configuration.addAllowedOrigin("http://www.coffeechat.shop");
         configuration.addAllowedOrigin("https://coffeechat.shop");
         configuration.addAllowedOrigin("http://coffeechat.shop");
-        configuration.addAllowedOrigin("https://api.coffeechat.shop");
-        configuration.addAllowedOrigin("http://api.coffeechat.shop");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
+        configuration.setExposedHeaders(List.of("Authorization", "Set-Cookie"));
         configuration.addExposedHeader("Authorization");
         configuration.addExposedHeader("refreshToken");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
 
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
