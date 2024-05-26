@@ -12,22 +12,24 @@ public class CookieUtil {
 
     // 요청값(이름, 값, 만료기간)을 바탕으로 쿠키 추가
     public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
-//        ResponseCookie cookie = ResponseCookie.from(name, value)
-//                .path("/")
-//                .sameSite("None")
-//                .httpOnly(true)
-//                .secure(false)
-//                .maxAge(maxAge)
-//                .build();
+        ResponseCookie cookie = ResponseCookie.from(name, value)
+                .path("/")
+                .sameSite("None")
+                .httpOnly(true)
+                .secure(true)
+                .maxAge(maxAge)
+                .build();
 //        response.addHeader("Set-Cookie", cookie.toString());
-        Cookie cookie = new Cookie(name, value);
-        cookie.setPath("/");
-        cookie.setMaxAge(maxAge);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setAttribute("SameSite", "None");
+//        Cookie cookie = new Cookie(name, value);
+//        cookie.setPath("/");
+//        cookie.setMaxAge(maxAge);
+//        cookie.setHttpOnly(true);
+//        cookie.setSecure(true);
+//        cookie.setAttribute("SameSite", "None");
 
-        response.addCookie(cookie);
+//        response.addCookie(cookie);
+
+        response.addHeader("Set-Cookie", cookie.toString());
     }
 
     // 쿠키의 이름을 입력받아 쿠키 삭제
@@ -43,9 +45,6 @@ public class CookieUtil {
                 cookie.setValue("");
                 cookie.setPath("/");
                 cookie.setMaxAge(0);
-                cookie.setHttpOnly(true);
-                cookie.setSecure(true);
-                cookie.setAttribute("SameSite", "None");
                 response.addCookie(cookie);
             }
         }

@@ -126,9 +126,10 @@ public class WebOAuthSecurityConfig {
         configuration.addAllowedOrigin("http://www.coffeechat.shop");
         configuration.addAllowedOrigin("https://coffeechat.shop");
         configuration.addAllowedOrigin("http://coffeechat.shop");
-        configuration.setExposedHeaders(List.of("Authorization", "Set-Cookie"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Set-Cookie"));
         configuration.addExposedHeader("Authorization");
-        configuration.addExposedHeader("refreshToken");
+        configuration.addExposedHeader("refresh_token");
+        configuration.addExposedHeader("Set-Cookie");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
 
