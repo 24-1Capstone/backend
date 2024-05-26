@@ -45,7 +45,6 @@ public class WebOAuthSecurityConfig {
 //        return (web) -> web.ignoring().requestMatchers();
 //    }
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // 토큰 방식으로 인증을 하기 때문에 기존에 사용하던 폼로그인, 세션 비활성화
@@ -64,7 +63,7 @@ public class WebOAuthSecurityConfig {
 
         // 토큰 재발급 URL은 인증 없이 접근 가능하도록 설정. 나머지 API URL은 인증 필요
         http.authorizeRequests()
-                .requestMatchers("/","/api/token", "/api/user/**", "/api/users/**", "/api/meetings/**"/*, "/auth/**", "/oauth2/**", "/api/auth/**"*/).permitAll()
+                .requestMatchers("/","/api/token", "/api/user/**", "/api/users/**", "/api/meetings/**").permitAll()
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll();
 
@@ -85,13 +84,10 @@ public class WebOAuthSecurityConfig {
 //                .exceptionHandling()
 //                .authenticationEntryPoint(new Http403ForbiddenEntryPoint());// 인증 성공 시 실행할 핸들러
         http.oauth2Login()
-//                .loginPage("/login")
                 .authorizationEndpoint().baseUri("/oauth2/authorization")
-//                .baseUri("/oauth2/authorization")
                 .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())//Authorization 요청과 관련된 상태 저장
                 .and()
                 .successHandler(oAuth2SuccessHandler()) // 인증 성공 시 실행할 핸들러
-//                .defaultSuccessUrl("https://frontend-lovat-psi-83.vercel.app/api/auth/login", true)
                 .userInfoEndpoint()
                 .userService(oAuth2UserCustomService);
 
@@ -116,11 +112,6 @@ public class WebOAuthSecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOriginPattern("*");
-//        configuration.addAllowedOriginPattern("http://localhost:3000");
-//        configuration.addAllowedOriginPattern("http://localhost:8080");
-//        configuration.addAllowedOriginPattern("https://www.coffeechat.shop");
-//        configuration.addAllowedOriginPattern("http://www.coffeechat.shop");
-//        configuration.addAllowedOriginPattern("https://api.coffeechat.shop");
         configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedOrigin("https://www.coffeechat.shop");
         configuration.addAllowedOrigin("http://www.coffeechat.shop");
@@ -166,12 +157,4 @@ public class WebOAuthSecurityConfig {
     public OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository() {
         return new OAuth2AuthorizationRequestBasedOnCookieRepository();
     }
-
-//    @Bean
-//    public FilterRegistrationBean<SameSiteCookieFilter> sameSiteCookieFilter() {
-//        FilterRegistrationBean<SameSiteCookieFilter> registrationBean = new FilterRegistrationBean<>();
-//        registrationBean.setFilter(new SameSiteCookieFilter());
-//        registrationBean.addUrlPatterns("/*");
-//        return registrationBean;
-//    }
 }
