@@ -120,10 +120,17 @@ public class WebOAuthSecurityConfig {
 //        configuration.addAllowedOriginPattern("https://www.coffeechat.shop");
 //        configuration.addAllowedOriginPattern("http://www.coffeechat.shop");
 //        configuration.addAllowedOriginPattern("https://api.coffeechat.shop");
+        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("http://localhost:8080");
         configuration.addAllowedOrigin("https://www.coffeechat.shop");
+        configuration.addAllowedOrigin("http://www.coffeechat.shop");
         configuration.addAllowedOrigin("https://api.coffeechat.shop");
+        configuration.addAllowedOrigin("http://api.coffeechat.shop");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
+        configuration.addExposedHeader("Authorization");
+        configuration.addExposedHeader("refreshToken");
+
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
 

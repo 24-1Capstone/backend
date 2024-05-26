@@ -27,8 +27,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     public static final Duration REFRESH_TOKEN_DURATION = Duration.ofDays(3);
     public static final Duration ACCESS_TOKEN_DURATION = Duration.ofDays(1);
 
-    public static final String REDIRECT_PATH = "https://www.coffeechat.shop/api/auth/login"; //redirect 경로
-//    public static final String REDIRECT_PATH = "http://localhost:3000/api/auth/login"; //redirect 경로
+//    public static final String REDIRECT_PATH = "https://www.coffeechat.shop/api/auth/login"; //redirect 경로
+    public static final String REDIRECT_PATH = "http://localhost:3000/api/auth/login"; //redirect 경로
 
 
 
@@ -49,16 +49,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String accessToken = tokenProvider.generateToken(user, ACCESS_TOKEN_DURATION);
         addAccessTokenToCookie(request, response, accessToken);
         String targetUrl = getTargetUrl(accessToken);
-
-
-        Cookie refreshTokenCookie = new Cookie("refresh_token", refreshToken);
-        refreshTokenCookie.setHttpOnly(false);
-        refreshTokenCookie.setSecure(true); // HTTPS에서만 전송
-        refreshTokenCookie.setAttribute("SameSite","None");
-        refreshTokenCookie.setPath("/");
-        refreshTokenCookie.setMaxAge(3600);
-
-        response.addCookie(refreshTokenCookie);
 
         clearAuthenticationAttributes(request, response);
 
