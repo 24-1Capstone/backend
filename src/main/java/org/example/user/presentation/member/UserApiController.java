@@ -64,6 +64,8 @@ public class UserApiController {
         userService.deleteUserById(user.getId());
 //        // 로그아웃 처리
 //        logout(request, response);
+
+        authorizationRequestBasedOnCookieRepository.removeAuthorizationRequestCookies(request, response);
         return ResponseEntity.noContent().build();
 
     }
