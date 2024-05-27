@@ -33,8 +33,12 @@ public class CookieUtil {
         for (Cookie cookie : cookies) {
             if (name.equals(cookie.getName())) {
                 cookie.setValue("");
+                cookie.setDomain("coffeechat.shop");
                 cookie.setPath("/");
                 cookie.setMaxAge(0);
+                cookie.setHttpOnly(true);
+                cookie.setSecure(true);
+                cookie.setAttribute("SameSite", "None");
                 response.addCookie(cookie);
             }
         }

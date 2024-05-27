@@ -100,46 +100,8 @@ public class UserApiRestController {
 //                .body(githubProfileResponse);
 //    }
 
-//    @GetMapping("/user")
-//    public String getUserInfo(HttpServletRequest request) {
-//        final String token = extractToken(request); // 'Bearer'가 포함되지 않은 순수 토큰 값이어야 함
-//        System.out.println("token used: " + token);
-//        HttpHeaders headers = new HttpHeaders();
-//        RestTemplate restTemplate = new RestTemplate();
-//        headers.setBearerAuth(token);
-//        HttpEntity<Void> requests = new HttpEntity<>(headers);
-//
-//        return restTemplate.exchange(
-//                "https://api.github.com/user",
-//                HttpMethod.GET,
-//                requests,
-//                OAuthMemberInfoResponse.class
-//        ).getBody().getName();
-
-//        return webClient.get()
-//                .uri("https://api.github.com/user")
-////                .header("Authorization", "Bearer " + token)
-//                .retrieve()
-//                .bodyToFlux(String.class);
 
 
-//    @Operation(summary = "모든 사용자 정보 조회API", description = "모든 사용자 상세 정보를 조회")
-//    @ApiResponses({
-//            @ApiResponse(responseCode = "200", description = "ok!!"),
-//            @ApiResponse(responseCode = "404", description = "user not found!!"),
-//            @ApiResponse(responseCode = "500", description = "internal server error!!"),
-//    })
-//    @GetMapping("/ser")
-//    public ResponseEntity<List<AllUsersResponse>> findAllUsers() {
-//        List<AllUsersResponse> users = userService.findAll()
-//                .stream()
-//                .map(u -> new AllUsersResponse(u))
-//                .toList();
-//
-//        return ResponseEntity.ok()
-//                .body(users);
-//    }
-//}
 
 
 }

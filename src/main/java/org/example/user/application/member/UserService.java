@@ -30,37 +30,6 @@ public class UserService {
         this.webClient = webClient;
     }
 
-    public Flux<GithubProfileResponse> fetchUserInfo(String accessToken) {
-        return webClient.get()
-                .uri("/user")
-                .header("Authorization", "token " + accessToken)
-                .header("User-Agent", "YourApp")
-                .retrieve()
-                .bodyToFlux(GithubProfileResponse.class);
-    }
-
-
-    public Flux<FollowerResponse> fetchFollowers(String followersUrl) {
-        return webClient.get()
-                .uri(followersUrl)
-                .retrieve()
-                .onStatus(status -> status.is4xxClientError(), response -> {
-                    // 4xx 오류 로깅
-                    return response.bodyToMono(String.class).flatMap(body -> {
-                        log.error("API request failed with 4xx error: " + body);
-                        return Mono.error(new RuntimeException("API request failed with error: " + body));
-                    });
-                })
-                .onStatus(status -> status.is5xxServerError(), response -> {
-                    // 5xx 오류 처리
-                    return response.bodyToMono(String.class).flatMap(body -> {
-                        log.error("Server error on API request: " + body);
-                        return Mono.error(new RuntimeException("Server error on API request"));
-                    });
-                })
-                .bodyToFlux(FollowerResponse.class);
-    }
-
     public Flux<FollowingResponse> fetchFollowings(User user, int pageSize, int page) {
         String processedUrl = user.getFollowingsUrl().replace("{/other_user}", "");
 
@@ -97,6 +66,63 @@ public class UserService {
                     return Flux.error(new RuntimeException("API request failed with error "));  // API 오류 메시지 반환
                 });
     }
+
+    public User findById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("Unexpected user"));
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("unexpected user"));
+    }
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Transactional
+    public void update(String username, String accessToken) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("unexpected user"));
+        user.setAccessToken(accessToken);
+
+    }
+
+    public void deleteUserById(Long userId) {
+        userRepository.deleteById(userId);
+    }
+
+    public Flux<GithubProfileResponse> fetchUserInfo(String accessToken) {
+        return webClient.get()
+                .uri("/user")
+                .header("Authorization", "token " + accessToken)
+                .header("User-Agent", "YourApp")
+                .retrieve()
+                .bodyToFlux(GithubProfileResponse.class);
+    }
+
+
+    public Flux<FollowerResponse> fetchFollowers(String followersUrl) {
+        return webClient.get()
+                .uri(followersUrl)
+                .retrieve()
+                .onStatus(status -> status.is4xxClientError(), response -> {
+                    // 4xx 오류 로깅
+                    return response.bodyToMono(String.class).flatMap(body -> {
+                        log.error("API request failed with 4xx error: " + body);
+                        return Mono.error(new RuntimeException("API request failed with error: " + body));
+                    });
+                })
+                .onStatus(status -> status.is5xxServerError(), response -> {
+                    // 5xx 오류 처리
+                    return response.bodyToMono(String.class).flatMap(body -> {
+                        log.error("Server error on API request: " + body);
+                        return Mono.error(new RuntimeException("Server error on API request"));
+                    });
+                })
+                .bodyToFlux(FollowerResponse.class);
+    }
+
 
     public Flux<FollowingResponse> fetchNonRegisteredFollowings(User user, int pageSize, int page) {
         String processedUrl = user.getFollowingsUrl().replace("{/other_user}", "");
@@ -148,26 +174,7 @@ public class UserService {
                 .build()).getId();
     }
 
-    public User findById(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("Unexpected user"));
-    }
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("unexpected user"));
-    }
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
-    @Transactional
-    public void update(String username, String accessToken) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("unexpected user"));
-        user.setAccessToken(accessToken);
-
-    }
 
 
 }
