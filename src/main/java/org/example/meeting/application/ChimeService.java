@@ -39,20 +39,6 @@ public class ChimeService {
         CreateMeetingResponse createMeetingResponse = chimeSdkMeetingsClient.createMeeting(request);
 
 
-        MediaPlacement mediaPlacement = MediaPlacement.builder()
-                .audioFallbackUrl(createMeetingResponse.meeting().mediaPlacement().audioFallbackUrl())
-                .audioHostUrl(createMeetingResponse.meeting().mediaPlacement().audioHostUrl())
-                .eventIngestionUrl(createMeetingResponse.meeting().mediaPlacement().eventIngestionUrl())
-                .screenDataUrl(createMeetingResponse.meeting().mediaPlacement().screenDataUrl())
-                .screenSharingUrl(createMeetingResponse.meeting().mediaPlacement().screenSharingUrl())
-                .screenViewingUrl(createMeetingResponse.meeting().mediaPlacement().screenViewingUrl())
-                .signalingUrl(createMeetingResponse.meeting().mediaPlacement().signalingUrl())
-                .turnControlUrl(createMeetingResponse.meeting().mediaPlacement().turnControlUrl())
-                .build();
-
-
-
-
         MeetingSession meetingSession = MeetingSession.builder()
                 .externalMeetingId(createMeetingResponse.meeting().externalMeetingId())
                 .mediaRegion(createMeetingResponse.meeting().mediaRegion())
@@ -75,6 +61,7 @@ public class ChimeService {
 
 
     }
+
 
 
     // AttendeeSession 엔티티에 저장 및 createAttendeeResponseDTO 반환
