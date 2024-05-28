@@ -43,10 +43,10 @@ public class Reservation {
     @JoinColumn(name = "create_user_id")
     private User receiveUser;
 
-    @Column(name = "start_time")
+    @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
 
-    @Column(name = "end_time")
+    @Column(name = "end_time", nullable = false)
     private LocalDateTime endTime;
 
     @Enumerated(EnumType.STRING)
@@ -87,19 +87,6 @@ public class Reservation {
     }
 
 
-
-    // 예약을 신청한 사용자 설정
-    public void setApplyUser(User applyUser) {
-        this.applyUser = applyUser;
-        applyUser.getAppliedReservations().add(this); // 해당 사용자의 신청 예약 목록에 현재 예약 추가
-    }
-
-
-    //신청을 받은 사용자 설정
-    public void setReceiveUser(User receiveUser) {
-        this.receiveUser = receiveUser;
-        receiveUser.getReceivedReservations().add(this); // 해당 사용자의 생성 예약 목록에 현재 예약 추가
-    }
 
 }
 

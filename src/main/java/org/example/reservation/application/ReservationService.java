@@ -108,14 +108,14 @@ public class ReservationService {
                 .orElseThrow(() -> new ReservationNotFoundException("User not found"));
 
         Reservation reservation = Reservation.builder()
+                .applyUser(applyUser)
+                .receiveUser(receiveUser)
                 .content(createReservationRequestDTO.getContent())
                 .startTime(createReservationRequestDTO.getStartTime())
                 .endTime(createReservationRequestDTO.getEndTime())
                 .reservationStatus(ReservationStatus.PROGRESSING)
                 .build();
 
-        reservation.setApplyUser(applyUser);
-        reservation.setReceiveUser(receiveUser);
 
         reservationRepository.save(reservation);
     }
@@ -193,7 +193,6 @@ public class ReservationService {
         reservationRepository.save(reservation);
 
     }
-
 
 
 

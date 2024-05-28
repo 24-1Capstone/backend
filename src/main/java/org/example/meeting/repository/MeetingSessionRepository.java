@@ -17,4 +17,6 @@ public interface MeetingSessionRepository extends JpaRepository<MeetingSession, 
 
     void deleteByMeetingId(String meetingId);
 
+    boolean existsByMeetingId(String meetingId);
+
 }
