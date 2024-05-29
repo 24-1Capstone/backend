@@ -1,6 +1,5 @@
 package org.example.config;
 
-import org.example.meeting.domain.AwsProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;

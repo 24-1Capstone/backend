@@ -148,6 +148,10 @@ public class UserService {
                 .build()).getId();
     }
 
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
     public User findById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("Unexpected user"));
