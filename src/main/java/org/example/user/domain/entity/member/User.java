@@ -48,6 +48,7 @@ public class User extends BaseEntity implements UserDetails{ // UserDetailsë¥¼ ì
 
     private String accessToken;
 
+    @Column(nullable = true)
     private int couponCount;
 
     @Builder

@@ -174,6 +174,12 @@ public class UserService {
                 .build()).getId();
     }
 
+    public void saveUser(User user){
+
+        userRepository.save(user);
+
+    }
+
 
 
 
