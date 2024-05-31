@@ -21,22 +21,8 @@ public class MeetingSessionService {
 
     public void save(MeetingSession meetingSession) {
         try {
-            meetingSessionRepository.save(MeetingSession.builder()
-                    .externalMeetingId(meetingSession.getExternalMeetingId())
-                    .audioFallbackUrl(meetingSession.getAudioFallbackUrl())
-                    .audioHostUrl(meetingSession.getAudioHostUrl())
-                    .eventIngestionUrl(meetingSession.getEventIngestionUrl())
-                    .screenDataUrl(meetingSession.getScreenDataUrl())
-                    .screenSharingUrl(meetingSession.getScreenSharingUrl())
-                    .screenViewingUrl(meetingSession.getScreenViewingUrl())
-                    .signalingUrl(meetingSession.getSignalingUrl())
-                    .turnControllerUrl(meetingSession.getTurnControllerUrl())
-                    .mediaRegion(meetingSession.getMediaRegion())
-                    .meetingArn(meetingSession.getMeetingArn())
-                    .meetingId(meetingSession.getMeetingId())
-                    .applyUserName(meetingSession.getApplyUserName())
-                    .receiveUserName(meetingSession.getReceiveUserName())
-                    .build());
+            meetingSessionRepository.save(meetingSession);
+
         } catch (Exception e) {
             throw new MeetingSessionCreationException("Error saving meeting session: " + e.getMessage());
         }

@@ -61,15 +61,9 @@ public class AttendeeSessionService {
     }
 
     public void deleteByMeetingId(String meetingId) {
-        try {
-            if (attendeeSessionRepository.existsByMeetingId(meetingId)) {
-                attendeeSessionRepository.deleteByMeetingId(meetingId);
-            } else {
-                throw new AttendeeSessionNotFoundException("Attendee sessions with meeting ID: " + meetingId + " not found.");
-            }
-        } catch (Exception e) {
-            throw new AttendeeSessionDeletionException("Error deleting attendee sessions with meeting ID: " + meetingId);
-        }
+
+        attendeeSessionRepository.deleteByMeetingId(meetingId);
+
     }
 
     public Optional<AttendeeSession> findByAttendeeId(String attendeeId) {

@@ -48,6 +48,8 @@ public class User extends BaseEntity implements UserDetails{ // UserDetails를 �
 
     private String accessToken;
 
+    private int couponCount;
+
     @Builder
     public User(String username, String avatarUrl, String password, String followersUrl, String followingsUrl, String provider, String providerId, String accessToken) {
         this.username = username;
@@ -58,7 +60,26 @@ public class User extends BaseEntity implements UserDetails{ // UserDetails를 �
         this.provider = provider;
         this.providerId = providerId;
         this.accessToken = accessToken;
+        this.couponCount = 0;
     }
+
+
+
+    //쿠폰 사용
+    public void useCoupon() {
+        this.couponCount--;
+    }
+
+    //쿠폰 추가
+    public void addCoupon(int count) {
+        this.couponCount += count;
+    }
+
+    // 쿠폰 개수 조회
+    public int getCouponCount() {
+        return couponCount;
+    }
+
 
     //사용자 이름 변경
     public User update(String username) {
