@@ -2,6 +2,7 @@ package org.example.meeting.application;
 
 import lombok.RequiredArgsConstructor;
 import org.example.exception.AttendeeAlreadyExistsException;
+import org.example.exception.MeetingAlreadyExistsException;
 import org.example.meeting.domain.AttendeeSession;
 import org.example.meeting.domain.dto.*;
 import org.example.meeting.domain.MeetingSession;
@@ -29,6 +30,13 @@ public class ChimeService {
     // MeetingSession 엔티티에 저장 및 createMeetingResponseDTO 반환
     public void createMeeting(String applyUserName, String receiveUserName) {
 
+
+        List<MeetingSession> applyUserMeetings = meetingSessionService.listMeetings(applyUserName);
+        List<MeetingSession> receiveUserMeetings = meetingSessionService.listMeetings(receiveUserName);
+
+        if (!applyUserMeetings.isEmpty() || !receiveUserMeetings.isEmpty()) {
+            throw new MeetingAlreadyExistsException("A meeting already exists for one of the users.");
+        }
 
         CreateMeetingRequest request = CreateMeetingRequest.builder()
                 .clientRequestToken(getRandomString())
@@ -71,6 +79,7 @@ public class ChimeService {
         String externalUserId = SecurityContextHolder.getContext().getAuthentication().getName();
 
 
+
         // 이미 존재하는 참여자인지 확인
         Optional<AttendeeSession> existingAttendee = attendeeSessionService.findByExternalUserId(externalUserId);
         if (existingAttendee.isPresent()) {
@@ -107,6 +116,8 @@ public class ChimeService {
                 .build();
 
         attendeeSessionService.save(attendeeSession);
+
+
 
 
         return createAttendeeResponseDTO;

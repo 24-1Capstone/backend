@@ -19,4 +19,5 @@ public interface MeetingSessionRepository extends JpaRepository<MeetingSession, 
 
     boolean existsByMeetingId(String meetingId);
 
+
 }
