@@ -2,19 +2,25 @@ package org.example.meeting.application;
 
 import lombok.RequiredArgsConstructor;
 import org.example.exception.AttendeeAlreadyExistsException;
+import org.example.exception.MeetingAlreadyExistsException;
+import org.example.exception.MeetingSessionNotFoundException;
 import org.example.meeting.domain.AttendeeSession;
 import org.example.meeting.domain.dto.*;
 import org.example.meeting.domain.MeetingSession;
 import org.example.meeting.domain.dto.MediaPlacement;
+import org.example.user.application.member.UserService;
+import org.example.user.domain.entity.member.User;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.services.chimesdkmeetings.ChimeSdkMeetingsClient;
 import software.amazon.awssdk.services.chimesdkmeetings.model.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +35,13 @@ public class ChimeService {
     // MeetingSession 엔티티에 저장 및 createMeetingResponseDTO 반환
     public void createMeeting(String applyUserName, String receiveUserName) {
 
+
+        List<MeetingSession> applyUserMeetings = meetingSessionService.listMeetings(applyUserName);
+        List<MeetingSession> receiveUserMeetings = meetingSessionService.listMeetings(receiveUserName);
+
+        if (!applyUserMeetings.isEmpty() || !receiveUserMeetings.isEmpty()) {
+            throw new MeetingAlreadyExistsException("A meeting already exists for one of the users.");
+        }
 
         CreateMeetingRequest request = CreateMeetingRequest.builder()
                 .clientRequestToken(getRandomString())
@@ -71,6 +84,7 @@ public class ChimeService {
         String externalUserId = SecurityContextHolder.getContext().getAuthentication().getName();
 
 
+
         // 이미 존재하는 참여자인지 확인
         Optional<AttendeeSession> existingAttendee = attendeeSessionService.findByExternalUserId(externalUserId);
         if (existingAttendee.isPresent()) {
@@ -107,6 +121,8 @@ public class ChimeService {
                 .build();
 
         attendeeSessionService.save(attendeeSession);
+
+
 
 
         return createAttendeeResponseDTO;
@@ -182,8 +198,10 @@ public class ChimeService {
         return sb.toString();
     }
 
-}
 
+
+
+}
 
 
 

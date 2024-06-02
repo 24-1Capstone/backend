@@ -30,10 +30,6 @@ public class Reservation {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @LastModifiedDate // 엔티티가 수정될 때 수정 시간 저장
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apply_user_id")
@@ -61,13 +57,6 @@ public class Reservation {
         this.startTime = startTime;
         this.endTime = endTime;
         this.reservationStatus = reservationStatus;
-    }
-
-    //예약 수정
-    public void update(String content, LocalDateTime startTime, LocalDateTime endTime) {
-        this.content = content;
-        this.startTime = startTime;
-        this.endTime = endTime;
     }
 
 

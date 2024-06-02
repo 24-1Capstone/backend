@@ -72,14 +72,7 @@ public class UserApiRestController {
     }
 
 
-    private String extractToken(HttpServletRequest request) {
-        String authorizationHeader = request.getHeader("Authorization");
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            return authorizationHeader.substring(7); // "Bearer " 다음부터의 문자열을 추출
-        } else {
-            throw new RuntimeException("No token provided");
-        }
-    }
+
 
 //    @Operation(summary = "깃허브 사용자 정보 조회API", description = "깃허브 사용자 상세 정보 모두 조회")
 //    @ApiResponses({

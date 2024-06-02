@@ -8,6 +8,7 @@ import org.example.reservation.domain.dto.ReservationDTO;
 import org.example.reservation.domain.entity.Reservation;
 import org.example.reservation.domain.entity.ReservationStatus;
 import org.example.reservation.repository.ReservationRepository;
+import org.example.user.application.member.UserService;
 import org.example.user.domain.entity.member.User;
 import org.example.user.repository.member.UserRepository;
 import org.springframework.data.domain.Page;
@@ -18,94 +19,43 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-
-
-    //전체 에약 조회
-    public Page<ReservationDTO> reservationList(int page) {
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
-
-        Page<Reservation>reservationPage = reservationRepository.findAll(pageable);
-
-        Page<ReservationDTO> reservationDtoList = new ReservationDTO().toDtoList(reservationPage);
-
-        return reservationDtoList;
-    }
-
-
-    //특정 예약 조회
-    public ReservationDTO getReservation(Long reservationId) {
-
-        Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new ReservationNotFoundException("Reservation not found"));
-
-        return ReservationDTO.builder()
-                .id(reservation.getId())
-                .content(reservation.getContent())
-                .createdAt(reservation.getCreatedAt())
-                .updatedAt(reservation.getUpdatedAt())
-                .applyUserName(reservation.getApplyUser().getUsername())
-                .receiveUserName(reservation.getReceiveUser().getUsername())
-                .startTime(reservation.getStartTime())
-                .endTime(reservation.getEndTime())
-                .reservationStatus(reservation.getReservationStatus())
-                .build();
-
-    }
 
 
     //내 에약들 조회
-    public Page<ReservationDTO> getMyReservation(int page) {
+    public List<ReservationDTO> getMyReservation() {
 
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        User user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(() -> new ReservationNotFoundException("User not found"));
+        List<Reservation> reservation= reservationRepository.findByApplyUserUsernameOrReceiveUserUsername(userName, userName);
 
-        Page<Reservation> reservationPage = reservationRepository.findByApplyUser(user, pageable);
-
-        Page<ReservationDTO> reservationDtoList = new ReservationDTO().toDtoList(reservationPage);
+        List<ReservationDTO> reservationDtoList = new ReservationDTO().toDtoList(reservation);
 
         return reservationDtoList;
 
     }
 
-
-
-     //내 신청받은이의 신청응답 대기중인 예약들만 조회
-    public Page<ReservationDTO> getWaitingReservation(int page) {
-
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
-
-        Page<Reservation> reservationPage = reservationRepository.findByReservationStatusEquals(ReservationStatus.PROGRESSING, pageable);
-
-        Page<ReservationDTO> reservationDtoList = new ReservationDTO().toDtoList(reservationPage);
-
-        return reservationDtoList;
-
-
-    }
 
 
 
 
     //예약신청
 
-    public void createReservation(CreateReservationRequestDTO createReservationRequestDTO, Long receiveUserId) {
+    public void createReservation(CreateReservationRequestDTO createReservationRequestDTO) {
 
         String applyUserName = SecurityContextHolder.getContext().getAuthentication().getName();
-        User applyUser = userRepository.findByUsername(applyUserName)
-                .orElseThrow(() -> new ReservationNotFoundException("User not found"));
+        User applyUser = userService.findByUsername(applyUserName);
 
-        User receiveUser = userRepository.findById(receiveUserId)
-                .orElseThrow(() -> new ReservationNotFoundException("User not found"));
+        User receiveUser = userService.findByUsername(createReservationRequestDTO.getReceiveUserName());
 
         Reservation reservation = Reservation.builder()
                 .applyUser(applyUser)
@@ -114,6 +64,7 @@ public class ReservationService {
                 .startTime(createReservationRequestDTO.getStartTime())
                 .endTime(createReservationRequestDTO.getEndTime())
                 .reservationStatus(ReservationStatus.PROGRESSING)
+                .receiveUser(receiveUser)
                 .build();
 
 
@@ -171,28 +122,6 @@ public class ReservationService {
     }
 
 
-    // 신청자가 예약 수정
-    public void editReservation(Long reservationId, CreateReservationRequestDTO createReservationRequestDTO){
-
-
-        Reservation reservation = reservationRepository.findById(reservationId)
-                .orElseThrow(() -> new ReservationNotFoundException("Reservation not found"));
-
-
-        authorizeReservationApplyUser(reservationId);
-
-
-        if (reservation.getReservationStatus() != ReservationStatus.PROGRESSING) {
-            throw new ReservationNotWaitingException("Reservation cannot be edited because it's not in PROGRESSING status");
-        }
-
-
-        reservation.update(createReservationRequestDTO.getContent(), createReservationRequestDTO.getStartTime(), createReservationRequestDTO.getEndTime());
-
-
-        reservationRepository.save(reservation);
-
-    }
 
 
 

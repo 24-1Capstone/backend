@@ -1,4 +1,4 @@
-package org.example.meeting.domain;
+package org.example.config;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

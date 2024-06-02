@@ -62,10 +62,6 @@ public class UserApiController {
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(userName);
         userService.deleteUserById(user.getId());
-//        // 로그아웃 처리
-//        logout(request, response);
-
-        authorizationRequestBasedOnCookieRepository.removeAuthorizationRequestCookies(request, response);
         return ResponseEntity.noContent().build();
 
     }

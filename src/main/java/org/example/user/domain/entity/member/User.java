@@ -48,6 +48,8 @@ public class User extends BaseEntity implements UserDetails{ // UserDetails를 �
 
     private String accessToken;
 
+
+
     @Builder
     public User(String username, String avatarUrl, String password, String followersUrl, String followingsUrl, String provider, String providerId, String accessToken) {
         this.username = username;
@@ -59,6 +61,7 @@ public class User extends BaseEntity implements UserDetails{ // UserDetails를 �
         this.providerId = providerId;
         this.accessToken = accessToken;
     }
+
 
     //사용자 이름 변경
     public User update(String username) {

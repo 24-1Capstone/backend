@@ -15,11 +15,14 @@ public class CreateReservationRequestDTO {
 
     private LocalDateTime endTime;
 
+    private String receiveUserName;
+
 
     @Builder
-    public CreateReservationRequestDTO(String content, LocalDateTime startTime, LocalDateTime endTime) {
+    public CreateReservationRequestDTO(String content, LocalDateTime startTime, LocalDateTime endTime, String receiveUserName) {
         this.content = content;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.receiveUserName = receiveUserName;
     }
 }
