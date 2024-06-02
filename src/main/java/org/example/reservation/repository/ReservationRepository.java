@@ -13,8 +13,8 @@ import java.util.List;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    @Query("SELECT m FROM Reservation m WHERE m.applyUserName = :userName OR m.receiveUserName = :userName")
-    List<Reservation> findByApplyUserNameOrReceiveUserName(@Param("userName") String userName);
+    List<Reservation> findByApplyUserUsernameOrReceiveUserUsername(String applyUserName, String receiveUserName);
+
 
 
 }

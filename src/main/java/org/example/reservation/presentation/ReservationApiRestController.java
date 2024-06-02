@@ -34,7 +34,7 @@ public class ReservationApiRestController {
 
 
     @Operation(summary = "새로운 예약 신청", description = "새로운 예약 신청")
-    @PostMapping("/api/reservation/")
+    @PostMapping("/api/reservation")
     public void createReservation(@RequestBody CreateReservationRequestDTO createReservationRequestDTO) {
 
         reservationService.createReservation(createReservationRequestDTO);

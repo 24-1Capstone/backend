@@ -34,7 +34,9 @@ public class ReservationService {
     //내 에약들 조회
     public List<ReservationDTO> getMyReservation() {
 
-        List<Reservation> reservation= reservationRepository.findByApplyUserNameOrReceiveUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        List<Reservation> reservation= reservationRepository.findByApplyUserUsernameOrReceiveUserUsername(userName, userName);
 
         List<ReservationDTO> reservationDtoList = new ReservationDTO().toDtoList(reservation);
 
