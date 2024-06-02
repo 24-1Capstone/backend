@@ -59,13 +59,6 @@ public class Reservation {
         this.reservationStatus = reservationStatus;
     }
 
-    //예약 수정
-    public void update(String content, LocalDateTime startTime, LocalDateTime endTime) {
-        this.content = content;
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
-
 
 
     //예약 신청 승인

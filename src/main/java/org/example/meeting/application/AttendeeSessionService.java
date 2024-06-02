@@ -40,25 +40,6 @@ public class AttendeeSessionService {
         }
     }
 
-    public Optional<AttendeeSession> findById(Long attendeeSessionId) {
-        try {
-            return attendeeSessionRepository.findById(attendeeSessionId);
-        } catch (Exception e) {
-            throw new AttendeeSessionNotFoundException("Error finding attendee session by ID: " + attendeeSessionId);
-        }
-    }
-
-    public void deleteByAttendeeId(String attendeeId) {
-        try {
-            if (attendeeSessionRepository.existsByMeetingId(attendeeId)) {
-                attendeeSessionRepository.deleteByAttendeeId(attendeeId);
-            } else {
-                throw new AttendeeSessionNotFoundException("Attendee session with ID: " + attendeeId + " not found.");
-            }
-        } catch (Exception e) {
-            throw new AttendeeSessionDeletionException("Error deleting attendee session with ID: " + attendeeId);
-        }
-    }
 
     public void deleteByMeetingId(String meetingId) {
 
@@ -66,27 +47,4 @@ public class AttendeeSessionService {
 
     }
 
-    public Optional<AttendeeSession> findByAttendeeId(String attendeeId) {
-        try {
-            return attendeeSessionRepository.findByAttendeeId(attendeeId);
-        } catch (Exception e) {
-            throw new AttendeeSessionNotFoundException("Error finding attendee session by ID: " + attendeeId);
-        }
-    }
-
-    public Optional<AttendeeSession> findByJoinToken(String joinToken) {
-        try {
-            return attendeeSessionRepository.findByJoinToken(joinToken);
-        } catch (Exception e) {
-            throw new AttendeeSessionNotFoundException("Error finding attendee session by join token: " + joinToken);
-        }
-    }
-
-    public List<AttendeeSession> findAll() {
-        try {
-            return attendeeSessionRepository.findAll();
-        } catch (Exception e) {
-            throw new AttendeeSessionNotFoundException("Error retrieving all attendee sessions");
-        }
-    }
 }

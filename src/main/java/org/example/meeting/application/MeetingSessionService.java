@@ -48,13 +48,6 @@ public class MeetingSessionService {
         }
     }
 
-    public Optional<MeetingSession> findById(Long meetingSessionId) {
-        try {
-            return meetingSessionRepository.findById(meetingSessionId);
-        } catch (Exception e) {
-            throw new MeetingSessionNotFoundException("Error finding meeting session with ID: " + meetingSessionId);
-        }
-    }
 
     public Optional<MeetingSession> findByMeetingId(String meetingId) {
         try {
@@ -64,11 +57,5 @@ public class MeetingSessionService {
         }
     }
 
-    public List<MeetingSession> findAll() {
-        try {
-            return meetingSessionRepository.findAll();
-        } catch (Exception e) {
-            throw new MeetingSessionNotFoundException("Error retrieving all meeting sessions: " + e.getMessage());
-        }
-    }
+
 }
