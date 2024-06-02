@@ -33,7 +33,7 @@ public class ChimeService {
 
 
     // MeetingSession 엔티티에 저장 및 createMeetingResponseDTO 반환
-    public void createMeeting(String applyUserName, String receiveUserName) {
+    public CreateMeetingResponseDTO createMeeting(String applyUserName, String receiveUserName) {
 
 
         List<MeetingSession> applyUserMeetings = meetingSessionService.listMeetings(applyUserName);
@@ -72,6 +72,24 @@ public class ChimeService {
 
         meetingSessionService.save(meetingSession);
 
+        return CreateMeetingResponseDTO.builder()
+                .externalMeetingId(meetingSession.getExternalMeetingId())
+                .mediaPlacement(MediaPlacement.builder()
+                        .audioFallbackUrl(meetingSession.getAudioFallbackUrl())
+                        .audioHostUrl(meetingSession.getAudioHostUrl())
+                        .eventIngestionUrl(meetingSession.getEventIngestionUrl())
+                        .screenDataUrl(meetingSession.getScreenDataUrl())
+                        .screenSharingUrl(meetingSession.getScreenSharingUrl())
+                        .screenViewingUrl(meetingSession.getScreenViewingUrl())
+                        .signalingUrl(meetingSession.getSignalingUrl())
+                        .turnControlUrl(meetingSession.getTurnControllerUrl())
+                        .build())
+                .mediaRegion(meetingSession.getMediaRegion())
+                .meetingArn(meetingSession.getMeetingArn())
+                .meetingId(meetingSession.getMeetingId())
+                .applyUserName(meetingSession.getApplyUserName())
+                .receiveUserName(meetingSession.getReceiveUserName())
+                .build();
 
     }
 

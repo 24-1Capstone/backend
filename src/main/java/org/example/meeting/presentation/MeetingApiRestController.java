@@ -24,9 +24,9 @@ public class MeetingApiRestController {
             @ApiResponse(responseCode = "500", description = "서비스가 예기치 않은 오류를 만남")
     })
     @PostMapping("/api/meetings")
-    public void createMeeting(@RequestBody CreateMeetingRequestDTO createMeetingRequestDTO) {
+    public CreateMeetingResponseDTO createMeeting(@RequestBody CreateMeetingRequestDTO createMeetingRequestDTO) {
 
-        chimeService.createMeeting(createMeetingRequestDTO.getApplyUserName(), createMeetingRequestDTO.getReceiveUserName());
+       return chimeService.createMeeting(createMeetingRequestDTO.getApplyUserName(), createMeetingRequestDTO.getReceiveUserName());
     }
 
 
