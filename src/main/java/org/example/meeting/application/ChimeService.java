@@ -2,25 +2,17 @@ package org.example.meeting.application;
 
 import lombok.RequiredArgsConstructor;
 import org.example.exception.AttendeeAlreadyExistsException;
-import org.example.exception.MeetingAlreadyExistsException;
-import org.example.exception.MeetingSessionNotFoundException;
 import org.example.meeting.domain.AttendeeSession;
 import org.example.meeting.domain.dto.*;
 import org.example.meeting.domain.MeetingSession;
 import org.example.meeting.domain.dto.MediaPlacement;
-import org.example.user.application.member.UserService;
-import org.example.user.domain.entity.member.User;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import software.amazon.awssdk.services.chimesdkmeetings.ChimeSdkMeetingsClient;
 import software.amazon.awssdk.services.chimesdkmeetings.model.*;
-
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+
 
 @Service
 @RequiredArgsConstructor
@@ -39,8 +31,39 @@ public class ChimeService {
         List<MeetingSession> applyUserMeetings = meetingSessionService.listMeetings(applyUserName);
         List<MeetingSession> receiveUserMeetings = meetingSessionService.listMeetings(receiveUserName);
 
+        // 이미 회의가 생성되어 있는지 확인합니다.
         if (!applyUserMeetings.isEmpty() || !receiveUserMeetings.isEmpty()) {
-            throw new MeetingAlreadyExistsException("A meeting already exists for one of the users.");
+            List<MeetingSession> existingMeetings = new ArrayList<>();
+            existingMeetings.addAll(applyUserMeetings);
+            existingMeetings.addAll(receiveUserMeetings);
+
+            // 이미 있는 회의 중에서 applyUserName 또는 receiveUserName이 일치하는 경우를 찾습니다.
+            Optional<MeetingSession> existingMeeting = existingMeetings.stream()
+                    .filter(session -> session.getApplyUserName().equals(applyUserName) || session.getReceiveUserName().equals(receiveUserName))
+                    .findFirst();
+
+            if (existingMeeting.isPresent()) {
+                // 이미 생성된 회의를 찾았으므로 해당 회의의 정보로 CreateMeetingResponseDTO를 생성하여 반환합니다.
+                MeetingSession session = existingMeeting.get();
+                return CreateMeetingResponseDTO.builder()
+                        .externalMeetingId(session.getExternalMeetingId())
+                        .mediaPlacement(MediaPlacement.builder()
+                                .audioFallbackUrl(session.getAudioFallbackUrl())
+                                .audioHostUrl(session.getAudioHostUrl())
+                                .eventIngestionUrl(session.getEventIngestionUrl())
+                                .screenDataUrl(session.getScreenDataUrl())
+                                .screenSharingUrl(session.getScreenSharingUrl())
+                                .screenViewingUrl(session.getScreenViewingUrl())
+                                .signalingUrl(session.getSignalingUrl())
+                                .turnControlUrl(session.getTurnControllerUrl())
+                                .build())
+                        .mediaRegion(session.getMediaRegion())
+                        .meetingArn(session.getMeetingArn())
+                        .meetingId(session.getMeetingId())
+                        .applyUserName(session.getApplyUserName())
+                        .receiveUserName(session.getReceiveUserName())
+                        .build();
+            }
         }
 
         CreateMeetingRequest request = CreateMeetingRequest.builder()
