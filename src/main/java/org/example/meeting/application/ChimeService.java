@@ -30,10 +30,6 @@ public class ChimeService {
     private final ChimeSdkMeetingsClient chimeSdkMeetingsClient;
     private final MeetingSessionService meetingSessionService;
     private final AttendeeSessionService attendeeSessionService;
-    private final UserService userService;
-    private final ThreadPoolTaskScheduler taskScheduler;
-
-    private final ConcurrentMap<String, Long> meetingExpiryMap = new ConcurrentHashMap<>();
 
 
     // MeetingSession 엔티티에 저장 및 createMeetingResponseDTO 반환
@@ -76,11 +72,6 @@ public class ChimeService {
 
         meetingSessionService.save(meetingSession);
 
-        // 초기 만료 시간 설정
-        meetingExpiryMap.put(meetingSession.getMeetingId(), System.currentTimeMillis() + 10 * 60 * 1000);
-
-        // 첫 번째 쿠폰 체크 작업 예약
-        taskScheduler.schedule(() -> checkMeetingExpiry(meetingSession.getMeetingId(), applyUserName), new Date(System.currentTimeMillis() + 10 * 60 * 1000));
 
     }
 
@@ -207,40 +198,7 @@ public class ChimeService {
         return sb.toString();
     }
 
-    // 주기적인 쿠폰 체크 메서드
-    @Scheduled(fixedRate = 10 * 60 * 1000) // 10분마다 실행
-    public void checkMeetingExpiry() {
-        long currentTime = System.currentTimeMillis();
-        meetingExpiryMap.forEach((meetingId, expiryTime) -> {
-            if (currentTime >= expiryTime) {
-                MeetingSession meetingSession = meetingSessionService.findByMeetingId(meetingId)
-                        .orElseThrow(() -> new MeetingSessionNotFoundException("meeting not find"));
-                if (meetingSession != null) {
-                    checkMeetingExpiry(meetingId, meetingSession.getApplyUserName());
-                }
-            }
-        });
-    }
 
-    // 개별 회의 만료 체크 메서드
-    public void checkMeetingExpiry(String meetingId, String applyUserName) {
-        long currentTime = System.currentTimeMillis();
-        Long expiryTime = meetingExpiryMap.get(meetingId);
-        if (expiryTime != null && currentTime >= expiryTime) {
-            User user = userService.findByUsername(applyUserName);
-            if (user != null && user.getCouponCount() > 0) {
-                // 회의를 연장하고 쿠폰 수를 감소
-                user.useCoupon();
-                userService.saveUser(user);
-                meetingExpiryMap.put(meetingId, currentTime + 10 * 60 * 1000);
-                // 다음 체크 작업 예약
-                taskScheduler.schedule(() -> checkMeetingExpiry(meetingId, applyUserName), new Date(currentTime + 10 * 60 * 1000));
-            } else {
-                // 쿠폰이 없으면 회의를 삭제
-                deleteMeeting(meetingId);
-            }
-        }
-    }
 
 
 }
