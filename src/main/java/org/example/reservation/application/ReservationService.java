@@ -8,6 +8,7 @@ import org.example.reservation.domain.dto.ReservationDTO;
 import org.example.reservation.domain.entity.Reservation;
 import org.example.reservation.domain.entity.ReservationStatus;
 import org.example.reservation.repository.ReservationRepository;
+import org.example.user.application.member.UserService;
 import org.example.user.domain.entity.member.User;
 import org.example.user.repository.member.UserRepository;
 import org.springframework.data.domain.Page;
@@ -26,18 +27,14 @@ import java.util.List;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
 
 
     //내 에약들 조회
     public List<ReservationDTO> getMyReservation() {
 
-
-        User user = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(() -> new ReservationNotFoundException("User not found"));
-
-        List<Reservation> reservation= reservationRepository.findByApplyUser(user);
+        List<Reservation> reservation= reservationRepository.findByApplyUserNameOrReceiveUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 
         List<ReservationDTO> reservationDtoList = new ReservationDTO().toDtoList(reservation);
 
@@ -54,11 +51,9 @@ public class ReservationService {
     public void createReservation(CreateReservationRequestDTO createReservationRequestDTO) {
 
         String applyUserName = SecurityContextHolder.getContext().getAuthentication().getName();
-        User applyUser = userRepository.findByUsername(applyUserName)
-                .orElseThrow(() -> new ReservationNotFoundException("User not found"));
+        User applyUser = userService.findByUsername(applyUserName);
 
-        User receiveUser = userRepository.findByUsername(createReservationRequestDTO.getReceiveUserName())
-                .orElseThrow(() -> new ReservationNotFoundException("User not found"));
+        User receiveUser = userService.findByUsername(createReservationRequestDTO.getReceiveUserName());
 
         Reservation reservation = Reservation.builder()
                 .applyUser(applyUser)
