@@ -129,7 +129,12 @@ public class ChimeService {
         // 이미 존재하는 참여자인지 확인
         Optional<AttendeeSession> existingAttendee = attendeeSessionService.findByExternalUserId(externalUserId);
         if (existingAttendee.isPresent()) {
-            throw new AttendeeAlreadyExistsException("You are already an attendee of this meeting.");
+            AttendeeSession session = existingAttendee.get();
+            return CreateAttendeeResponseDTO.builder()
+                    .attendeeId(session.getAttendeeId())
+                    .externalUserId(session.getExternalUserId())
+                    .joinToken(session.getJoinToken())
+                    .build();
         }
 
 
