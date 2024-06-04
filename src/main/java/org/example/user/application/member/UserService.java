@@ -1,34 +1,41 @@
 package org.example.user.application.member;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.exception.UserNotFoundException;
+import org.example.meeting.application.AttendeeSessionService;
+import org.example.meeting.application.MeetingSessionService;
+import org.example.meeting.domain.MeetingSession;
+import org.example.reservation.application.ReservationService;
 import org.example.user.domain.dto.response.member.FollowerResponse;
 import org.example.user.domain.dto.response.member.FollowingResponse;
 import org.example.user.domain.dto.response.member.GithubProfileResponse;
 import org.example.user.domain.entity.member.User;
 import org.example.user.domain.dto.request.member.AddUserRequest;
 import org.example.user.repository.member.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
 import java.util.List;
-import java.util.Optional;
+
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final WebClient webClient;
+    private final MeetingSessionService meetingSessionService;
+    private final AttendeeSessionService attendeeSessionService;
+    private final ReservationService reservationService;
 
-    public UserService(UserRepository userRepository, WebClient webClient) {
-        this.userRepository = userRepository;
-        this.webClient = webClient;
-    }
+
+
 
     public Flux<FollowingResponse> fetchFollowings(User user, int pageSize, int page) {
         String processedUrl = user.getFollowingsUrl().replace("{/other_user}", "");
@@ -159,6 +166,22 @@ public class UserService {
                     log.error("Failed to retrieve followings due to: {}", e.getMessage());
                     return Flux.error(new RuntimeException("API request failed with error"));  // API 오류 메시지 반환
                 });
+    }
+
+    public void deleteUser() {
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        reservationService.deleteReservationByUserName(userName);
+        User user = userRepository.findByUsername(userName)
+                .orElseThrow(() -> new UserNotFoundException("User not found with username: " + userName));
+        userRepository.deleteById(user.getId());
+
+        List<MeetingSession> sessionList = meetingSessionService.listMeetings(userName);
+        for (MeetingSession session : sessionList) {
+            meetingSessionService.deleteByMeetingSessionId(session.getId());
+        }
+
+        attendeeSessionService.deleteByExternalUserId(userName);
     }
 
 

@@ -1,15 +1,11 @@
 package org.example.meeting.application;
-
 import lombok.RequiredArgsConstructor;
 import org.example.exception.AttendeeSessionCreationException;
-import org.example.exception.AttendeeSessionDeletionException;
 import org.example.exception.AttendeeSessionNotFoundException;
 import org.example.meeting.domain.AttendeeSession;
 import org.example.meeting.repository.AttendeeSessionRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,6 +40,12 @@ public class AttendeeSessionService {
     public void deleteByMeetingId(String meetingId) {
 
         attendeeSessionRepository.deleteByMeetingId(meetingId);
+
+    }
+
+    public void deleteByExternalUserId(String externalUserId) {
+
+        attendeeSessionRepository.deleteByExternalUserId(externalUserId);
 
     }
 
