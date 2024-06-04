@@ -11,10 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.config.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import org.example.user.application.member.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.io.IOException;
 
 
@@ -34,6 +32,13 @@ public class UserApiController {
 //        userService.save(request); // 회원가입 메서드 호출
 //        return "redirect:/login"; // 회원 가입이 완료된 이후에 로그인 페이지로 이동
 //    }
+
+    @GetMapping("/login")
+    public void loginFailRedirect(HttpServletResponse response, @RequestParam(required = false) String error) throws IOException {
+        if (error != null) {
+            response.sendRedirect("https://coffeechat.shop");
+        }
+    }
 
     @Operation(summary = "사용자 로그아웃", description = "로그아웃 하면 refresh_token 쿠키에서 제거, authentication 제거")
     @ApiResponses({

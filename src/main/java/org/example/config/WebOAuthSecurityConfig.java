@@ -54,7 +54,7 @@ public class WebOAuthSecurityConfig {
 
         // 토큰 재발급 URL은 인증 없이 접근 가능하도록 설정. 나머지 API URL은 인증 필요
         http.authorizeRequests()
-                .requestMatchers("/","/api/token", "/api/user/**", "/api/users/**", "/api/meetings/**").permitAll()
+                .requestMatchers("/","/api/token", "/api/user/**", "/api/users/**", "/api/meetings/**", "/login/**").permitAll()
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll();
 
@@ -80,7 +80,6 @@ public class WebOAuthSecurityConfig {
                 .and()
                 .successHandler(oAuth2SuccessHandler()) // 인증 성공 시 실행할 핸들러
                 .failureHandler(oAuth2FailureHandler())
-                .failureUrl("https://coffeechat.shop")
                 .userInfoEndpoint()
                 .userService(oAuth2UserCustomService);
 
