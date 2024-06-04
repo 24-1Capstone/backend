@@ -2,7 +2,6 @@ package org.example.config;
 import lombok.RequiredArgsConstructor;
 import org.example.config.jwt.TokenProvider;
 import org.example.config.oauth.*;
-import org.example.user.application.token.RefreshTokenService;
 import org.example.user.repository.token.RefreshTokenRepository;
 import org.example.user.application.member.UserService;
 import org.springframework.context.annotation.Bean;
@@ -10,20 +9,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.*;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-import java.util.List;
 
 
 @EnableWebSecurity
@@ -86,6 +80,7 @@ public class WebOAuthSecurityConfig {
                 .and()
                 .successHandler(oAuth2SuccessHandler()) // 인증 성공 시 실행할 핸들러
                 .failureHandler(oAuth2FailureHandler())
+                .failureUrl("https://coffeechat.shop")
                 .userInfoEndpoint()
                 .userService(oAuth2UserCustomService);
 
@@ -145,8 +140,8 @@ public class WebOAuthSecurityConfig {
         );
     }
     @Bean
-    public CustomOAuth2FailureHandler oAuth2FailureHandler() {
-        return new CustomOAuth2FailureHandler();
+    public AuthenticationFailureHandler oAuth2FailureHandler() {
+        return new CustomOAuth2AuthenticationFailureHandler();
     }
 
 
