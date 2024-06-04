@@ -37,16 +37,23 @@ public class MeetingSessionService {
     }
 
     public void deleteByMeetingId(String meetingId) {
-        try {
-            if (meetingSessionRepository.existsByMeetingId(meetingId)) {
-                meetingSessionRepository.deleteByMeetingId(meetingId);
-            } else {
-                throw new MeetingSessionNotFoundException("Meeting session with ID: " + meetingId + " not found.");
-            }
-        } catch (Exception e) {
-            throw new MeetingSessionDeletionException("Error deleting meeting session with ID: " + meetingId + ": " + e.getMessage());
+        Optional<MeetingSession> meetingSessionOptional = meetingSessionRepository.findByMeetingId(meetingId);
+        if (meetingSessionOptional.isPresent()) {
+            meetingSessionRepository.deleteByMeetingId(meetingId);
+        } else {
+            throw new MeetingSessionNotFoundException("Meeting session with ID: " + meetingId + " not found.");
         }
     }
+
+    public void deleteByMeetingSessionId(Long meetingSessionId) {
+        Optional<MeetingSession> meetingSessionOptional = meetingSessionRepository.findById(meetingSessionId);
+        if (meetingSessionOptional.isPresent()) {
+            meetingSessionRepository.deleteById(meetingSessionId);
+        } else {
+            throw new MeetingSessionNotFoundException("Meeting session with ID: " + meetingSessionId + " not found.");
+        }
+    }
+
 
 
     public Optional<MeetingSession> findByMeetingId(String meetingId) {

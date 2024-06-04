@@ -4,23 +4,20 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.config.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
-import org.example.user.domain.dto.request.member.AddUserRequest;
 import org.example.user.application.member.UserService;
-import org.example.user.domain.entity.member.User;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.io.IOException;
+
+
 
 @Slf4j
 @Tag(name = "user-api-controller", description = "회원가입, 로그아웃을 위한 컨트롤러")
@@ -30,6 +27,7 @@ public class UserApiController {
 
     private final UserService userService;
     private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestBasedOnCookieRepository;
+
 
 //    @PostMapping("/user")
 //    public String signup(AddUserRequest request) {
@@ -59,9 +57,9 @@ public class UserApiController {
     })
     @DeleteMapping("/api/user/resign")
     public ResponseEntity<Void> deleteUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userService.findByUsername(userName);
-        userService.deleteUserById(user.getId());
+
+        userService.deleteUser();
+
         return ResponseEntity.noContent().build();
 
     }

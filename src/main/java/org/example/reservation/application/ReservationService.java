@@ -3,6 +3,7 @@ package org.example.reservation.application;
 import lombok.RequiredArgsConstructor;
 import org.example.exception.ReservationNotFoundException;
 import org.example.exception.ReservationNotWaitingException;
+import org.example.exception.UserNotFoundException;
 import org.example.reservation.domain.dto.CreateReservationRequestDTO;
 import org.example.reservation.domain.dto.ReservationDTO;
 import org.example.reservation.domain.entity.Reservation;
@@ -27,7 +28,7 @@ import java.util.List;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
 
 
@@ -53,9 +54,11 @@ public class ReservationService {
     public void createReservation(CreateReservationRequestDTO createReservationRequestDTO) {
 
         String applyUserName = SecurityContextHolder.getContext().getAuthentication().getName();
-        User applyUser = userService.findByUsername(applyUserName);
+        User applyUser = userRepository.findByUsername(applyUserName)
+                .orElseThrow(() -> new UserNotFoundException("unexpected user"));
 
-        User receiveUser = userService.findByUsername(createReservationRequestDTO.getReceiveUserName());
+        User receiveUser = userRepository.findByUsername(createReservationRequestDTO.getReceiveUserName())
+                .orElseThrow(() -> new UserNotFoundException("unexpected user"));
 
         Reservation reservation = Reservation.builder()
                 .applyUser(applyUser)
@@ -118,6 +121,13 @@ public class ReservationService {
         authorizeReservationApplyUser(reservationId);
 
         reservationRepository.delete(reservation);
+
+    }
+
+    // 예약삭제
+    public void deleteReservationByUserName(String userName) {
+
+        reservationRepository.deleteByApplyUserUsernameOrReceiveUserUsername(userName, userName);
 
     }
 
