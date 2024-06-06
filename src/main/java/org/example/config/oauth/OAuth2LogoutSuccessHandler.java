@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 
@@ -20,6 +21,8 @@ public class OAuth2LogoutSuccessHandler implements LogoutSuccessHandler {
     private final TokenProvider tokenProvider;
     private final static String HEADER_AUTHORIZATION = "Authorization";
     private final static String TOKEN_PREFIX = "Bearer ";
+
+    public static final String REDIRECT_PATH = "https://www.coffeechat.shop/api/auth/login";
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
@@ -42,11 +45,21 @@ public class OAuth2LogoutSuccessHandler implements LogoutSuccessHandler {
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().print("You have been logged out successfully.");
         response.getWriter().flush();
+
+        String targetUrl = getTargetUrl();
+        response.sendRedirect(targetUrl);
     }
     private String getAccessToken(String authorizationHeader) {
         if (authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
             return authorizationHeader.substring(TOKEN_PREFIX.length());
         }
         return null;
+    }
+
+    private String getTargetUrl() {
+        return UriComponentsBuilder.fromUriString(REDIRECT_PATH)
+//                .queryParam("token", token)
+                .build()
+                .toUriString();
     }
 }
