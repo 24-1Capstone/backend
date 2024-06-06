@@ -127,7 +127,7 @@ public class WebOAuthSecurityConfig {
 
     @Bean
     public OAuth2LogoutSuccessHandler logoutSuccessHandler() {
-        return new OAuth2LogoutSuccessHandler(refreshTokenRepository, tokenProvider);
+        return new OAuth2LogoutSuccessHandler(refreshTokenRepository, tokenProvider, oAuth2AuthorizationRequestBasedOnCookieRepository());
     }
 
     @Bean
