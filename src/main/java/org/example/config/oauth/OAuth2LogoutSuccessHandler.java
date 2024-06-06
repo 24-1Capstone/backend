@@ -22,7 +22,6 @@ public class OAuth2LogoutSuccessHandler implements LogoutSuccessHandler {
     private final static String HEADER_AUTHORIZATION = "Authorization";
     private final static String TOKEN_PREFIX = "Bearer ";
 
-    public static final String REDIRECT_PATH = "https://www.coffeechat.shop/api/auth/logout";
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
@@ -46,8 +45,6 @@ public class OAuth2LogoutSuccessHandler implements LogoutSuccessHandler {
         response.getWriter().print("You have been logged out successfully.");
         response.getWriter().flush();
 
-        String targetUrl = getTargetUrl();
-        response.sendRedirect(targetUrl);
     }
     private String getAccessToken(String authorizationHeader) {
         if (authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
@@ -56,10 +53,4 @@ public class OAuth2LogoutSuccessHandler implements LogoutSuccessHandler {
         return null;
     }
 
-    private String getTargetUrl() {
-        return UriComponentsBuilder.fromUriString(REDIRECT_PATH)
-//                .queryParam("token", token)
-                .build()
-                .toUriString();
-    }
 }
