@@ -21,7 +21,6 @@ public class OAuth2LogoutSuccessHandler implements LogoutSuccessHandler {
     private final TokenProvider tokenProvider;
     private final static String HEADER_AUTHORIZATION = "Authorization";
     private final static String TOKEN_PREFIX = "Bearer ";
-    private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestRepository;
 
 
     @Override
@@ -41,7 +40,6 @@ public class OAuth2LogoutSuccessHandler implements LogoutSuccessHandler {
         });
 
 
-        clearAuthenticationAttributes(request, response);
 
         // Complete the logout process
         new SecurityContextLogoutHandler().logout(request, response, authentication);
@@ -57,7 +55,4 @@ public class OAuth2LogoutSuccessHandler implements LogoutSuccessHandler {
         return null;
     }
 
-    private void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
-        authorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
-    }
 }
