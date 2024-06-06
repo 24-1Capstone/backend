@@ -22,7 +22,7 @@ public class OAuth2LogoutSuccessHandler implements LogoutSuccessHandler {
     private final static String HEADER_AUTHORIZATION = "Authorization";
     private final static String TOKEN_PREFIX = "Bearer ";
 
-    public static final String REDIRECT_PATH = "https://www.coffeechat.shop/api/auth/login";
+    public static final String REDIRECT_PATH = "https://www.coffeechat.shop/api/auth/logout";
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
