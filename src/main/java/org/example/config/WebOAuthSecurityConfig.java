@@ -86,7 +86,7 @@ public class WebOAuthSecurityConfig {
         http.logout()
                 .logoutUrl("/logout")
                 .logoutSuccessHandler(logoutSuccessHandler())
-                .deleteCookies("refresh_token", "token")
+                .deleteCookies("refresh_token", "access_token")
                 .clearAuthentication(true)
                 .invalidateHttpSession(true);
 
