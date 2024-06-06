@@ -86,7 +86,6 @@ public class WebOAuthSecurityConfig {
         http.logout()
                 .logoutUrl("/logout")
                 .logoutSuccessHandler(logoutSuccessHandler())
-                .logoutSuccessUrl("https://coffeechat.shop")
                 .deleteCookies("refresh_token", "access_token")
                 .clearAuthentication(true)
                 .invalidateHttpSession(true);
